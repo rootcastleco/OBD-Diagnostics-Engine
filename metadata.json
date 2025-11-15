@@ -1,0 +1,8 @@
+{
+  "name": "Rootcastle Pilot AI – OBD & Diagnostics Engine",
+  "description": "An advanced automotive diagnostic AI that reads and analyzes ELM327 OBD-II data to provide users with technical diagnostics and suggestions.",
+  "requestFramePermissions": [
+    "geolocation",
+    "bluetooth"
+  ]
+}
