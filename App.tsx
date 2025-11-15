@@ -1,10 +1,11 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { VehicleData, LiveData, ResolvedVehicleData, RootcastleResponse, VehicleProfile } from './types';
+import { VehicleData, LiveData, VehicleProfile } from './types';
 import { analyzeObdData } from './services/geminiService';
 import { ELM327Service } from './services/elmService';
-import { getMakes, getModelsForMake, getYearsForModel, getOptionsForYear, resolveVehicleInfo } from './services/vehicleDataService';
-import { EngineIcon, WrenchIcon, CarIcon, BoltIcon, InfoIcon, BluetoothIcon, VehicleSearchIcon, TransmissionIcon } from './components/icons';
+import { getMakes, getModelsForMake, getYearsForModel, getOptionsForYear } from './services/vehicleDataService';
+import { resolveVehicleByVIN, resolveVehicleManually } from './services/vinService';
+import { EngineIcon, WrenchIcon, CarIcon, BoltIcon, InfoIcon, BluetoothIcon, VehicleSearchIcon } from './components/icons';
 
 const LiveValue: React.FC<{ label: string; value: string | number; unit?: string }> = ({ label, value, unit }) => (
   <div className="flex justify-between items-baseline bg-brand-dark/50 p-2 rounded">
@@ -13,12 +14,14 @@ const LiveValue: React.FC<{ label: string; value: string | number; unit?: string
   </div>
 );
 
+type MobileView = 'live' | 'config' | 'report';
+
 const App: React.FC = () => {
   // --- STATE MANAGEMENT ---
   const [selections, setSelections] = useState({ make: '', model: '', year: '', engine: '', trim: '' });
   const [vin, setVin] = useState('');
   
-  const [uiOptions, setUiOptions] = useState({ makes: [] as string[], models: [] as string[], years: [] as number[], engines: [] as any[], trims: [] as string[] });
+  const [uiOptions, setUiOptions] = useState<{ makes: string[], models: string[], years: number[], engines: any[], trims: string[] }>({ makes: [], models: [], years: [], engines: [], trims: [] });
   const [vehicleProfile, setVehicleProfile] = useState<VehicleProfile | null>(null);
 
   const [analysisResult, setAnalysisResult] = useState<string>('');
@@ -30,12 +33,15 @@ const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [liveData, setLiveData] = useState<LiveData>({ rpm: 'N/A', speed: 'N/A', maf: 'N/A', ltft: 'N/A', stft: 'N/A', ect: 'N/A', dtc: [] });
   const [rawLog, setRawLog] = useState<string[]>(["Rootcastle Pilot AI'ya hoş geldiniz. Başlamak için bir araca bağlanın."]);
+  const [activeView, setActiveView] = useState<MobileView>('config');
+
 
   const elmServiceRef = useRef<ELM327Service | null>(null);
   const liveIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const vinBufferRef = useRef<Record<string, string>>({});
   const dtcCheckCounterRef = useRef(0);
+  const isProgrammaticUpdate = useRef(false);
 
 
   // --- DATA FETCHING & LOGIC ---
@@ -55,6 +61,7 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (isProgrammaticUpdate.current) return;
     if (selections.make) {
         const fetchModels = async () => {
             const models = await getModelsForMake(selections.make);
@@ -67,6 +74,7 @@ const App: React.FC = () => {
   }, [selections.make]);
   
   useEffect(() => {
+    if (isProgrammaticUpdate.current) return;
     if (selections.make && selections.model) {
         const fetchYears = async () => {
             const years = await getYearsForModel(selections.make, selections.model);
@@ -79,6 +87,7 @@ const App: React.FC = () => {
   }, [selections.make, selections.model]);
 
   useEffect(() => {
+    if (isProgrammaticUpdate.current) return;
     if (selections.make && selections.model && selections.year) {
         const fetchOptions = async () => {
             const { engines, trims } = await getOptionsForYear(selections.make, selections.model, parseInt(selections.year, 10));
@@ -97,26 +106,84 @@ const App: React.FC = () => {
   const handleResolveVehicle = async () => {
     setIsResolving(true);
     setError(null);
+    
     try {
-        const data: Partial<VehicleData> = { ...selections, vin, year: selections.year.toString() };
-        const result: RootcastleResponse = await resolveVehicleInfo(data);
-        setVehicleProfile(result.vehicle);
-        // Sync selections with resolved data
-        setSelections({
-            make: result.vehicle.make,
-            model: result.vehicle.model,
-            year: result.vehicle.year.toString(),
-            engine: `${result.vehicle.engine.volume_cc}cc ${result.vehicle.engine.power_hp}hp`,
-            trim: result.vehicle.trim
-        });
-        setVin(vin || result.vehicle.vin || '');
+        let profile: VehicleProfile | null = null;
+        let wasVinLookup = false;
+
+        // Priority 1: A full manual selection has been made. This also resolves the partial VIN-match loop.
+        if (selections.make && selections.model && selections.year && selections.engine && selections.trim) {
+            profile = await resolveVehicleManually(
+                selections.make, 
+                selections.model, 
+                parseInt(selections.year, 10), 
+                selections.engine, 
+                selections.trim
+            );
+            // If a VIN was present in the input, attach it to the resolved profile.
+            if (profile && vin.trim().length >= 17) {
+                profile.vin = vin;
+            }
+        } 
+        // Priority 2: No full manual selection, but a valid VIN is present.
+        else if (vin.trim().length >= 17) {
+            wasVinLookup = true;
+            isProgrammaticUpdate.current = true;
+            const result = await resolveVehicleByVIN(vin);
+            if (result.status === "ok") {
+                profile = result as VehicleProfile;
+            } else {
+                 setError(`Araç ${result.make} ${result.model} ${result.year} olarak tanındı, ancak TR veritabanında detay bulunamadı. Lütfen motor ve donanım bilgilerini seçerek devam edin.`);
+                 // Create a partial profile to pre-fill the UI for manual completion.
+                 profile = { make: result.make, model: result.model, year: result.year, vin: result.vin } as Partial<VehicleProfile> as VehicleProfile;
+            }
+        } 
+        // If neither condition is met, there's not enough information.
+        else {
+             throw new Error("Aracı tanımlamak için lütfen 17 haneli VIN girin veya tüm alanları manuel olarak seçin.");
+        }
+
+        if (profile) {
+            setVehicleProfile(profile);
+
+            // If the process was initiated by a VIN lookup (full or partial), update the dropdowns.
+            if (wasVinLookup) {
+                 const uiModels = await getModelsForMake(profile.make);
+                 const uiYears = await getYearsForModel(profile.make, profile.model);
+                 const uiOptionsForYear = await getOptionsForYear(profile.make, profile.model, profile.year);
+            
+                 setUiOptions(prev => ({
+                     ...prev,
+                     models: uiModels,
+                     years: uiYears,
+                     engines: uiOptionsForYear.engines,
+                     trims: uiOptionsForYear.trims,
+                 }));
+
+                 setSelections({
+                     make: profile.make,
+                     model: profile.model,
+                     year: profile.year.toString(),
+                     // If the profile is complete (from VIN), set engine/trim. Otherwise, leave them blank for the user to select.
+                     engine: profile.engine ? `${profile.engine.volume_cc}cc ${profile.engine.power_hp}hp` : '',
+                     trim: profile.trim || ''
+                 });
+                 if (profile.vin) setVin(profile.vin);
+            }
+        }
     } catch (err) {
         setError((err as Error).message);
         setVehicleProfile(null);
     } finally {
         setIsResolving(false);
+        if (isProgrammaticUpdate.current) {
+            setTimeout(() => {
+                isProgrammaticUpdate.current = false;
+            }, 0);
+        }
     }
   };
+
 
   const hexToAscii = (hexStr: string) => {
     let asciiStr = '';
@@ -183,7 +250,7 @@ const App: React.FC = () => {
         return { dtc: dtcs };
     }
     return null;
-  }, [log, handleResolveVehicle]);
+  }, [log]);
 
   const startLiveMode = useCallback((service: ELM327Service) => {
       if (liveIntervalRef.current) clearInterval(liveIntervalRef.current);
@@ -257,6 +324,7 @@ const App: React.FC = () => {
     setIsLoading(true);
     setError(null);
     setAnalysisResult('');
+    setActiveView('report');
 
     let rawData = `DTCs: ${liveData.dtc.join(', ') || 'Yok'}\n`;
     rawData += Object.entries(liveData)
@@ -276,7 +344,7 @@ const App: React.FC = () => {
         make: vehicleProfile.make,
         model: `${vehicleProfile.model} (${vehicleProfile.trim})`,
         year: vehicleProfile.year.toString(),
-        fuel: `${vehicleProfile.engine.fuel} (${vehicleProfile.engine.volume_cc}cc, ${vehicleProfile.engine.power_hp}HP)`
+        fuel: vehicleProfile.engine ? `${vehicleProfile.engine.fuel} (${vehicleProfile.engine.volume_cc}cc, ${vehicleProfile.engine.power_hp}HP)` : 'Bilinmiyor'
       } : { ...selections, vin };
 
       const result = await analyzeObdData(vehicleInfoForAI, rawData);
@@ -311,13 +379,33 @@ const App: React.FC = () => {
 
   const selectClasses = "w-full bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue";
 
+  const BottomNavBar = () => (
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#111827] border-t border-gray-700/50 flex justify-around items-center p-2 z-10">
+      <button onClick={() => setActiveView('live')} className={`flex flex-col items-center space-y-1 ${activeView === 'live' ? 'text-brand-blue' : 'text-gray-400'}`}>
+        <CarIcon className="w-6 h-6"/>
+        <span className="text-xs">Araç</span>
+      </button>
+      <button onClick={() => setActiveView('config')} className={`flex flex-col items-center space-y-1 ${activeView === 'config' ? 'text-brand-blue' : 'text-gray-400'}`}>
+        <WrenchIcon className="w-6 h-6"/>
+        <span className="text-xs">Kontrol</span>
+      </button>
+      <button onClick={() => setActiveView('report')} className={`flex flex-col items-center space-y-1 ${activeView === 'report' ? 'text-brand-blue' : 'text-gray-400'}`}>
+        <InfoIcon className="w-6 h-6"/>
+        <span className="text-xs">Rapor</span>
+      </button>
+    </nav>
+  );
+
   return (
-    <div className="bg-[#0E121A] min-h-screen text-gray-200 flex font-sans overflow-hidden">
+    <div className="bg-[#0E121A] min-h-screen text-gray-200 flex flex-col md:flex-row font-sans h-screen overflow-hidden">
       {/* LEFT SIDEBAR */}
-      <aside className="w-80 bg-[#111827] p-4 flex flex-col border-r border-gray-700/50">
-        <header className="mb-6 text-center">
-            <h1 className="text-2xl font-bold text-white">Rootcastle</h1>
-            <p className="text-sm text-brand-blue">Pilot AI</p>
+      <aside className={`w-full md:w-80 bg-[#111827] p-4 flex-col border-r border-gray-700/50 overflow-y-auto pb-20 md:pb-4 ${activeView === 'live' ? 'flex' : 'hidden'} md:flex`}>
+        <header className="mb-6 flex items-center justify-start md:justify-center space-x-3">
+          <img src="/logo.png" alt="Rootcastle Pilot AI Logo" className="w-10 h-10" />
+          <div className='text-left md:text-center'>
+            <h1 className="text-2xl font-bold text-white leading-tight">Rootcastle</h1>
+            <p className="text-sm text-brand-blue leading-tight">Pilot AI</p>
+          </div>
         </header>
         {isConnected ? (
              <button onClick={handleDisconnect} className="w-full flex justify-center items-center py-2 px-4 rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors">
@@ -332,11 +420,11 @@ const App: React.FC = () => {
         )}
         <div className={`mt-2 text-center text-sm ${isConnected ? 'text-green-400' : 'text-gray-500'}`}>{isConnected ? 'Bağlı' : 'Bağlantı Yok'}</div>
 
-        {vehicleProfile && (
+        {vehicleProfile && vehicleProfile.engine && (
             <div className='mt-6 border-t border-gray-700 pt-4'>
                 <h3 className="text-lg font-semibold mb-3 text-center">{vehicleProfile.make} {vehicleProfile.model}</h3>
                 <p className="text-sm text-gray-400 text-center mb-3">{vehicleProfile.year} - {vehicleProfile.trim}</p>
-                <img src={vehicleProfile.image_url} alt={`${vehicleProfile.make} ${vehicleProfile.model}`} className="rounded-lg mb-4 w-full h-auto object-cover"/>
+                {vehicleProfile.image_url && <img src={vehicleProfile.image_url} alt={`${vehicleProfile.make} ${vehicleProfile.model}`} className="rounded-lg mb-4 w-full h-auto object-cover"/>}
                 <div className="space-y-2 text-sm">
                     <LiveValue label="Motor" value={`${vehicleProfile.engine.volume_cc}cc ${vehicleProfile.engine.power_hp}hp`} />
                     <LiveValue label="Aspirasyon" value={vehicleProfile.engine.aspiration} />
@@ -353,6 +441,7 @@ const App: React.FC = () => {
                 <LiveValue label="Devir" value={liveData.rpm} />
                 <LiveValue label="Hız" value={liveData.speed} unit="km/h" />
                 <LiveValue label="Soğutma Suyu" value={liveData.ect} unit="°C" />
+                <LiveValue label="Hava Akışı (MAF)" value={liveData.maf} unit="g/s" />
                 <LiveValue label="STFT B1" value={liveData.stft} unit="%" />
                 <LiveValue label="LTFT B1" value={liveData.ltft} unit="%" />
             </div>
@@ -366,25 +455,25 @@ const App: React.FC = () => {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 p-6 flex flex-col">
-        <div className='flex justify-between items-center mb-4'>
+      <main className={`flex-1 p-6 flex-col overflow-y-auto pb-20 md:pb-6 ${activeView === 'config' ? 'flex' : 'hidden'} md:flex`}>
+        <div className='flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4'>
             <h2 className="text-2xl font-semibold text-white">Araç Konfigürasyonu</h2>
-            <div className="flex items-center space-x-2">
-                <button onClick={handleGetVin} disabled={!isConnected} className="flex items-center py-2 px-3 rounded-md text-sm text-white bg-teal-600 hover:bg-teal-700 disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors">
+            <div className="flex items-center space-x-2 w-full md:w-auto">
+                <button onClick={handleGetVin} disabled={!isConnected} className="flex-1 md:flex-none flex items-center justify-center py-2 px-3 rounded-md text-sm text-white bg-teal-600 hover:bg-teal-700 disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors">
                     <CarIcon className="w-4 h-4 mr-2"/>
-                    VIN'i Araçtan Al
+                    VIN'i Al
                 </button>
-                <button onClick={handleResolveVehicle} disabled={isResolving || !selections.trim} className="flex items-center py-2 px-3 rounded-md text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-500 transition-colors">
+                <button onClick={handleResolveVehicle} disabled={isResolving || (vin.trim().length < 17 && !selections.trim)} className="flex-1 md:flex-none flex items-center justify-center py-2 px-3 rounded-md text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-500 transition-colors">
                     {isResolving ? <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 
                     : <VehicleSearchIcon className="w-4 h-4 mr-2"/>}
-                    {isResolving ? 'Tanımlanıyor...' : 'Aracı Tanımla'}
+                    {isResolving ? 'Tanımlanıyor...' : 'Tanımla'}
                 </button>
             </div>
         </div>
         <div className="grid grid-cols-1 gap-4 mb-4">
-           <input type="text" placeholder="VIN (Şasi Numarası)" value={vin} onChange={e => setVin(e.target.value)} className="bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono"/>
+           <input type="text" placeholder="VIN (Şasi Numarası) - 17 Karakter" value={vin} onChange={e => setVin(e.target.value.toUpperCase())} className="bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono uppercase"/>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             <select value={selections.make} onChange={e => handleSelectionChange('make', e.target.value)} className={selectClasses}>
                 <option value="">Marka Seçin</option>
                 {uiOptions.makes.map(m => <option key={m} value={m}>{m}</option>)}
@@ -408,7 +497,7 @@ const App: React.FC = () => {
         </div>
 
         <h2 className="text-2xl font-semibold mb-4 text-white">ELM327 Konsolu</h2>
-        <div ref={consoleRef} className="bg-black/40 p-4 rounded-lg h-80 flex-grow font-mono text-sm overflow-y-auto border border-gray-700/50">
+        <div ref={consoleRef} className="bg-black/40 p-4 rounded-lg flex-grow font-mono text-sm overflow-y-auto border border-gray-700/50 min-h-[200px]">
             {rawLog.map((line, index) => <div key={index} className={line.startsWith('TX:') ? 'text-cyan-400' : line.startsWith('RX:') ? 'text-lime-400' : 'text-gray-500'}>{line}</div>)}
         </div>
         <button onClick={handleAnalysis} disabled={isLoading || !isConnected} className="w-full mt-6 flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm font-medium text-white bg-brand-blue hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue disabled:bg-brand-light-gray disabled:cursor-not-allowed transition-colors">
@@ -417,7 +506,7 @@ const App: React.FC = () => {
       </main>
 
       {/* RIGHT SIDEBAR (AI REPORT) */}
-      <aside className="w-[480px] bg-[#111827] p-4 flex flex-col border-l border-gray-700/50">
+      <aside className={`w-full md:w-[480px] bg-[#111827] p-4 flex-col border-l border-gray-700/50 overflow-y-auto pb-20 md:pb-4 ${activeView === 'report' ? 'flex' : 'hidden'} md:flex`}>
         <h2 className="text-2xl font-semibold text-white border-b-2 border-brand-blue pb-2 mb-2 shrink-0">Yapay Zekâ Teşhis Raporu</h2>
         <div className="flex-grow overflow-y-auto pr-2">
             {error && <div className="text-red-400 bg-red-900/30 p-3 rounded-md text-sm">{error}</div>}
@@ -441,6 +530,7 @@ const App: React.FC = () => {
             )}
         </div>
       </aside>
+      <BottomNavBar />
     </div>
   );
 };

@@ -1,0 +1,283 @@
+
+[
+  {
+    "wmi": "1FD",
+    "manufacturer": "FORD MOTOR COMPANY",
+    "vehicle_type": "Incomplete Vehicle"
+  },
+  {
+    "wmi": "1G1",
+    "manufacturer": "GENERAL MOTORS USA",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "1GC",
+    "manufacturer": "GENERAL MOTORS USA",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "1GT",
+    "manufacturer": "GMC (GENERAL MOTORS CORP.)",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "1HG",
+    "manufacturer": "AMERICAN HONDA MOTOR CO., INC.",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "1VW",
+    "manufacturer": "VOLKSWAGEN OF AMERICA, INC",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "2G1",
+    "manufacturer": "GENERAL MOTORS OF CANADA LTD.",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "2T1",
+    "manufacturer": "TOYOTA MOTOR MANUFACTURING CANADA",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "3G1",
+    "manufacturer": "GENERAL MOTORS DE MEXICO",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "3VW",
+    "manufacturer": "VOLKSWAGEN DE MEXICO",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "4S3",
+    "manufacturer": "SUBARU-ISUZU AUTOMOTIVE, INC.",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "4US",
+    "manufacturer": "BMW MANUFACTURING CORPORATION",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "5FN",
+    "manufacturer": "AMERICAN HONDA MOTOR CO., INC.",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "5TD",
+    "manufacturer": "TOYOTA MOTOR MANUFACTURING, INDIANA, INC.",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "JA3",
+    "manufacturer": "MITSUBISHI MOTORS CORPORATION",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "JA4",
+    "manufacturer": "MITSUBISHI MOTORS CORPORATION",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "JHM",
+    "manufacturer": "HONDA MOTOR CO., LTD.",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "JMB",
+    "manufacturer": "MITSUBISHI MOTORS CORPORATION",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "JMY",
+    "manufacturer": "MITSUBISHI MOTORS CORPORATION",
+    "vehicle_type": "Incomplete Vehicle"
+  },
+  {
+    "wmi": "JT2",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "JT3",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "JT4",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "JT5",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Incomplete Vehicle"
+  },
+  {
+    "wmi": "JTD",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "JTE",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "JTJ",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "SUV/MPV"
+  },
+  {
+    "wmi": "JTK",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "JTL",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "JTM",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "SUV/MPV"
+  },
+  {
+    "wmi": "JTN",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "JTP",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "JTR",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "SUV/MPV"
+  },
+  {
+    "wmi": "JTS",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "JTT",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "JTU",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "SUV/MPV"
+  },
+  {
+    "wmi": "JTX",
+    "manufacturer": "TOYOTA MOTOR CORPORATION",
+    "vehicle_type": "SUV/MPV"
+  },
+  {
+    "wmi": "KL1",
+    "manufacturer": "DAEWOO (GM)",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "SAD",
+    "manufacturer": "JAGUAR CARS",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "SAL",
+    "manufacturer": "LAND ROVER",
+    "vehicle_type": "SUV/MPV"
+  },
+  {
+    "wmi": "TRU",
+    "manufacturer": "AUDI HUNGARIA MOTOR KFT.",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "WAU",
+    "manufacturer": "AUDI AG",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "WBA",
+    "manufacturer": "BMW AG",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "WBS",
+    "manufacturer": "BMW M GMBH",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "WDB",
+    "manufacturer": "MERCEDES-BENZ AG",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "WDY",
+    "manufacturer": "MERCEDES-BENZ AG",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "WMA",
+    "manufacturer": "MAN",
+    "vehicle_type": "Truck"
+  },
+  {
+    "wmi": "WMW",
+    "manufacturer": "MINI (BMW)",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "WP0",
+    "manufacturer": "PORSCHE AG",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "WP1",
+    "manufacturer": "PORSCHE AG",
+    "vehicle_type": "SUV/MPV"
+  },
+  {
+    "wmi": "WVW",
+    "manufacturer": "VOLKSWAGEN AG",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "YV1",
+    "manufacturer": "VOLVO CARS",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "ZAM",
+    "manufacturer": "LAMBORGHINI",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "ZAR",
+    "manufacturer": "ALFA ROMEO",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "ZFA",
+    "manufacturer": "FIAT",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "ZFF",
+    "manufacturer": "FERRARI",
+    "vehicle_type": "Passenger Car"
+  },
+  {
+    "wmi": "ZHW",
+    "manufacturer": "LAMBORGHINI",
+    "vehicle_type": "Passenger Car"
+  }
+]
