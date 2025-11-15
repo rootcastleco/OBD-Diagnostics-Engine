@@ -73,7 +73,7 @@ export class ELM327Service {
   public onLog?: (log: string) => void;
   public onDisconnect?: () => void;
 
-  async connect() {
+  async connect(): Promise<'success' | 'cancelled' | 'failed'> {
     this.onLog?.('Bluetooth cihazı isteniyor...');
     try {
       this.device = await navigator.bluetooth.requestDevice({
@@ -133,12 +133,17 @@ export class ELM327Service {
       this.send('ATSP0');
       this.send('0100');
 
-      return true;
+      return 'success';
     } catch (error) {
+      if (error instanceof Error && error.name === 'NotFoundError') {
+        this.onLog?.('Cihaz seçimi iptal edildi.');
+        this.disconnect();
+        return 'cancelled';
+      }
       this.onLog?.(`Bağlantı başarısız: ${error}`);
       console.error(error);
       this.disconnect();
-      return false;
+      return 'failed';
     }
   }
   

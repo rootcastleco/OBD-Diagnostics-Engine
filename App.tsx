@@ -19,7 +19,12 @@ const LiveValue: React.FC<{ label: string; value: string | number; unit?: string
 type MobileView = 'live' | 'config' | 'report';
 
 const generateLogoUrl = (make: string) => {
-    const domain = make.toLowerCase().replace(/ /g, '').replace(/-/g, '') + '.com';
+    const makeLower = make.toLowerCase();
+    if (makeLower === 'skoda') {
+        // Clearbit doesn't have a good Skoda logo, so we provide a direct link.
+        return 'https://upload.wikimedia.org/wikipedia/commons/2/29/Skoda_Logo.svg';
+    }
+    const domain = makeLower.replace(/ /g, '').replace(/-/g, '') + '.com';
     return `https://logo.clearbit.com/${domain}`;
 };
 
@@ -315,11 +320,11 @@ const App: React.FC = () => {
         setLiveData({ rpm: 'N/A', speed: 'N/A', maf: 'N/A', ltft: 'N/A', stft: 'N/A', ect: 'N/A', dtc: [] });
     };
 
-    const success = await service.connect();
-    if (success) {
+    const status = await service.connect();
+    if (status === 'success') {
         setIsConnected(true);
         startLiveMode(service);
-    } else {
+    } else if (status === 'failed') {
         setError("ELM327 cihazına bağlanılamadı. Cihazın açık ve menzilde olduğundan emin olun.");
     }
     setIsConnecting(false);
@@ -482,8 +487,12 @@ const App: React.FC = () => {
             </div>
             <div className="mt-4">
                 <h4 className="text-sm text-gray-400">Bulunan Hata Kodları:</h4>
-                <div className="font-mono text-yellow-400 text-center p-2 bg-brand-dark/50 rounded mt-1">
-                    {liveData.dtc.length > 0 ? liveData.dtc.join(', ') : 'Yok'}
+                <div className="font-mono text-yellow-400 p-2 bg-brand-dark/50 rounded mt-1">
+                    {liveData.dtc.length > 0 ? (
+                        liveData.dtc.map((code, index) => <div key={index}>{code}</div>)
+                    ) : (
+                        <div>Yok</div>
+                    )}
                 </div>
             </div>
         </div>
