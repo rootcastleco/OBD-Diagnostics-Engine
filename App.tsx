@@ -1,7 +1,8 @@
 
+
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { VehicleData, LiveData, VehicleProfile, SpecProfile } from './types';
-import { analyzeObdData } from './services/geminiService';
+import { analyzeObdData, lookupDtcCode } from './services/geminiService';
 import { ELM327Service } from './services/elmService';
 import { resolveVehicleByVIN } from './services/vinService';
 import { getMakes, getModelsForMake, getYearsForModel, getSpecsForYear } from './services/vehicleDataService';
@@ -15,6 +16,24 @@ const LiveValue: React.FC<{ label: string; value: string | number; unit?: string
     <span className="font-mono text-lg text-brand-blue">{value} <span className="text-xs text-gray-500">{unit}</span></span>
   </div>
 );
+
+const VisualLiveValue: React.FC<{ label: string; value: string | number; unit?: string; max: number }> = ({ label, value, unit, max }) => {
+  const numericValue = typeof value === 'number' ? value : parseFloat(String(value));
+  const displayValue = isNaN(numericValue) ? 'N/A' : value;
+  const percentage = isNaN(numericValue) || numericValue < 0 ? 0 : Math.min((numericValue / max) * 100, 100);
+
+  return (
+    <div className="bg-brand-dark/50 p-2 rounded">
+      <div className="flex justify-between items-baseline mb-1">
+        <span className="text-sm text-gray-400">{label}</span>
+        <span className="font-mono text-lg text-brand-blue">{displayValue} <span className="text-xs text-gray-500">{unit}</span></span>
+      </div>
+      <div className="w-full bg-brand-light-gray/50 rounded-full h-1.5">
+        <div className="bg-brand-blue h-1.5 rounded-full transition-all duration-300 ease-in-out" style={{ width: `${percentage}%` }}></div>
+      </div>
+    </div>
+  );
+};
 
 type MobileView = 'live' | 'config' | 'report';
 
@@ -47,6 +66,12 @@ const App: React.FC = () => {
   const [rawLog, setRawLog] = useState<string[]>(["Rootcastle Pilot AI'ya hoş geldiniz. Başlamak için bir araca bağlanın."]);
   const [activeView, setActiveView] = useState<MobileView>('config');
   const [logoError, setLogoError] = useState<boolean>(false);
+
+  // DTC Lookup State
+  const [dtcLookupCode, setDtcLookupCode] = useState<string>('');
+  const [dtcLookupResult, setDtcLookupResult] = useState<string>('');
+  const [isLookingUpDtc, setIsLookingUpDtc] = useState<boolean>(false);
+  const [dtcLookupError, setDtcLookupError] = useState<string | null>(null);
 
 
   const elmServiceRef = useRef<ELM327Service | null>(null);
@@ -380,6 +405,31 @@ const App: React.FC = () => {
     }
   }, [selections, liveData, vehicleProfile, vin]);
 
+  const handleDtcLookup = useCallback(async (codeOverride?: string) => {
+    const codeToSearch = (codeOverride || dtcLookupCode).trim();
+    if (!codeToSearch) return;
+
+    if (codeOverride) {
+      setDtcLookupCode(codeToSearch);
+    }
+    setActiveView('report');
+    
+    setIsLookingUpDtc(true);
+    setDtcLookupError(null);
+    setDtcLookupResult('');
+    
+    try {
+      const result = await lookupDtcCode(codeToSearch.toUpperCase());
+      setDtcLookupResult(result);
+    } catch (err) {
+      setDtcLookupError('Hata kodu bilgisi alınamadı. Lütfen tekrar deneyin.');
+      console.error(err);
+    } finally {
+      setIsLookingUpDtc(false);
+    }
+  }, [dtcLookupCode]);
+
+
   const renderAnalysis = (text: string) => {
     const lines = text.split('\n');
     return lines.map((line, index) => {
@@ -441,7 +491,12 @@ const App: React.FC = () => {
                 {isConnecting ? 'Bağlanılıyor...' : "ELM327'ye Bağlan"}
             </button>
         )}
-        <div className={`mt-2 text-center text-sm ${isConnected ? 'text-green-400' : 'text-gray-500'}`}>{isConnected ? 'Bağlı' : 'Bağlantı Yok'}</div>
+        <div className="mt-4 flex items-center justify-center space-x-2 p-2 rounded-lg bg-black/20 border border-gray-700/50">
+            <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></div>
+            <span className={`text-sm font-medium ${isConnected ? 'text-green-400' : 'text-gray-300'}`}>
+                {isConnected ? 'Bağlı' : 'Bağlantı Yok'}
+            </span>
+        </div>
 
         {vehicleProfile && vehicleProfile.engine && (
             <div className='mt-6 border-t border-gray-700 pt-4'>
@@ -478,22 +533,32 @@ const App: React.FC = () => {
         <div>
             <h3 className="text-lg font-semibold mt-6 border-b border-gray-700 pb-1 mb-3">Canlı Veri</h3>
             <div className="space-y-2">
-                <LiveValue label="Devir" value={liveData.rpm} />
-                <LiveValue label="Hız" value={liveData.speed} unit="km/h" />
+                <VisualLiveValue label="Devir" value={liveData.rpm} max={8000} unit="RPM" />
+                <VisualLiveValue label="Hız" value={liveData.speed} max={250} unit="km/h" />
                 <LiveValue label="Soğutma Suyu" value={liveData.ect} unit="°C" />
                 <LiveValue label="Hava Akışı (MAF)" value={liveData.maf} unit="g/s" />
                 <LiveValue label="STFT B1" value={liveData.stft} unit="%" />
                 <LiveValue label="LTFT B1" value={liveData.ltft} unit="%" />
             </div>
             <div className="mt-4">
-                <h4 className="text-sm text-gray-400">Bulunan Hata Kodları:</h4>
-                <div className="font-mono text-yellow-400 p-2 bg-brand-dark/50 rounded mt-1">
-                    {liveData.dtc.length > 0 ? (
-                        liveData.dtc.map((code, index) => <div key={index}>{code}</div>)
-                    ) : (
-                        <div>Yok</div>
-                    )}
-                </div>
+              <h4 className="text-base font-semibold text-red-500 mb-2">Arıza Kodları</h4>
+              {liveData.dtc.length > 0 ? (
+                  <div className="space-y-1">
+                      {liveData.dtc.map((code) => (
+                          <button 
+                              key={code}
+                              onClick={() => handleDtcLookup(code)}
+                              className="w-full text-left font-mono text-yellow-400 p-2 bg-red-900/20 rounded hover:bg-red-900/40 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
+                          >
+                              {code}
+                          </button>
+                      ))}
+                  </div>
+              ) : (
+                  <div className="font-mono text-gray-500 p-2 bg-brand-dark/50 rounded mt-1">
+                      Yok
+                  </div>
+              )}
             </div>
         </div>
       </aside>
@@ -551,7 +616,49 @@ const App: React.FC = () => {
 
       {/* RIGHT SIDEBAR (AI REPORT) */}
       <aside className={`w-full md:w-[480px] bg-[#111827] p-4 flex-col border-l border-gray-700/50 overflow-y-auto pb-20 md:pb-4 ${activeView === 'report' ? 'flex' : 'hidden'} md:flex`}>
-        <h2 className="text-2xl font-semibold text-white border-b-2 border-brand-blue pb-2 mb-2 shrink-0">Yapay Zekâ Teşhis Raporu</h2>
+        <h2 className="text-2xl font-semibold text-white border-b-2 border-brand-blue pb-2 mb-4 shrink-0">Yapay Zekâ Teşhis Raporu</h2>
+        
+        <div className="mb-6 shrink-0">
+          <h3 className="text-lg font-semibold text-gray-200 mb-2">Hata Kodu Arama</h3>
+          <div className="flex space-x-2">
+            <input
+              type="text"
+              placeholder="Örn: P0420"
+              value={dtcLookupCode}
+              onChange={e => setDtcLookupCode(e.target.value.toUpperCase())}
+              className="flex-grow bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono uppercase"
+            />
+            <button
+              onClick={() => handleDtcLookup()}
+              disabled={isLookingUpDtc}
+              className="flex items-center justify-center py-2 px-4 rounded-md text-sm text-white bg-brand-blue hover:bg-blue-600 disabled:bg-gray-500 transition-colors"
+            >
+              {isLookingUpDtc ? (
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              ) : "Ara"}
+            </button>
+          </div>
+        </div>
+        
+        {(isLookingUpDtc || dtcLookupError || dtcLookupResult) && (
+          <div className="mb-6 p-4 bg-brand-dark/50 rounded-lg border border-gray-700/50">
+            {dtcLookupError && <div className="text-red-400 bg-red-900/30 p-3 rounded-md text-sm">{dtcLookupError}</div>}
+            {isLookingUpDtc && (
+              <div className="flex items-center justify-center text-gray-400">
+                <svg className="animate-spin h-5 w-5 text-brand-blue mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span>Hata kodu bilgisi alınıyor...</span>
+              </div>
+            )}
+            {dtcLookupResult && (
+              <div className="prose prose-invert max-w-none text-sm">
+                {renderAnalysis(dtcLookupResult)}
+              </div>
+            )}
+          </div>
+        )}
+        
+        <div className="border-t border-gray-700/50 my-2 shrink-0"></div>
+
         <div className="flex-grow overflow-y-auto pr-2">
             {error && <div className="text-red-400 bg-red-900/30 p-3 rounded-md text-sm">{error}</div>}
             {isLoading && (

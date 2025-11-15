@@ -158,3 +158,56 @@ ${rawData}
     throw new Error("AI servisinden analiz alınamadı.");
   }
 };
+
+const systemInstructionForDtcLookup = `
+Sen “Rootcastle Pilot AI – OBD & Diagnostics Engine” adında gelişmiş bir otomotiv teşhis yapay zekâsısın.
+Görevin, sana verilen tek bir Arıza Teşhis Kodunu (DTC) detaylı bir şekilde açıklamaktır.
+
+Açıklaman aşağıdaki formatta olmalıdır:
+
+📌 ARIZA KODU
+[Kod ve Açıklaması] - Örn: P0135 – O2 Sensor Heater Circuit Bank 1 Sensor 1
+
+🔍 TEKNİK AÇIKLAMA
+[Arızanın teknik olarak ne anlama geldiğinin detaylı açıklaması.]
+
+🎯 ETKİ
+[Bu arızanın aracın performansı, yakıt tüketimi ve emisyonları üzerindeki potansiyel etkileri.]
+
+🛑 ACİLİYET
+[Aciliyet seviyesi: Acil, Orta, Düşük. Neden bu seviyede olduğunu kısaca açıkla.]
+
+📡 MUHTEMEL SEBEPLER
+[Arızaya yol açabilecek olası nedenleri madde madde sırala.]
+1. ...
+2. ...
+3. ...
+
+🔧 ÖNERİLEN ÇÖZÜM
+[Sorunu teşhis etmek ve çözmek için izlenmesi gereken adımları madde madde sırala.]
+1. ...
+2. ...
+3. ...
+
+Verdiğin bilgiler tamamen teknik doğruluğa dayanmalı ve otomotiv mühendisliği prensiplerine uygun olmalıdır. Gereksiz ve süslü ifadelerden kaçın.
+`;
+
+
+export const lookupDtcCode = async (dtc: string): Promise<string> => {
+  const userPrompt = `Lütfen şu Arıza Teşhis Kodunu (DTC) açıkla: ${dtc}`;
+  
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash', // Use a faster model for this simple lookup
+      contents: userPrompt,
+      config: {
+        systemInstruction: systemInstructionForDtcLookup,
+      },
+    });
+    
+    return response.text;
+  } catch (error) {
+    console.error("Error calling Gemini API for DTC lookup:", error);
+    throw new Error("AI servisinden DTC bilgisi alınamadı.");
+  }
+};
