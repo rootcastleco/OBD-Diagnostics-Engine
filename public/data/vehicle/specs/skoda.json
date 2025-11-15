@@ -1,0 +1,145 @@
+
+[
+    {
+        "model": "Citigo",
+        "specs": [
+            {
+                "startYear": 2012,
+                "endYear": 2020,
+                "body": "Hatchback",
+                "engine": "1.0L",
+                "engine_displacement": "999cc",
+                "engine_hp": "60 HP",
+                "engine_torque": "95 Nm",
+                "transmission": "5-Speed M/T",
+                "zero_to_100_kmh": "14.4s",
+                "max_speed_kmh": "162km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Fabia",
+        "specs": [
+            {
+                "startYear": 2007,
+                "endYear": 2014,
+                "body": "Hatchback",
+                "engine": "1.2L",
+                "engine_displacement": "1198cc",
+                "engine_hp": "70 HP",
+                "engine_torque": "112 Nm",
+                "transmission": "5-Speed M/T",
+                "zero_to_100_kmh": "14.9s",
+                "max_speed_kmh": "163km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2014,
+                "endYear": 2021,
+                "body": "Hatchback",
+                "engine": "1.0L Turbo",
+                "engine_displacement": "999cc",
+                "engine_hp": "95 HP",
+                "engine_torque": "160 Nm",
+                "transmission": "5-Speed M/T",
+                "zero_to_100_kmh": "10.8s",
+                "max_speed_kmh": "187km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Octavia",
+        "specs": [
+            {
+                "startYear": 2013,
+                "endYear": 2020,
+                "body": "Sedan",
+                "engine": "1.0L Turbo",
+                "engine_displacement": "999cc",
+                "engine_hp": "115 HP",
+                "engine_torque": "200 Nm",
+                "transmission": "6-Speed M/T",
+                "zero_to_100_kmh": "10s",
+                "max_speed_kmh": "208km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2013,
+                "endYear": 2020,
+                "body": "Sedan",
+                "engine": "1.6L Diesel",
+                "engine_displacement": "1598cc",
+                "engine_hp": "115 HP",
+                "engine_torque": "250 Nm",
+                "transmission": "5-Speed M/T",
+                "zero_to_100_kmh": "10.2s",
+                "max_speed_kmh": "206km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    },
+    {
+        "model": "Superb",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2022,
+                "body": "Sedan",
+                "engine": "1.4L Turbo",
+                "engine_displacement": "1395cc",
+                "engine_hp": "150 HP",
+                "engine_torque": "250 Nm",
+                "transmission": "6-Speed M/T",
+                "zero_to_100_kmh": "8.6s",
+                "max_speed_kmh": "220km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2015,
+                "endYear": 2022,
+                "body": "Sedan",
+                "engine": "2.0L Diesel",
+                "engine_displacement": "1968cc",
+                "engine_hp": "190 HP",
+                "engine_torque": "400 Nm",
+                "transmission": "6-Speed DSG",
+                "zero_to_100_kmh": "7.7s",
+                "max_speed_kmh": "235km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    },
+    {
+        "model": "Yeti",
+        "specs": [
+            {
+                "startYear": 2009,
+                "endYear": 2017,
+                "body": "SUV",
+                "engine": "1.2L Turbo",
+                "engine_displacement": "1197cc",
+                "engine_hp": "110 HP",
+                "engine_torque": "175 Nm",
+                "transmission": "6-Speed M/T",
+                "zero_to_100_kmh": "10.9s",
+                "max_speed_kmh": "179km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2009,
+                "endYear": 2017,
+                "body": "SUV",
+                "engine": "2.0L Diesel",
+                "engine_displacement": "1968cc",
+                "engine_hp": "150 HP",
+                "engine_torque": "340 Nm",
+                "transmission": "6-Speed M/T",
+                "zero_to_100_kmh": "9.1s",
+                "max_speed_kmh": "195km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    }
+]

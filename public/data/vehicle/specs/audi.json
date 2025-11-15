@@ -1,0 +1,104 @@
+
+[
+    {
+        "model": "A3",
+        "specs": [
+            {
+                "startYear": 2006,
+                "endYear": 2013,
+                "body": "Hatchback",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1984cc",
+                "engine_hp": "200 HP",
+                "engine_torque": "207 Nm",
+                "transmission": "6-Speed A/T",
+                "zero_to_100_kmh": "6.7s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2015,
+                "endYear": 2016,
+                "body": "Sedan",
+                "engine": "1.8L Turbo",
+                "engine_displacement": "1798cc",
+                "engine_hp": "170 HP",
+                "engine_torque": "200 Nm",
+                "transmission": "6-Speed A/T",
+                "zero_to_100_kmh": "7.2s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2017,
+                "endYear": 2019,
+                "body": "Sedan",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1984cc",
+                "engine_hp": "220 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "6-Speed A/T",
+                "zero_to_100_kmh": "5.8s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2015,
+                "endYear": 2016,
+                "body": "Cabriolet",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1984cc",
+                "engine_hp": "220 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "6-Speed A/T",
+                "zero_to_100_kmh": "5.9s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "A4",
+        "specs": [
+            {
+                "startYear": 2002,
+                "endYear": 2008,
+                "body": "Sedan",
+                "engine": "1.8L Turbo",
+                "engine_displacement": "1781cc",
+                "engine_hp": "170 HP",
+                "engine_torque": "166 Nm",
+                "transmission": "5-Speed M/T",
+                "zero_to_100_kmh": "8.2s",
+                "max_speed_kmh": "229km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2009,
+                "endYear": 2016,
+                "body": "Sedan",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1984cc",
+                "engine_hp": "211 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "6-Speed M/T",
+                "zero_to_100_kmh": "6.6s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2017,
+                "endYear": 2019,
+                "body": "Sedan",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1984cc",
+                "engine_hp": "252 HP",
+                "engine_torque": "273 Nm",
+                "transmission": "7-Speed A/T",
+                "zero_to_100_kmh": "5.6s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

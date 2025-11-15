@@ -1,9 +1,10 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { VehicleData, LiveData, VehicleProfile } from './types';
+import { VehicleData, LiveData, VehicleProfile, SpecProfile } from './types';
 import { analyzeObdData } from './services/geminiService';
 import { ELM327Service } from './services/elmService';
-import { resolveVehicleByVIN, resolveVehicleManually } from './services/vinService';
+import { resolveVehicleByVIN } from './services/vinService';
+import { getMakes, getModelsForMake, getYearsForModel, getSpecsForYear } from './services/vehicleDataService';
 import { EngineIcon, WrenchIcon, CarIcon, BoltIcon, InfoIcon, BluetoothIcon, VehicleSearchIcon } from './components/icons';
 
 const logoBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAPACAYAAAB/Y4w6AAAF4UlEQVR4nO3d4XHTMBSG4bcy2xkgE5BNUCZgA5QJUCZgmAAmCZgEwASYAG9JgL+h42kkyZPk/x2fPRLJW0s+XpZt24Jb/B4AAEBgCQQkIAEJSEACEnALb+9vX/6i/H0A4H/LbduW3CAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCDA3/gP8P0d/b8LCEgAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIMBbeL9+/v57+P64b27f/vAAwP+W27YlNwhIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCCAv/Ef4Ps7+n8XEJCAAAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEnB7eX4/vj99+uP3s+f983l+P3/K78+f48d3n+e329u3z/t3AECg8hL49fM9v334/Pl2u11vby/j+/v7Lp/n9vZm3+324/P23t6/z/fnz3k/P35+vP+fH395Pj+/3f8HAECg/gIPDAgCEpCABCQggW/g5w8P+Pj8/Pz3eX6/vx+/v38/n19/3+/vj+/P+Hl+v3++v79/vj9/vr/4/QECgSr89v6e327/9vmc3++3t7eX8fb2drvdbsft9vt8fn6b3+/xeHw/n59x+/3j8fiP3x8AAKgQeGBAEJCAAAQkIAEJ+A08v7+n+fXt7eX4+vr6/ffz/H5/35/v7+/n+P39/Tq/PwACRfgFnhgQBCQgAQlIQAISkIAEfi8gIAMSkIAEJCABCUhAAhKQgAQlIAEJSEACEpCAAAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEnBb2Lbt1t7eXj4/P+/p/f19T2/v9vHx+H3v+PHx+PXr9/eP3x8AAB/gDwIJSAC/hA/wPz9+e3t7e4+Pj/v8/HxeX1/39fV1T0/v+Xx+/fj06T0+Pr7Hx8f9+PFxfn67p6fH5+fn9fb2vsePHz/u3//8AQBQIfDAgCAgAQkISEACEpCAX8D19XVPb2/v6empra2tvb29/f33169fX758+fz58+fPnz9+/Pjx48ePn5+fn5+f9/X19ePHj3t7e/v48ePevn37/Pnzvr6+/vz5s7e3t7e3t7e3t6+vr2trc58/f/78+fPevn379evXr1+/fvx+f3+/P78/AACK8AseGBAEJCAgAQlIQAISkIAE/JdAQAYkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAv/P8A/w/R39vwsISEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAv//gQAEJPAGvgEAAAAASUVORK5CYII=';
@@ -19,7 +20,8 @@ type MobileView = 'live' | 'config' | 'report';
 
 const App: React.FC = () => {
   // --- STATE MANAGEMENT ---
-  const [selections, setSelections] = useState({ make: '', model: '', year: '', engine: '', trim: '' });
+  const [selections, setSelections] = useState({ make: '', model: '', year: '', spec: '' });
+  const [uiOptions, setUiOptions] = useState<{ makes: string[], models: string[], years: number[], specs: SpecProfile[] }>({ makes: [], models: [], years: [], specs: []});
   const [vin, setVin] = useState('');
   
   const [vehicleProfile, setVehicleProfile] = useState<VehicleProfile | null>(null);
@@ -42,6 +44,78 @@ const App: React.FC = () => {
   const vinBufferRef = useRef<Record<string, string>>({});
   const dtcCheckCounterRef = useRef(0);
   
+  // --- UI DATA LOADING ---
+  useEffect(() => {
+    getMakes().then(makes => setUiOptions(prev => ({...prev, makes})));
+  }, []);
+
+  useEffect(() => {
+    if (selections.make) {
+      getModelsForMake(selections.make).then(models => setUiOptions(prev => ({...prev, models, years: [], specs: []})));
+    } else {
+      setUiOptions(prev => ({...prev, models: [], years: [], specs: []}));
+    }
+  }, [selections.make]);
+
+  useEffect(() => {
+    if (selections.make && selections.model) {
+      getYearsForModel(selections.make, selections.model).then(years => setUiOptions(prev => ({...prev, years, specs: []})));
+    } else {
+      setUiOptions(prev => ({...prev, years: [], specs: []}));
+    }
+  }, [selections.make, selections.model]);
+
+  useEffect(() => {
+    if (selections.make && selections.model && selections.year) {
+      getSpecsForYear(selections.make, selections.model, parseInt(selections.year, 10)).then(specs => setUiOptions(prev => ({...prev, specs})));
+    } else {
+      setUiOptions(prev => ({...prev, specs: []}));
+    }
+  }, [selections.make, selections.model, selections.year]);
+
+  useEffect(() => {
+      if (selections.spec) {
+          try {
+              const selectedSpec: SpecProfile = JSON.parse(selections.spec);
+              const profile: VehicleProfile = {
+                  make: selections.make,
+                  model: selections.model,
+                  year: parseInt(selections.year, 10),
+                  trim: selectedSpec.body,
+                  engine: {
+                    volume_cc: parseInt(selectedSpec.engine_displacement?.replace('cc', '').trim() || '0'),
+                    power_hp: parseInt(selectedSpec.engine_hp?.replace('HP', '').trim() || '0'),
+                    torque_nm: parseInt(selectedSpec.engine_torque?.replace('Nm', '').trim() || '0'),
+                    fuel: selectedSpec.fuel,
+                    aspiration: selectedSpec.engine,
+                    cylinders: 4, // Assuming 4, not in new data
+                  },
+                  transmission: {
+                    type: selectedSpec.transmission,
+                    gears: 'Bilinmiyor'
+                  },
+                  technical_specs: {
+                    acceleration_0_100: selectedSpec.zero_to_100_kmh?.replace('s','').trim() || 'N/A',
+                    top_speed: selectedSpec.max_speed_kmh?.replace('km/h', '').trim() || 'N/A',
+                    avg_consumption: 'N/A', // Not in new data
+                    weight_kg: 'N/A', // Not in new data
+                    boot_liters: 'N/A', // Not in new data
+                    fuel_tank_liters: 'N/A' // Not in new data
+                  },
+                  image_url: '' // Not in new data
+              };
+              if (vin.trim().length >= 17) {
+                profile.vin = vin;
+              }
+              setVehicleProfile(profile);
+          } catch(e) {
+              console.error("Failed to parse selected spec:", e);
+              setVehicleProfile(null);
+          }
+      }
+  }, [selections.spec, selections.make, selections.model, selections.year, vin]);
+
+
   // --- DATA FETCHING & LOGIC ---
   const log = useCallback((message: string) => {
     setRawLog(prev => [...prev.slice(-100), message]);
@@ -51,60 +125,57 @@ const App: React.FC = () => {
   }, []);
 
   const handleSelectionChange = (field: keyof typeof selections, value: string) => {
-      setSelections(prev => ({...prev, [field]: value}));
+      setSelections(prev => {
+        const newState = {...prev, [field]: value};
+        if (field === 'make') {
+            newState.model = '';
+            newState.year = '';
+            newState.spec = '';
+            setVehicleProfile(null);
+        } else if (field === 'model') {
+            newState.year = '';
+            newState.spec = '';
+            setVehicleProfile(null);
+        } else if (field === 'year') {
+            newState.spec = '';
+            setVehicleProfile(null);
+        }
+        return newState;
+      });
   };
 
   const handleResolveVehicle = async () => {
     setIsResolving(true);
     setError(null);
+    setVehicleProfile(null);
+    
+    if (vin.trim().length < 17) {
+        setError("Lütfen 17 haneli geçerli bir VIN girin.");
+        setIsResolving(false);
+        return;
+    }
     
     try {
-        let profile: VehicleProfile | null = null;
-        let wasVinLookup = false;
-
-        if (selections.make && selections.model && selections.year && selections.engine && selections.trim) {
-            profile = await resolveVehicleManually(
-                selections.make, 
-                selections.model, 
-                parseInt(selections.year, 10), 
-                selections.engine, 
-                selections.trim
-            );
-            if (profile && vin.trim().length >= 17) {
-                profile.vin = vin;
-            }
-        } 
-        else if (vin.trim().length >= 17) {
-            wasVinLookup = true;
-            const result = await resolveVehicleByVIN(vin);
-            if (result.status === "ok") {
-                profile = result as VehicleProfile;
-            } else {
-                 setError(`Araç ${result.make} ${result.model} ${result.year} olarak tanındı, ancak TR veritabanında detay bulunamadı. Lütfen motor ve donanım bilgilerini manuel olarak girerek devam edin.`);
-                 profile = { make: result.make, model: result.model, year: result.year, vin: result.vin } as Partial<VehicleProfile> as VehicleProfile;
-            }
-        } 
-        else {
-             throw new Error("Aracı tanımlamak için lütfen 17 haneli VIN girin veya tüm alanları manuel olarak girin.");
-        }
-
-        if (profile) {
-            setVehicleProfile(profile);
-
-            if (wasVinLookup) {
-                 setSelections({
-                     make: profile.make,
-                     model: profile.model,
-                     year: profile.year.toString(),
-                     engine: profile.engine ? `${profile.engine.volume_cc}cc ${profile.engine.power_hp}hp` : '',
-                     trim: profile.trim || ''
-                 });
-                 if (profile.vin) setVin(profile.vin);
-            }
+        const result = await resolveVehicleByVIN(vin);
+        if (result.status === 'ok' && result.vehicle) {
+            setSelections({
+                make: result.vehicle.make,
+                model: result.vehicle.model,
+                year: result.vehicle.year.toString(),
+                spec: result.spec ? JSON.stringify(result.spec) : ''
+            });
+            // The useEffect for selections.spec will handle setting the vehicle profile
+        } else {
+             setError(`Araç ${result.make} ${result.model} ${result.year} olarak tanındı, ancak veritabanında tam eşleşme bulunamadı. Lütfen manuel olarak seçim yapın.`);
+             setSelections({
+                make: result.make || '',
+                model: result.model || '',
+                year: result.year?.toString() || '',
+                spec: ''
+             });
         }
     } catch (err) {
         setError((err as Error).message);
-        setVehicleProfile(null);
     } finally {
         setIsResolving(false);
     }
@@ -271,7 +342,7 @@ const App: React.FC = () => {
         model: `${vehicleProfile.model} (${vehicleProfile.trim})`,
         year: vehicleProfile.year.toString(),
         fuel: vehicleProfile.engine ? `${vehicleProfile.engine.fuel} (${vehicleProfile.engine.volume_cc}cc, ${vehicleProfile.engine.power_hp}HP)` : 'Bilinmiyor'
-      } : { ...selections, vin };
+      } : { make: selections.make, model: selections.model, year: selections.year, vin };
 
       const result = await analyzeObdData(vehicleInfoForAI, rawData);
       setAnalysisResult(result);
@@ -303,7 +374,7 @@ const App: React.FC = () => {
     });
   };
 
-  const inputClasses = "w-full bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue";
+  const selectClasses = "w-full bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue disabled:opacity-50 disabled:cursor-not-allowed";
 
   const BottomNavBar = () => (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#111827] border-t border-gray-700/50 flex justify-around items-center p-2 z-10">
@@ -356,7 +427,7 @@ const App: React.FC = () => {
                     <LiveValue label="Aspirasyon" value={vehicleProfile.engine.aspiration} />
                     <LiveValue label="0-100km/s" value={vehicleProfile.technical_specs.acceleration_0_100} unit="s" />
                     <LiveValue label="Maks. Hız" value={vehicleProfile.technical_specs.top_speed} unit="km/h" />
-                    <LiveValue label="Şanzıman" value={`${vehicleProfile.transmission.type} ${vehicleProfile.transmission.gears}`} />
+                    <LiveValue label="Şanzıman" value={`${vehicleProfile.transmission.type}`} />
                 </div>
             </div>
         )}
@@ -389,7 +460,7 @@ const App: React.FC = () => {
                     <CarIcon className="w-4 h-4 mr-2"/>
                     VIN'i Al
                 </button>
-                <button onClick={handleResolveVehicle} disabled={isResolving || (vin.trim().length < 17 && !selections.trim)} className="flex-1 md:flex-none flex items-center justify-center py-2 px-3 rounded-md text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-500 transition-colors">
+                <button onClick={handleResolveVehicle} disabled={isResolving || vin.trim().length < 17} className="flex-1 md:flex-none flex items-center justify-center py-2 px-3 rounded-md text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-500 transition-colors">
                     {isResolving ? <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 
                     : <VehicleSearchIcon className="w-4 h-4 mr-2"/>}
                     {isResolving ? 'Tanımlanıyor...' : 'Tanımla'}
@@ -399,12 +470,27 @@ const App: React.FC = () => {
         <div className="grid grid-cols-1 gap-4 mb-4">
            <input type="text" placeholder="VIN (Şasi Numarası) - 17 Karakter" value={vin} onChange={e => setVin(e.target.value.toUpperCase())} className="bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono uppercase"/>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            <input type="text" placeholder="Marka" value={selections.make} onChange={e => handleSelectionChange('make', e.target.value)} className={inputClasses} />
-            <input type="text" placeholder="Model" value={selections.model} onChange={e => handleSelectionChange('model', e.target.value)} className={inputClasses} />
-            <input type="text" placeholder="Yıl" value={selections.year} onChange={e => handleSelectionChange('year', e.target.value)} className={inputClasses} />
-            <input type="text" placeholder="Motor (örn: 1598cc 120hp)" value={selections.engine} onChange={e => handleSelectionChange('engine', e.target.value)} className={inputClasses} />
-            <input type="text" placeholder="Donanım" value={selections.trim} onChange={e => handleSelectionChange('trim', e.target.value)} className={inputClasses} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+             <select value={selections.make} onChange={e => handleSelectionChange('make', e.target.value)} className={selectClasses}>
+                <option value="">Marka Seçin</option>
+                {uiOptions.makes.map(make => <option key={make} value={make}>{make}</option>)}
+            </select>
+             <select value={selections.model} onChange={e => handleSelectionChange('model', e.target.value)} disabled={!selections.make} className={selectClasses}>
+                <option value="">Model Seçin</option>
+                {uiOptions.models.map(model => <option key={model} value={model}>{model}</option>)}
+            </select>
+             <select value={selections.year} onChange={e => handleSelectionChange('year', e.target.value)} disabled={!selections.model} className={selectClasses}>
+                <option value="">Yıl Seçin</option>
+                {uiOptions.years.map(year => <option key={year} value={year}>{year}</option>)}
+            </select>
+            <select value={selections.spec} onChange={e => handleSelectionChange('spec', e.target.value)} disabled={!selections.year} className={`${selectClasses} sm:col-span-2`}>
+                <option value="">Motor / Donanım Seçin</option>
+                {uiOptions.specs.map((spec, index) => (
+                    <option key={index} value={JSON.stringify(spec)}>
+                        {`${spec.engine || ''} (${spec.engine_hp || 'N/A'}) - ${spec.fuel} ${spec.transmission} - ${spec.body}`}
+                    </option>
+                ))}
+            </select>
         </div>
 
         <h2 className="text-2xl font-semibold mb-4 text-white">ELM327 Konsolu</h2>

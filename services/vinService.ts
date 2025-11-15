@@ -1,22 +1,20 @@
 
-import type { VehicleProfile } from '../types';
+import type { VehicleProfile, ModelProfile, SpecProfile } from '../types';
 
-// Cache for the local datasets
-let trDataset: any[] | null = null;
-
-async function getTrDataset() {
-  if (!trDataset) {
-    const response = await fetch('/data/vehicle/tr-dataset.json');
-    if (!response.ok) {
-      throw new Error('TR Veriseti yüklenemedi.');
+async function getSpecsForMake(make: string): Promise<ModelProfile[]> {
+    try {
+        const response = await fetch(`/data/vehicle/specs/${make.toLowerCase().replace(' ', '-')}.json`);
+        if (!response.ok) {
+            return [];
+        }
+        return await response.json();
+    } catch (e) {
+        console.error(`Spesifikasyon dosyası yüklenemedi: ${make}`, e);
+        return [];
     }
-    trDataset = await response.json();
-  }
-  return trDataset;
 }
 
-
-export async function decodeVIN(vin: string) {
+async function decodeVIN(vin: string) {
   const vpicRes = await fetch(
     `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/${vin}?format=json`
   );
@@ -27,7 +25,7 @@ export async function decodeVIN(vin: string) {
   const vpicResults = vpicData.Results;
 
   const getVpicValue = (variable: string) => {
-    const result = vpicResults.find((r: any) => r.Variable === variable && r.Value && r.Value.trim() !== "");
+    const result = vpicResults.find((r: any) => r.Variable === variable && r.Value && r.Value.trim() !== "" && r.Value.trim() !== "Not Applicable");
     return result ? result.Value : null;
   };
 
@@ -43,51 +41,35 @@ export async function decodeVIN(vin: string) {
   return { make, model, year };
 }
 
-export async function resolveTRSpecs(make: string, model: string, year: number) {
-  const dataset = await getTrDataset();
-  const car = dataset.find((c: any) =>
-    c.Marka?.toLowerCase() === make.toLowerCase() &&
-    model.toLowerCase().includes(c.Model?.toLowerCase()) &&
-    Number(c["Model Yılı"]) === Number(year)
-  );
 
-  return car || null;
-}
-
-const mapTrSpecsToProfile = (trSpecs: any, vin?: string): VehicleProfile => {
-    const make = trSpecs.Marka;
-    const model = trSpecs.Model;
-    const year = Number(trSpecs["Model Yılı"]);
-
+const mapSpecToProfile = (make: string, model: string, year: number, spec: SpecProfile, vin?: string): VehicleProfile => {
     return {
         vin: vin,
         make,
         model,
         year,
-        segment: trSpecs.Segment,
-        body: trSpecs['Kasa Tipi'],
-        trim: trSpecs['Donanım Paketi'],
+        trim: spec.body,
         engine: {
-        volume_cc: parseInt(trSpecs['Motor Hacmi']?.replace(' cc', '') || '0', 10),
-        power_hp: parseInt(trSpecs.Beygir?.replace(' HP', '') || '0', 10),
-        torque_nm: parseInt(trSpecs.Tork?.replace(' Nm', '') || '0', 10),
-        fuel: trSpecs['Yakıt Tipi'],
-        aspiration: 'Bilinmiyor',
-        cylinders: parseInt(trSpecs.Silindir || '4', 10)
+            volume_cc: parseInt(spec.engine_displacement?.replace('cc', '').trim() || '0'),
+            power_hp: parseInt(spec.engine_hp?.replace('HP', '').trim() || '0'),
+            torque_nm: parseInt(spec.engine_torque?.replace('Nm', '').trim() || '0'),
+            fuel: spec.fuel,
+            aspiration: spec.engine,
+            cylinders: 4, // Assuming 4, not in new data
         },
         transmission: {
-        type: trSpecs['Vites Tipi'],
-        gears: trSpecs['Vites Sayısı']
+            type: spec.transmission,
+            gears: 'Bilinmiyor'
         },
         technical_specs: {
-        acceleration_0_100: trSpecs['0-100 Hızlanma']?.replace(' s', '') || 'N/A',
-        top_speed: trSpecs['Maksimum Hız']?.replace(' km/s', '') || 'N/A',
-        avg_consumption: trSpecs['Karma Tüketim']?.replace(' lt', '') || 'N/A',
-        weight_kg: trSpecs['Boş Ağırlık']?.replace(' kg', '') || 'N/A',
-        boot_liters: trSpecs['Bagaj Hacmi']?.replace(' lt', '') || 'N/A',
-        fuel_tank_liters: trSpecs['Yakıt Deposu']?.replace(' lt', '') || 'N/A'
+            acceleration_0_100: spec.zero_to_100_kmh?.replace('s','').trim() || 'N/A',
+            top_speed: spec.max_speed_kmh?.replace('km/h', '').trim() || 'N/A',
+            avg_consumption: 'N/A',
+            weight_kg: 'N/A',
+            boot_liters: 'N/A',
+            fuel_tank_liters: 'N/A'
         },
-        image_url: '' 
+        image_url: ''
     };
 };
 
@@ -99,46 +81,33 @@ export async function resolveVehicleByVIN(vin: string) {
   }
 
   const { make, model, year } = baseInfo;
-  const trSpecs = await resolveTRSpecs(make, model, year);
-
-  if (!trSpecs) {
-    return {
-        vin,
-        make,
-        model,
-        year,
-        status: "tr_data_missing"
-    };
+  
+  const allSpecsForMake = await getSpecsForMake(make);
+  if (!allSpecsForMake.length) {
+      return { make, model, year, status: "spec_data_missing", vehicle: null, spec: null };
   }
   
-  const vehicleProfile = mapTrSpecsToProfile(trSpecs, vin);
+  const modelData = allSpecsForMake.find(m => m.model.toLowerCase() === model.toLowerCase());
+  if (!modelData) {
+      return { make, model, year, status: "model_not_found", vehicle: null, spec: null };
+  }
+
+  const matchingSpecs = modelData.specs.filter(spec => year >= spec.startYear && year <= spec.endYear);
+
+  if (matchingSpecs.length === 0) {
+      return { make, model, year, status: "year_not_found", vehicle: null, spec: null };
+  }
+  
+  // Return the first match for simplicity
+  const bestSpec = matchingSpecs[0];
+  const vehicleProfile = mapSpecToProfile(make, model, year, bestSpec, vin);
 
   return {
-    ...vehicleProfile,
-    status: "ok"
+    status: "ok",
+    vehicle: vehicleProfile,
+    spec: bestSpec,
+    make, 
+    model, 
+    year
   };
-}
-
-
-export async function resolveVehicleManually(make: string, model: string, year: number, engineStr: string, trim: string): Promise<VehicleProfile> {
-    const dataset = await getTrDataset();
-  
-    const engineMatch = engineStr.match(/(\d+)cc (\d+)hp/);
-    if (!engineMatch) throw new Error("Motor formatı geçersiz.");
-    const [, volume_cc, power_hp] = engineMatch;
-  
-    const trSpecs = dataset.find(car => 
-        car.Marka === make &&
-        car.Model === model &&
-        Number(car["Model Yılı"]) === year &&
-        parseInt(car['Motor Hacmi']) === parseInt(volume_cc) &&
-        parseInt(car.Beygir) === parseInt(power_hp) &&
-        car['Donanım Paketi'] === trim
-    );
-  
-    if (!trSpecs) {
-      throw new Error(`Belirtilen kriterlere uygun TR profili bulunamadı.`);
-    }
-    
-    return mapTrSpecsToProfile(trSpecs);
 }

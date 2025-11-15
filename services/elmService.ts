@@ -3,6 +3,7 @@
 // This is necessary when @types/web-bluetooth is not available in the project.
 declare global {
   interface BluetoothDevice {
+    readonly id: string;
     readonly name?: string;
     readonly gatt?: BluetoothRemoteGATTServer;
     addEventListener(type: 'gattserverdisconnected', listener: (this: this, ev: Event) => any): void;
@@ -10,22 +11,43 @@ declare global {
   }
 
   interface BluetoothRemoteGATTServer {
+    readonly device: BluetoothDevice;
     readonly connected: boolean;
     connect(): Promise<BluetoothRemoteGATTServer>;
     disconnect(): void;
+    getPrimaryServices(): Promise<BluetoothRemoteGATTService[]>;
     getPrimaryService(service: string): Promise<BluetoothRemoteGATTService>;
   }
 
   interface BluetoothRemoteGATTService {
+    readonly uuid: string;
+    getCharacteristics(): Promise<BluetoothRemoteGATTCharacteristic[]>;
     getCharacteristic(characteristic: string): Promise<BluetoothRemoteGATTCharacteristic>;
   }
 
   interface BluetoothRemoteGATTCharacteristic {
+    readonly uuid: string;
+    readonly properties: BluetoothCharacteristicProperties;
     startNotifications(): Promise<void>;
+    stopNotifications(): Promise<void>;
     addEventListener(type: 'characteristicvaluechanged', listener: (event: any) => void): void;
+    removeEventListener(type: 'characteristicvaluechanged', listener: (event: any) => void): void;
+    writeValue(value: BufferSource): Promise<void>;
     writeValueWithoutResponse(value: BufferSource): Promise<void>;
   }
 
+  interface BluetoothCharacteristicProperties {
+    readonly broadcast: boolean;
+    readonly read: boolean;
+    readonly writeWithoutResponse: boolean;
+    readonly write: boolean;
+    readonly notify: boolean;
+    readonly indicate: boolean;
+    readonly authenticatedSignedWrites: boolean;
+    readonly reliableWrite: boolean;
+    readonly writableAuxiliaries: boolean;
+  }
+  
   interface Navigator {
     readonly bluetooth: {
       requestDevice(options?: any): Promise<BluetoothDevice>;
@@ -33,8 +55,11 @@ declare global {
   }
 }
 
+const ELM_SERVICE_UUIDS = [
+    '0000ffe0-0000-1000-8000-00805f9b34fb', // Common non-standard
+    '00001101-0000-1000-8000-00805f9b34fb'  // Standard SPP
+];
 
-// services/elmService.ts
 export class ELM327Service {
   private device: BluetoothDevice | null = null;
   private server: BluetoothRemoteGATTServer | null = null;
@@ -55,26 +80,47 @@ export class ELM327Service {
         filters: [
           { namePrefix: 'OBD' },
           { namePrefix: 'V-LINK' },
-          { namePrefix: 'ELM' },
-          { services: ['0000ffe0-0000-1000-8000-00805f9b34fb'] }
+          { namePrefix: 'ELM' }
         ],
-        optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb']
+        optionalServices: ELM_SERVICE_UUIDS
       });
 
-      if (!this.device.gatt) {
-        throw new Error('GATT Server not available.');
+      if (!this.device || !this.device.gatt) {
+        throw new Error('Geçerli bir cihaz seçilmedi veya GATT sunucusu yok.');
       }
       
       this.onLog?.(`${this.device.name} üzerindeki GATT Sunucusuna bağlanılıyor...`);
       this.device.addEventListener('gattserverdisconnected', this.handleDisconnect);
       this.server = await this.device.gatt.connect();
 
-      this.onLog?.('Ana servis alınıyor...');
-      const service = await this.server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb');
+      this.onLog?.('Uyumlu servis aranıyor...');
+      let service: BluetoothRemoteGATTService | undefined;
       
-      this.onLog?.('Karakteristikler alınıyor...');
-      this.rx = await service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb');
-      this.tx = this.rx; 
+      for(const uuid of ELM_SERVICE_UUIDS) {
+        try {
+            service = await this.server.getPrimaryService(uuid);
+            if (service) {
+                this.onLog?.(`Servis bulundu: ${uuid}`);
+                break;
+            }
+        } catch(e) { /* Service not found, try next */ }
+      }
+      
+      if (!service) {
+        throw new Error('Uyumlu ELM327 servisi bulunamadı.');
+      }
+
+      this.onLog?.('Okuma/Yazma karakteristikleri aranıyor...');
+      const characteristics = await service.getCharacteristics();
+      
+      this.rx = characteristics.find(c => c.properties.notify || c.properties.indicate) || null;
+      this.tx = characteristics.find(c => c.properties.writeWithoutResponse || c.properties.write) || null;
+
+      if (!this.rx || !this.tx) {
+        throw new Error('Gerekli okuma/yazma karakteristiği bulunamadı.');
+      }
+      this.onLog?.(`RX Karakteristiği: ${this.rx.uuid}`);
+      this.onLog?.(`TX Karakteristiği: ${this.tx.uuid}`);
 
       this.onLog?.('Bildirimler başlatılıyor...');
       await this.rx.startNotifications();
@@ -85,7 +131,7 @@ export class ELM327Service {
       this.send('ATE0');
       this.send('ATL0');
       this.send('ATSP0');
-      this.send('0100'); // Check supported PIDs
+      this.send('0100');
 
       return true;
     } catch (error) {
@@ -124,6 +170,7 @@ export class ELM327Service {
     messages.forEach(msg => {
         const cleanValue = msg.replace(/>/g, '').trim();
         if (cleanValue) {
+            this.onLog?.(`RX: ${cleanValue}`);
             this.onData?.(cleanValue);
         }
     });
@@ -152,7 +199,7 @@ export class ELM327Service {
         try {
             await this.tx.writeValueWithoutResponse(data);
         } catch (error) {
-            console.error('Failed to send command:', error);
+            console.error('Komut gönderilemedi:', error);
             this.isSending = false;
         }
     } else {

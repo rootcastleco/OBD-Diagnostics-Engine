@@ -1,0 +1,96 @@
+
+[
+    {
+        "model": "4C",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2016,
+                "body": "Coupe",
+                "engine": "1.7L Turbo",
+                "engine_displacement": "1742cc",
+                "engine_hp": "237 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "6-speed auto-shift manual w/OD",
+                "zero_to_100_kmh": "4.1s",
+                "max_speed_kmh": "258km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2015,
+                "endYear": 2016,
+                "body": "Spider",
+                "engine": "1.7L Turbo",
+                "engine_displacement": "1742cc",
+                "engine_hp": "237 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "6-speed auto-shift manual w/OD",
+                "zero_to_100_kmh": "4.1s",
+                "max_speed_kmh": "258km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Giulia",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2019,
+                "body": "Sedan",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1995cc",
+                "engine_hp": "280 HP",
+                "engine_torque": "306 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.1s",
+                "max_speed_kmh": "240km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2017,
+                "endYear": 2019,
+                "body": "Quadrifoglio",
+                "engine": "2.9L Twin-Turbo V6",
+                "engine_displacement": "2891cc",
+                "engine_hp": "505 HP",
+                "engine_torque": "443 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "3.8s",
+                "max_speed_kmh": "307km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Stelvio",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2019,
+                "body": "SUV",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1995cc",
+                "engine_hp": "280 HP",
+                "engine_torque": "306 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.4s",
+                "max_speed_kmh": "232km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2018,
+                "endYear": 2019,
+                "body": "Quadrifoglio",
+                "engine": "2.9L Twin-Turbo V6",
+                "engine_displacement": "2891cc",
+                "engine_hp": "505 HP",
+                "engine_torque": "443 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "3.6s",
+                "max_speed_kmh": "283km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

@@ -19,7 +19,26 @@ export interface LiveData {
     dtc: string[];
 }
 
-// --- NEW ROOTCASTLE DATA STRUCTURES ---
+// --- NEW ROOTCASTLE DATA STRUCTURES from automobile-models-and-specs ---
+
+export interface SpecProfile {
+    body: string;
+    engine: string;
+    engine_displacement: string;
+    engine_hp: string;
+    engine_torque: string;
+    fuel: string;
+    max_speed_kmh: string;
+    startYear: number;
+    endYear: number;
+    transmission: string;
+    zero_to_100_kmh: string;
+}
+
+export interface ModelProfile {
+    model: string;
+    specs: SpecProfile[];
+}
 
 export interface EngineProfile {
     volume_cc: number;
@@ -49,53 +68,9 @@ export interface VehicleProfile {
     make: string;
     model: string;
     year: number;
-    segment: string;
-    body: string;
+    trim: string;
     engine: EngineProfile;
     transmission: TransmissionProfile;
-    trim: string;
     technical_specs: TechnicalSpecs;
     image_url: string;
-}
-
-export interface VehicleUI {
-    makes: string[];
-    models: string[];
-    years: number[];
-    fuels: string[];
-    engines: { engine: string; fuel: string; transmission: string }[];
-    trims: string[];
-}
-
-export interface SourceConfidence {
-    tr_dataset: 'high' | 'medium' | 'low' | 'none';
-    arabalar_com: 'high' | 'medium' | 'low' | 'none';
-    world_cars: 'high' | 'medium' | 'low' | 'none';
-    vpic: 'high' | 'medium' | 'low' | 'none';
-}
-
-export interface RootcastleResponse {
-    vehicle: VehicleProfile;
-    ui: VehicleUI;
-    source_confidence: SourceConfidence;
-}
-
-
-// --- DEPRECATED ---
-export interface ResolvedVehicleData {
-    vin: string;
-    make: string;
-    model: string;
-    year: number;
-    engine: {
-        volume_cc: number;
-        power_hp: number;
-        torque_nm: number;
-        fuel: string;
-        configuration: string;
-    };
-    transmission: string;
-    segment: string;
-    trim: string;
-    source_confidence: any;
 }
