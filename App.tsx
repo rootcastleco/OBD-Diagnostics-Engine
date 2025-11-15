@@ -3,9 +3,10 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { VehicleData, LiveData, VehicleProfile } from './types';
 import { analyzeObdData } from './services/geminiService';
 import { ELM327Service } from './services/elmService';
-import { getMakes, getModelsForMake, getYearsForModel, getOptionsForYear } from './services/vehicleDataService';
 import { resolveVehicleByVIN, resolveVehicleManually } from './services/vinService';
 import { EngineIcon, WrenchIcon, CarIcon, BoltIcon, InfoIcon, BluetoothIcon, VehicleSearchIcon } from './components/icons';
+
+const logoBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAPACAYAAAB/Y4w6AAAF4UlEQVR4nO3d4XHTMBSG4bcy2xkgE5BNUCZgA5QJUCZgmAAmCZgEwASYAG9JgL+h42kkyZPk/x2fPRLJW0s+XpZt24Jb/B4AAEBgCQQkIAEJSEACEnALb+9vX/6i/H0A4H/LbduW3CAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCDA3/gP8P0d/b8LCEgAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIMBbeL9+/v57+P64b27f/vAAwP+W27YlNwhIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCCAv/Ef4Ps7+n8XEJCAAAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEnB7eX4/vj99+uP3s+f983l+P3/K78+f48d3n+e329u3z/t3AECg8hL49fM9v334/Pl2u11vby/j+/v7Lp/n9vZm3+324/P23t6/z/fnz3k/P35+vP+fH395Pj+/3f8HAECg/gIPDAgCEpCABCQggW/g5w8P+Pj8/Pz3eX6/vx+/v38/n19/3+/vj+/P+Hl+v3++v79/vj9/vr/4/QECgSr89v6e327/9vmc3++3t7eX8fb2drvdbsft9vt8fn6b3+/xeHw/n59x+/3j8fiP3x8AAKgQeGBAEJCAAAQkIAEJ+A08v7+n+fXt7eX4+vr6/ffz/H5/35/v7+/n+P39/Tq/PwACRfgFnhgQBCQgAQlIQAISkIAEfi8gIAMSkIAEJCABCUhAAhKQgAQlIAEJSEACEpCAAAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEnBb2Lbt1t7eXj4/P+/p/f19T2/v9vHx+H3v+PHx+PXr9/eP3x8AAB/gDwIJSAC/hA/wPz9+e3t7e4+Pj/v8/HxeX1/39fV1T0/v+Xx+/fj06T0+Pr7Hx8f9+PFxfn67p6fH5+fn9fb2vsePHz/u3//8AQBQIfDAgCAgAQkISEACEpCAX8D19XVPb2/v6empra2tvb29/f33169fX758+fz58+fPnz9+/Pjx48ePn5+fn5+f9/X19ePHj3t7e/v48ePevn37/Pnzvr6+/vz5s7e3t7e3t7e3t6+vr2trc58/f/78+fPevn379evXr1+/fvx+f3+/P78/AACK8AseGBAEJCAgAQlIQAISkIAE/JdAQAYkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAv/P8A/w/R39vwsISEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAv//gQAEJPAGvgEAAAAASUVORK5CYII=';
 
 const LiveValue: React.FC<{ label: string; value: string | number; unit?: string }> = ({ label, value, unit }) => (
   <div className="flex justify-between items-baseline bg-brand-dark/50 p-2 rounded">
@@ -21,7 +22,6 @@ const App: React.FC = () => {
   const [selections, setSelections] = useState({ make: '', model: '', year: '', engine: '', trim: '' });
   const [vin, setVin] = useState('');
   
-  const [uiOptions, setUiOptions] = useState<{ makes: string[], models: string[], years: number[], engines: any[], trims: string[] }>({ makes: [], models: [], years: [], engines: [], trims: [] });
   const [vehicleProfile, setVehicleProfile] = useState<VehicleProfile | null>(null);
 
   const [analysisResult, setAnalysisResult] = useState<string>('');
@@ -41,9 +41,7 @@ const App: React.FC = () => {
   const consoleRef = useRef<HTMLDivElement>(null);
   const vinBufferRef = useRef<Record<string, string>>({});
   const dtcCheckCounterRef = useRef(0);
-  const isProgrammaticUpdate = useRef(false);
-
-
+  
   // --- DATA FETCHING & LOGIC ---
   const log = useCallback((message: string) => {
     setRawLog(prev => [...prev.slice(-100), message]);
@@ -51,53 +49,6 @@ const App: React.FC = () => {
         consoleRef.current?.scrollTo({ top: consoleRef.current.scrollHeight, behavior: 'smooth' });
     }, 100);
   }, []);
-
-  useEffect(() => {
-    const fetchMakes = async () => {
-        const makes = await getMakes();
-        setUiOptions(prev => ({...prev, makes}));
-    };
-    fetchMakes();
-  }, []);
-
-  useEffect(() => {
-    if (isProgrammaticUpdate.current) return;
-    if (selections.make) {
-        const fetchModels = async () => {
-            const models = await getModelsForMake(selections.make);
-            setUiOptions(prev => ({...prev, models, years: [], engines: [], trims: []}));
-            setSelections(s => ({...s, model: '', year: '', engine: '', trim: ''}));
-            setVehicleProfile(null);
-        };
-        fetchModels();
-    }
-  }, [selections.make]);
-  
-  useEffect(() => {
-    if (isProgrammaticUpdate.current) return;
-    if (selections.make && selections.model) {
-        const fetchYears = async () => {
-            const years = await getYearsForModel(selections.make, selections.model);
-            setUiOptions(prev => ({...prev, years, engines: [], trims: []}));
-            setSelections(s => ({...s, year: '', engine: '', trim: ''}));
-            setVehicleProfile(null);
-        };
-        fetchYears();
-    }
-  }, [selections.make, selections.model]);
-
-  useEffect(() => {
-    if (isProgrammaticUpdate.current) return;
-    if (selections.make && selections.model && selections.year) {
-        const fetchOptions = async () => {
-            const { engines, trims } = await getOptionsForYear(selections.make, selections.model, parseInt(selections.year, 10));
-            setUiOptions(prev => ({...prev, engines, trims}));
-            setSelections(s => ({...s, engine: '', trim: ''}));
-            setVehicleProfile(null);
-        }
-        fetchOptions();
-    }
-  }, [selections.make, selections.model, selections.year]);
 
   const handleSelectionChange = (field: keyof typeof selections, value: string) => {
       setSelections(prev => ({...prev, [field]: value}));
@@ -111,7 +62,6 @@ const App: React.FC = () => {
         let profile: VehicleProfile | null = null;
         let wasVinLookup = false;
 
-        // Priority 1: A full manual selection has been made. This also resolves the partial VIN-match loop.
         if (selections.make && selections.model && selections.year && selections.engine && selections.trim) {
             profile = await resolveVehicleManually(
                 selections.make, 
@@ -120,51 +70,32 @@ const App: React.FC = () => {
                 selections.engine, 
                 selections.trim
             );
-            // If a VIN was present in the input, attach it to the resolved profile.
             if (profile && vin.trim().length >= 17) {
                 profile.vin = vin;
             }
         } 
-        // Priority 2: No full manual selection, but a valid VIN is present.
         else if (vin.trim().length >= 17) {
             wasVinLookup = true;
-            isProgrammaticUpdate.current = true;
             const result = await resolveVehicleByVIN(vin);
             if (result.status === "ok") {
                 profile = result as VehicleProfile;
             } else {
-                 setError(`Araç ${result.make} ${result.model} ${result.year} olarak tanındı, ancak TR veritabanında detay bulunamadı. Lütfen motor ve donanım bilgilerini seçerek devam edin.`);
-                 // Create a partial profile to pre-fill the UI for manual completion.
+                 setError(`Araç ${result.make} ${result.model} ${result.year} olarak tanındı, ancak TR veritabanında detay bulunamadı. Lütfen motor ve donanım bilgilerini manuel olarak girerek devam edin.`);
                  profile = { make: result.make, model: result.model, year: result.year, vin: result.vin } as Partial<VehicleProfile> as VehicleProfile;
             }
         } 
-        // If neither condition is met, there's not enough information.
         else {
-             throw new Error("Aracı tanımlamak için lütfen 17 haneli VIN girin veya tüm alanları manuel olarak seçin.");
+             throw new Error("Aracı tanımlamak için lütfen 17 haneli VIN girin veya tüm alanları manuel olarak girin.");
         }
 
         if (profile) {
             setVehicleProfile(profile);
 
-            // If the process was initiated by a VIN lookup (full or partial), update the dropdowns.
             if (wasVinLookup) {
-                 const uiModels = await getModelsForMake(profile.make);
-                 const uiYears = await getYearsForModel(profile.make, profile.model);
-                 const uiOptionsForYear = await getOptionsForYear(profile.make, profile.model, profile.year);
-            
-                 setUiOptions(prev => ({
-                     ...prev,
-                     models: uiModels,
-                     years: uiYears,
-                     engines: uiOptionsForYear.engines,
-                     trims: uiOptionsForYear.trims,
-                 }));
-
                  setSelections({
                      make: profile.make,
                      model: profile.model,
                      year: profile.year.toString(),
-                     // If the profile is complete (from VIN), set engine/trim. Otherwise, leave them blank for the user to select.
                      engine: profile.engine ? `${profile.engine.volume_cc}cc ${profile.engine.power_hp}hp` : '',
                      trim: profile.trim || ''
                  });
@@ -176,11 +107,6 @@ const App: React.FC = () => {
         setVehicleProfile(null);
     } finally {
         setIsResolving(false);
-        if (isProgrammaticUpdate.current) {
-            setTimeout(() => {
-                isProgrammaticUpdate.current = false;
-            }, 0);
-        }
     }
   };
 
@@ -377,7 +303,7 @@ const App: React.FC = () => {
     });
   };
 
-  const selectClasses = "w-full bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue";
+  const inputClasses = "w-full bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue";
 
   const BottomNavBar = () => (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#111827] border-t border-gray-700/50 flex justify-around items-center p-2 z-10">
@@ -401,7 +327,7 @@ const App: React.FC = () => {
       {/* LEFT SIDEBAR */}
       <aside className={`w-full md:w-80 bg-[#111827] p-4 flex-col border-r border-gray-700/50 overflow-y-auto pb-20 md:pb-4 ${activeView === 'live' ? 'flex' : 'hidden'} md:flex`}>
         <header className="mb-6 flex items-center justify-start md:justify-center space-x-3">
-          <img src="/logo.png" alt="Rootcastle Pilot AI Logo" className="w-10 h-10" />
+          <img src={logoBase64} alt="Rootcastle Pilot AI Logo" className="w-10 h-10" />
           <div className='text-left md:text-center'>
             <h1 className="text-2xl font-bold text-white leading-tight">Rootcastle</h1>
             <p className="text-sm text-brand-blue leading-tight">Pilot AI</p>
@@ -474,26 +400,11 @@ const App: React.FC = () => {
            <input type="text" placeholder="VIN (Şasi Numarası) - 17 Karakter" value={vin} onChange={e => setVin(e.target.value.toUpperCase())} className="bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono uppercase"/>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            <select value={selections.make} onChange={e => handleSelectionChange('make', e.target.value)} className={selectClasses}>
-                <option value="">Marka Seçin</option>
-                {uiOptions.makes.map(m => <option key={m} value={m}>{m}</option>)}
-            </select>
-            <select value={selections.model} onChange={e => handleSelectionChange('model', e.target.value)} className={selectClasses} disabled={!selections.make}>
-                <option value="">Model Seçin</option>
-                {uiOptions.models.map(m => <option key={m} value={m}>{m}</option>)}
-            </select>
-            <select value={selections.year} onChange={e => handleSelectionChange('year', e.target.value)} className={selectClasses} disabled={!selections.model}>
-                <option value="">Yıl Seçin</option>
-                {uiOptions.years.map(y => <option key={y} value={y}>{y}</option>)}
-            </select>
-             <select value={selections.engine} onChange={e => handleSelectionChange('engine', e.target.value)} className={selectClasses} disabled={!selections.year}>
-                <option value="">Motor Seçin</option>
-                {uiOptions.engines.map(e => <option key={e.engine} value={e.engine}>{`${e.engine} (${e.fuel})`}</option>)}
-            </select>
-             <select value={selections.trim} onChange={e => handleSelectionChange('trim', e.target.value)} className={selectClasses} disabled={!selections.engine}>
-                <option value="">Donanım Seçin</option>
-                {uiOptions.trims.map(t => <option key={t} value={t}>{t}</option>)}
-            </select>
+            <input type="text" placeholder="Marka" value={selections.make} onChange={e => handleSelectionChange('make', e.target.value)} className={inputClasses} />
+            <input type="text" placeholder="Model" value={selections.model} onChange={e => handleSelectionChange('model', e.target.value)} className={inputClasses} />
+            <input type="text" placeholder="Yıl" value={selections.year} onChange={e => handleSelectionChange('year', e.target.value)} className={inputClasses} />
+            <input type="text" placeholder="Motor (örn: 1598cc 120hp)" value={selections.engine} onChange={e => handleSelectionChange('engine', e.target.value)} className={inputClasses} />
+            <input type="text" placeholder="Donanım" value={selections.trim} onChange={e => handleSelectionChange('trim', e.target.value)} className={inputClasses} />
         </div>
 
         <h2 className="text-2xl font-semibold mb-4 text-white">ELM327 Konsolu</h2>
