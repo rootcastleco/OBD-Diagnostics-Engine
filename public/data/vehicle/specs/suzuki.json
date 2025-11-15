@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Swift",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "Sport",
+                "engine": "1.4L Boosterjet Turbo",
+                "engine_displacement": "1373cc",
+                "engine_hp": "140 HP",
+                "engine_torque": "230 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "8.1s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Vitara",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "1.6L VVT",
+                "engine_displacement": "1586cc",
+                "engine_hp": "120 HP",
+                "engine_torque": "156 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "11.5s",
+                "max_speed_kmh": "180km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

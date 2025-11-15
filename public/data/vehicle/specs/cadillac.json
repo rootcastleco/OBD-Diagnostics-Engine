@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "CTS",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2019,
+                "body": "Sedan",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1998cc",
+                "engine_hp": "268 HP",
+                "engine_torque": "295 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.6s",
+                "max_speed_kmh": "240km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Escalade",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2020,
+                "body": "SUV",
+                "engine": "6.2L V8",
+                "engine_displacement": "6162cc",
+                "engine_hp": "420 HP",
+                "engine_torque": "460 Nm",
+                "transmission": "10-Speed Automatic",
+                "zero_to_100_kmh": "5.9s",
+                "max_speed_kmh": "180km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "ATS",
+        "specs": [
+            {
+                "startYear": 2013,
+                "endYear": 2019,
+                "body": "Coupe",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1998cc",
+                "engine_hp": "272 HP",
+                "engine_torque": "295 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.7s",
+                "max_speed_kmh": "240km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

@@ -1,0 +1,75 @@
+
+[
+    {
+        "model": "Model S",
+        "specs": [
+            {
+                "startYear": 2021,
+                "endYear": 2023,
+                "body": "Plaid",
+                "engine": "Tri-Motor",
+                "engine_displacement": "0cc",
+                "engine_hp": "1020 HP",
+                "engine_torque": "1050 Nm",
+                "transmission": "1-Speed Direct Drive",
+                "zero_to_100_kmh": "2.1s",
+                "max_speed_kmh": "322km/h",
+                "fuel": "Electric"
+            }
+        ]
+    },
+    {
+        "model": "Model 3",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "Performance",
+                "engine": "Dual-Motor",
+                "engine_displacement": "0cc",
+                "engine_hp": "450 HP",
+                "engine_torque": "471 Nm",
+                "transmission": "1-Speed Direct Drive",
+                "zero_to_100_kmh": "3.3s",
+                "max_speed_kmh": "261km/h",
+                "fuel": "Electric"
+            }
+        ]
+    },
+    {
+        "model": "Model X",
+        "specs": [
+            {
+                "startYear": 2021,
+                "endYear": 2023,
+                "body": "Plaid",
+                "engine": "Tri-Motor",
+                "engine_displacement": "0cc",
+                "engine_hp": "1020 HP",
+                "engine_torque": "1050 Nm",
+                "transmission": "1-Speed Direct Drive",
+                "zero_to_100_kmh": "2.6s",
+                "max_speed_kmh": "262km/h",
+                "fuel": "Electric"
+            }
+        ]
+    },
+    {
+        "model": "Model Y",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Performance",
+                "engine": "Dual-Motor",
+                "engine_displacement": "0cc",
+                "engine_hp": "456 HP",
+                "engine_torque": "497 Nm",
+                "transmission": "1-Speed Direct Drive",
+                "zero_to_100_kmh": "3.7s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Electric"
+            }
+        ]
+    }
+]

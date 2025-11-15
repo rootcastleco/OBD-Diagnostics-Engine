@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Delta",
+        "specs": [
+            {
+                "startYear": 2008,
+                "endYear": 2014,
+                "body": "Hatchback",
+                "engine": "1.4L T-Jet",
+                "engine_displacement": "1368cc",
+                "engine_hp": "120 HP",
+                "engine_torque": "206 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "9.8s",
+                "max_speed_kmh": "195km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Ypsilon",
+        "specs": [
+            {
+                "startYear": 2011,
+                "endYear": 2023,
+                "body": "Hatchback",
+                "engine": "1.2L Fire",
+                "engine_displacement": "1242cc",
+                "engine_hp": "69 HP",
+                "engine_torque": "102 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "14.5s",
+                "max_speed_kmh": "163km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

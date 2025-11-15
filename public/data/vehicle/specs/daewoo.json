@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Lanos",
+        "specs": [
+            {
+                "startYear": 1997,
+                "endYear": 2002,
+                "body": "Sedan",
+                "engine": "1.5L I4",
+                "engine_displacement": "1498cc",
+                "engine_hp": "86 HP",
+                "engine_torque": "130 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "12.5s",
+                "max_speed_kmh": "172km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Matiz",
+        "specs": [
+            {
+                "startYear": 1998,
+                "endYear": 2005,
+                "body": "Hatchback",
+                "engine": "0.8L I3",
+                "engine_displacement": "796cc",
+                "engine_hp": "51 HP",
+                "engine_torque": "69 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "17.0s",
+                "max_speed_kmh": "144km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

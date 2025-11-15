@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Ion",
+        "specs": [
+            {
+                "startYear": 2004,
+                "endYear": 2007,
+                "body": "Red Line Coupe",
+                "engine": "2.0L Supercharged I4",
+                "engine_displacement": "1998cc",
+                "engine_hp": "205 HP",
+                "engine_torque": "200 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "6.3s",
+                "max_speed_kmh": "225km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Sky",
+        "specs": [
+            {
+                "startYear": 2007,
+                "endYear": 2010,
+                "body": "Red Line Roadster",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1998cc",
+                "engine_hp": "260 HP",
+                "engine_torque": "260 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "5.5s",
+                "max_speed_kmh": "227km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

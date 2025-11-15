@@ -1,0 +1,52 @@
+
+[
+    {
+        "model": "Duster",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "1.5L dCi Diesel",
+                "engine_displacement": "1461cc",
+                "engine_hp": "115 HP",
+                "engine_torque": "260 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "10.5s",
+                "max_speed_kmh": "179km/h",
+                "fuel": "Diesel"
+            },
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "1.3L TCe Gasoline",
+                "engine_displacement": "1332cc",
+                "engine_hp": "150 HP",
+                "engine_torque": "250 Nm",
+                "transmission": "6-Speed EDC",
+                "zero_to_100_kmh": "9.7s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Sandero",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Hatchback",
+                "engine": "1.0L TCe",
+                "engine_displacement": "999cc",
+                "engine_hp": "90 HP",
+                "engine_torque": "160 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "13.4s",
+                "max_speed_kmh": "172km/h",
+                "fuel": "Gasoline/LPG"
+            }
+        ]
+    }
+]

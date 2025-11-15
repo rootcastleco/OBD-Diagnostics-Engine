@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "Esperante",
+        "specs": [
+            {
+                "startYear": 2000,
+                "endYear": 2007,
+                "body": "GTLM",
+                "engine": "5.4L Supercharged V8",
+                "engine_displacement": "5408cc",
+                "engine_hp": "500 HP",
+                "engine_torque": "480 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "4.0s",
+                "max_speed_kmh": "290km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

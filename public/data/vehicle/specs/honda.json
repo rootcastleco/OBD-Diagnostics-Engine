@@ -1,0 +1,70 @@
+
+[
+    {
+        "model": "Civic",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2021,
+                "body": "Sedan",
+                "engine": "1.5L Turbo I4",
+                "engine_displacement": "1497cc",
+                "engine_hp": "174 HP",
+                "engine_torque": "162 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "7.5s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2017,
+                "endYear": 2021,
+                "body": "Type R",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1996cc",
+                "engine_hp": "306 HP",
+                "engine_torque": "295 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "5.0s",
+                "max_speed_kmh": "272km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Accord",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2022,
+                "body": "Sedan",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1996cc",
+                "engine_hp": "252 HP",
+                "engine_torque": "273 Nm",
+                "transmission": "10-Speed Automatic",
+                "zero_to_100_kmh": "5.5s",
+                "max_speed_kmh": "205km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "CR-V",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2022,
+                "body": "SUV",
+                "engine": "1.5L Turbo I4",
+                "engine_displacement": "1498cc",
+                "engine_hp": "190 HP",
+                "engine_torque": "179 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "7.9s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

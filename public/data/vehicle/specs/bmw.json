@@ -1,0 +1,88 @@
+
+[
+    {
+        "model": "3 Series",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "Sedan (G20)",
+                "engine": "2.0L Turbo I4 (330i)",
+                "engine_displacement": "1998cc",
+                "engine_hp": "255 HP",
+                "engine_torque": "295 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.6s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "Sedan (G20)",
+                "engine": "3.0L Turbo I6 (M340i)",
+                "engine_displacement": "2998cc",
+                "engine_hp": "382 HP",
+                "engine_torque": "369 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "4.1s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "5 Series",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "Sedan (G30)",
+                "engine": "2.0L Turbo I4 (530i)",
+                "engine_displacement": "1998cc",
+                "engine_hp": "248 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.0s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "X5",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "SUV (G05)",
+                "engine": "3.0L Turbo I6 (xDrive40i)",
+                "engine_displacement": "2998cc",
+                "engine_hp": "335 HP",
+                "engine_torque": "330 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.3s",
+                "max_speed_kmh": "243km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "M3",
+        "specs": [
+            {
+                "startYear": 2021,
+                "endYear": 2023,
+                "body": "Sedan (G80)",
+                "engine": "3.0L Twin-Turbo I6",
+                "engine_displacement": "2993cc",
+                "engine_hp": "473 HP",
+                "engine_torque": "406 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "4.1s",
+                "max_speed_kmh": "290km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

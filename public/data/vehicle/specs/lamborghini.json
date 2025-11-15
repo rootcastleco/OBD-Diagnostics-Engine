@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Aventador",
+        "specs": [
+            {
+                "startYear": 2011,
+                "endYear": 2021,
+                "body": "LP 700-4 Coupe",
+                "engine": "6.5L V12",
+                "engine_displacement": "6498cc",
+                "engine_hp": "691 HP",
+                "engine_torque": "509 Nm",
+                "transmission": "7-Speed ISR",
+                "zero_to_100_kmh": "2.9s",
+                "max_speed_kmh": "350km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Huracan",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2023,
+                "body": "LP 610-4 Coupe",
+                "engine": "5.2L V10",
+                "engine_displacement": "5204cc",
+                "engine_hp": "602 HP",
+                "engine_torque": "413 Nm",
+                "transmission": "7-Speed DCT",
+                "zero_to_100_kmh": "3.2s",
+                "max_speed_kmh": "325km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Urus",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "4.0L Twin-Turbo V8",
+                "engine_displacement": "3996cc",
+                "engine_hp": "641 HP",
+                "engine_torque": "627 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "3.6s",
+                "max_speed_kmh": "305km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

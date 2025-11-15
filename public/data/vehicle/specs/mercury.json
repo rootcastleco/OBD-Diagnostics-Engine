@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Grand Marquis",
+        "specs": [
+            {
+                "startYear": 1998,
+                "endYear": 2011,
+                "body": "Sedan",
+                "engine": "4.6L V8",
+                "engine_displacement": "4601cc",
+                "engine_hp": "224 HP",
+                "engine_torque": "275 Nm",
+                "transmission": "4-Speed Automatic",
+                "zero_to_100_kmh": "8.5s",
+                "max_speed_kmh": "180km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Sable",
+        "specs": [
+            {
+                "startYear": 2000,
+                "endYear": 2005,
+                "body": "Sedan",
+                "engine": "3.0L V6",
+                "engine_displacement": "2986cc",
+                "engine_hp": "200 HP",
+                "engine_torque": "200 Nm",
+                "transmission": "4-Speed Automatic",
+                "zero_to_100_kmh": "8.7s",
+                "max_speed_kmh": "180km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

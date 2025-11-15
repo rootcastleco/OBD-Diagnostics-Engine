@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Ghibli",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2023,
+                "body": "S Q4 Sedan",
+                "engine": "3.0L Twin-Turbo V6",
+                "engine_displacement": "2979cc",
+                "engine_hp": "424 HP",
+                "engine_torque": "428 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "4.7s",
+                "max_speed_kmh": "286km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Levante",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "3.0L Twin-Turbo V6",
+                "engine_displacement": "2979cc",
+                "engine_hp": "345 HP",
+                "engine_torque": "369 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.8s",
+                "max_speed_kmh": "251km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

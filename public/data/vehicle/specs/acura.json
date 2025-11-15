@@ -1,0 +1,75 @@
+
+[
+    {
+        "model": "ILX",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2022,
+                "body": "Sedan",
+                "engine": "2.4L I4",
+                "engine_displacement": "2356cc",
+                "engine_hp": "201 HP",
+                "engine_torque": "180 Nm",
+                "transmission": "8-Speed DCT",
+                "zero_to_100_kmh": "7.0s",
+                "max_speed_kmh": "220km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "MDX",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2020,
+                "body": "SUV",
+                "engine": "3.5L V6",
+                "engine_displacement": "3471cc",
+                "engine_hp": "290 HP",
+                "engine_torque": "267 Nm",
+                "transmission": "9-Speed Automatic",
+                "zero_to_100_kmh": "6.5s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "NSX",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2022,
+                "body": "Coupe",
+                "engine": "3.5L Twin-Turbo V6 Hybrid",
+                "engine_displacement": "3493cc",
+                "engine_hp": "573 HP",
+                "engine_torque": "476 Nm",
+                "transmission": "9-Speed DCT",
+                "zero_to_100_kmh": "2.9s",
+                "max_speed_kmh": "307km/h",
+                "fuel": "Gasoline/Hybrid"
+            }
+        ]
+    },
+    {
+        "model": "TLX",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2020,
+                "body": "Sedan",
+                "engine": "2.4L I4",
+                "engine_displacement": "2356cc",
+                "engine_hp": "206 HP",
+                "engine_torque": "182 Nm",
+                "transmission": "8-Speed DCT",
+                "zero_to_100_kmh": "6.9s",
+                "max_speed_kmh": "225km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "Cascadia",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "Sleeper Cab",
+                "engine": "14.8L Detroit DD15",
+                "engine_displacement": "14800cc",
+                "engine_hp": "505 HP",
+                "engine_torque": "1750 Nm",
+                "transmission": "12-Speed Automated Manual",
+                "zero_to_100_kmh": "N/A",
+                "max_speed_kmh": "120km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    }
+]

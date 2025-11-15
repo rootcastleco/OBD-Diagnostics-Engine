@@ -1,0 +1,75 @@
+
+[
+    {
+        "model": "208",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "Hatchback",
+                "engine": "1.2L PureTech",
+                "engine_displacement": "1199cc",
+                "engine_hp": "100 HP",
+                "engine_torque": "205 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "10.8s",
+                "max_speed_kmh": "188km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "308",
+        "specs": [
+            {
+                "startYear": 2013,
+                "endYear": 2021,
+                "body": "Hatchback",
+                "engine": "1.6L BlueHDi",
+                "engine_displacement": "1560cc",
+                "engine_hp": "120 HP",
+                "engine_torque": "300 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "9.5s",
+                "max_speed_kmh": "196km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    },
+    {
+        "model": "3008",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "1.6L THP",
+                "engine_displacement": "1598cc",
+                "engine_hp": "165 HP",
+                "engine_torque": "240 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "8.9s",
+                "max_speed_kmh": "206km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "508",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "Fastback",
+                "engine": "1.6L PureTech",
+                "engine_displacement": "1598cc",
+                "engine_hp": "225 HP",
+                "engine_torque": "300 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "7.3s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

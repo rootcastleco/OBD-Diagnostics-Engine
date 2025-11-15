@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Phantom",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "6.75L Twin-Turbo V12",
+                "engine_displacement": "6749cc",
+                "engine_hp": "563 HP",
+                "engine_torque": "664 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.3s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Ghost",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "6.75L Twin-Turbo V12",
+                "engine_displacement": "6749cc",
+                "engine_hp": "563 HP",
+                "engine_torque": "627 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "4.8s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Cullinan",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "6.75L Twin-Turbo V12",
+                "engine_displacement": "6749cc",
+                "engine_hp": "563 HP",
+                "engine_torque": "627 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.2s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

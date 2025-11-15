@@ -1,0 +1,70 @@
+
+[
+    {
+        "model": "DB9",
+        "specs": [
+            {
+                "startYear": 2004,
+                "endYear": 2016,
+                "body": "Coupe",
+                "engine": "6.0L V12",
+                "engine_displacement": "5935cc",
+                "engine_hp": "470 HP",
+                "engine_torque": "600 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "4.6s",
+                "max_speed_kmh": "306km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2004,
+                "endYear": 2016,
+                "body": "Volante (Convertible)",
+                "engine": "6.0L V12",
+                "engine_displacement": "5935cc",
+                "engine_hp": "470 HP",
+                "engine_torque": "600 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "4.8s",
+                "max_speed_kmh": "300km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Vantage",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2022,
+                "body": "Coupe",
+                "engine": "4.0L Twin-Turbo V8",
+                "engine_displacement": "3982cc",
+                "engine_hp": "503 HP",
+                "engine_torque": "685 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "3.6s",
+                "max_speed_kmh": "314km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "DB11",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2022,
+                "body": "Coupe",
+                "engine": "5.2L Twin-Turbo V12",
+                "engine_displacement": "5204cc",
+                "engine_hp": "600 HP",
+                "engine_torque": "700 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "3.9s",
+                "max_speed_kmh": "322km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

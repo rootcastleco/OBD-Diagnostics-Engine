@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Metro",
+        "specs": [
+            {
+                "startYear": 1995,
+                "endYear": 2001,
+                "body": "Hatchback",
+                "engine": "1.0L I3",
+                "engine_displacement": "993cc",
+                "engine_hp": "55 HP",
+                "engine_torque": "58 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "14.0s",
+                "max_speed_kmh": "145km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Tracker",
+        "specs": [
+            {
+                "startYear": 1989,
+                "endYear": 1998,
+                "body": "SUV",
+                "engine": "1.6L I4",
+                "engine_displacement": "1590cc",
+                "engine_hp": "95 HP",
+                "engine_torque": "98 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "13.5s",
+                "max_speed_kmh": "150km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

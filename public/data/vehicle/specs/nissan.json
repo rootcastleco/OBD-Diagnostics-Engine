@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Altima",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "2.5L I4",
+                "engine_displacement": "2488cc",
+                "engine_hp": "188 HP",
+                "engine_torque": "180 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "7.8s",
+                "max_speed_kmh": "215km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Rogue",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2020,
+                "body": "SUV",
+                "engine": "2.5L I4",
+                "engine_displacement": "2488cc",
+                "engine_hp": "170 HP",
+                "engine_torque": "175 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "9.1s",
+                "max_speed_kmh": "190km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "GT-R",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "Premium Coupe",
+                "engine": "3.8L Twin-Turbo V6",
+                "engine_displacement": "3799cc",
+                "engine_hp": "565 HP",
+                "engine_torque": "467 Nm",
+                "transmission": "6-Speed DCT",
+                "zero_to_100_kmh": "2.9s",
+                "max_speed_kmh": "315km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

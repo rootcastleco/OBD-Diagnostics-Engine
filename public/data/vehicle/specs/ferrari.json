@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "488",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2019,
+                "body": "GTB Coupe",
+                "engine": "3.9L Twin-Turbo V8",
+                "engine_displacement": "3902cc",
+                "engine_hp": "661 HP",
+                "engine_torque": "561 Nm",
+                "transmission": "7-Speed DCT",
+                "zero_to_100_kmh": "3.0s",
+                "max_speed_kmh": "330km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "F8 Tributo",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2022,
+                "body": "Coupe",
+                "engine": "3.9L Twin-Turbo V8",
+                "engine_displacement": "3902cc",
+                "engine_hp": "710 HP",
+                "engine_torque": "568 Nm",
+                "transmission": "7-Speed DCT",
+                "zero_to_100_kmh": "2.9s",
+                "max_speed_kmh": "340km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "SF90 Stradale",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Coupe",
+                "engine": "4.0L Twin-Turbo V8 PHEV",
+                "engine_displacement": "3990cc",
+                "engine_hp": "986 HP",
+                "engine_torque": "590 Nm",
+                "transmission": "8-Speed DCT",
+                "zero_to_100_kmh": "2.5s",
+                "max_speed_kmh": "340km/h",
+                "fuel": "Gasoline/Hybrid"
+            }
+        ]
+    }
+]

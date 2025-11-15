@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "Revero",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2019,
+                "body": "GT Sedan",
+                "engine": "1.5L Turbo I3 PHEV (BMW)",
+                "engine_displacement": "1499cc",
+                "engine_hp": "536 HP",
+                "engine_torque": "550 Nm",
+                "transmission": "1-Speed Direct Drive",
+                "zero_to_100_kmh": "4.5s",
+                "max_speed_kmh": "201km/h",
+                "fuel": "Gasoline/Hybrid"
+            }
+        ]
+    }
+]

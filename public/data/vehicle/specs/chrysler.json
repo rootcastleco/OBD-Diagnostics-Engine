@@ -1,0 +1,52 @@
+
+[
+    {
+        "model": "300",
+        "specs": [
+            {
+                "startYear": 2011,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "3.6L V6",
+                "engine_displacement": "3604cc",
+                "engine_hp": "292 HP",
+                "engine_torque": "260 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.3s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2011,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "5.7L V8 HEMI",
+                "engine_displacement": "5654cc",
+                "engine_hp": "363 HP",
+                "engine_torque": "394 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.3s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Pacifica",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "Minivan",
+                "engine": "3.6L V6",
+                "engine_displacement": "3604cc",
+                "engine_hp": "287 HP",
+                "engine_torque": "262 Nm",
+                "transmission": "9-Speed Automatic",
+                "zero_to_100_kmh": "7.3s",
+                "max_speed_kmh": "190km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

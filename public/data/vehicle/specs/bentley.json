@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Continental GT",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "Coupe",
+                "engine": "6.0L Twin-Turbo W12",
+                "engine_displacement": "5950cc",
+                "engine_hp": "626 HP",
+                "engine_torque": "664 Nm",
+                "transmission": "8-Speed DCT",
+                "zero_to_100_kmh": "3.7s",
+                "max_speed_kmh": "333km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Bentayga",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "4.0L Twin-Turbo V8",
+                "engine_displacement": "3996cc",
+                "engine_hp": "542 HP",
+                "engine_torque": "568 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "4.5s",
+                "max_speed_kmh": "290km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Flying Spur",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "6.0L Twin-Turbo W12",
+                "engine_displacement": "5950cc",
+                "engine_hp": "626 HP",
+                "engine_torque": "664 Nm",
+                "transmission": "8-Speed DCT",
+                "zero_to_100_kmh": "3.8s",
+                "max_speed_kmh": "333km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

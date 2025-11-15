@@ -1,4 +1,3 @@
-
 import { ModelProfile, SpecProfile } from '../types';
 
 // Cache for the datasets
@@ -25,10 +24,13 @@ const getSpecsForMake = async (make: string): Promise<ModelProfile[]> => {
     if (!specsCache[cacheKey]) {
         try {
             const response = await fetch(`/data/vehicle/specs/${make.toLowerCase().replace(' ', '-')}.json`);
-            if (!response.ok) throw new Error(`Spesifikasyonlar yüklenemedi: ${make}`);
-            specsCache[cacheKey] = await response.json();
+            if (!response.ok) {
+                 specsCache[cacheKey] = [];
+            } else {
+                 specsCache[cacheKey] = await response.json();
+            }
         } catch (e) {
-            console.error(e);
+            console.error(`Spesifikasyonlar yüklenemedi: ${make}`, e);
             specsCache[cacheKey] = [];
         }
     }

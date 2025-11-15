@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Lancer",
+        "specs": [
+            {
+                "startYear": 2008,
+                "endYear": 2015,
+                "body": "Evolution X",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1998cc",
+                "engine_hp": "291 HP",
+                "engine_torque": "300 Nm",
+                "transmission": "6-Speed TC-SST",
+                "zero_to_100_kmh": "4.9s",
+                "max_speed_kmh": "242km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Outlander",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2020,
+                "body": "SUV",
+                "engine": "2.4L I4",
+                "engine_displacement": "2360cc",
+                "engine_hp": "166 HP",
+                "engine_torque": "162 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "9.2s",
+                "max_speed_kmh": "198km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Pajero",
+        "specs": [
+            {
+                "startYear": 2006,
+                "endYear": 2021,
+                "body": "SUV",
+                "engine": "3.2L DI-D Diesel",
+                "engine_displacement": "3200cc",
+                "engine_hp": "190 HP",
+                "engine_torque": "441 Nm",
+                "transmission": "5-Speed Automatic",
+                "zero_to_100_kmh": "11.1s",
+                "max_speed_kmh": "185km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    }
+]

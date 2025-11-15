@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "D-MAX",
+        "specs": [
+            {
+                "startYear": 2012,
+                "endYear": 2019,
+                "body": "Pickup Truck",
+                "engine": "2.5L Twin-Turbo Diesel",
+                "engine_displacement": "2499cc",
+                "engine_hp": "163 HP",
+                "engine_torque": "400 Nm",
+                "transmission": "5-Speed Automatic",
+                "zero_to_100_kmh": "10.7s",
+                "max_speed_kmh": "180km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    },
+    {
+        "model": "Trooper",
+        "specs": [
+            {
+                "startYear": 1998,
+                "endYear": 2002,
+                "body": "SUV",
+                "engine": "3.5L V6",
+                "engine_displacement": "3494cc",
+                "engine_hp": "215 HP",
+                "engine_torque": "230 Nm",
+                "transmission": "4-Speed Automatic",
+                "zero_to_100_kmh": "10.0s",
+                "max_speed_kmh": "180km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

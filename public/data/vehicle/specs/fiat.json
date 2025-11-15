@@ -1,0 +1,70 @@
+
+[
+    {
+        "model": "500",
+        "specs": [
+            {
+                "startYear": 2007,
+                "endYear": 2019,
+                "body": "Hatchback",
+                "engine": "1.2L I4",
+                "engine_displacement": "1242cc",
+                "engine_hp": "69 HP",
+                "engine_torque": "102 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "12.9s",
+                "max_speed_kmh": "160km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Egea",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "1.3L Multijet",
+                "engine_displacement": "1248cc",
+                "engine_hp": "95 HP",
+                "engine_torque": "200 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "11.7s",
+                "max_speed_kmh": "183km/h",
+                "fuel": "Diesel"
+            },
+            {
+                "startYear": 2015,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "1.6L E-Torq",
+                "engine_displacement": "1598cc",
+                "engine_hp": "110 HP",
+                "engine_torque": "152 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "11.2s",
+                "max_speed_kmh": "192km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Punto",
+        "specs": [
+            {
+                "startYear": 2005,
+                "endYear": 2018,
+                "body": "Hatchback",
+                "engine": "1.4L Fire",
+                "engine_displacement": "1368cc",
+                "engine_hp": "77 HP",
+                "engine_torque": "115 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "13.2s",
+                "max_speed_kmh": "165km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

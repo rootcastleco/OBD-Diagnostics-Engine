@@ -1,0 +1,52 @@
+
+[
+    {
+        "model": "Challenger",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2023,
+                "body": "Coupe R/T",
+                "engine": "5.7L V8 HEMI",
+                "engine_displacement": "5654cc",
+                "engine_hp": "375 HP",
+                "engine_torque": "410 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "5.1s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2015,
+                "endYear": 2023,
+                "body": "SRT Hellcat",
+                "engine": "6.2L Supercharged V8",
+                "engine_displacement": "6166cc",
+                "engine_hp": "717 HP",
+                "engine_torque": "656 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "3.6s",
+                "max_speed_kmh": "320km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Charger",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2023,
+                "body": "Sedan Scat Pack",
+                "engine": "6.4L V8 HEMI",
+                "engine_displacement": "6417cc",
+                "engine_hp": "485 HP",
+                "engine_torque": "475 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "4.3s",
+                "max_speed_kmh": "281km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Prowler",
+        "specs": [
+            {
+                "startYear": 1997,
+                "endYear": 2002,
+                "body": "Roadster",
+                "engine": "3.5L V6",
+                "engine_displacement": "3518cc",
+                "engine_hp": "253 HP",
+                "engine_torque": "255 Nm",
+                "transmission": "4-Speed Autostick",
+                "zero_to_100_kmh": "5.9s",
+                "max_speed_kmh": "190km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Neon",
+        "specs": [
+            {
+                "startYear": 1995,
+                "endYear": 2001,
+                "body": "Sedan",
+                "engine": "2.0L I4",
+                "engine_displacement": "1996cc",
+                "engine_hp": "132 HP",
+                "engine_torque": "130 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "8.5s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

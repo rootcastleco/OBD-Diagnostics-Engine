@@ -18,6 +18,11 @@ const LiveValue: React.FC<{ label: string; value: string | number; unit?: string
 
 type MobileView = 'live' | 'config' | 'report';
 
+const generateLogoUrl = (make: string) => {
+    const domain = make.toLowerCase().replace(/ /g, '').replace(/-/g, '') + '.com';
+    return `https://logo.clearbit.com/${domain}`;
+};
+
 const App: React.FC = () => {
   // --- STATE MANAGEMENT ---
   const [selections, setSelections] = useState({ make: '', model: '', year: '', spec: '' });
@@ -36,6 +41,7 @@ const App: React.FC = () => {
   const [liveData, setLiveData] = useState<LiveData>({ rpm: 'N/A', speed: 'N/A', maf: 'N/A', ltft: 'N/A', stft: 'N/A', ect: 'N/A', dtc: [] });
   const [rawLog, setRawLog] = useState<string[]>(["Rootcastle Pilot AI'ya hoş geldiniz. Başlamak için bir araca bağlanın."]);
   const [activeView, setActiveView] = useState<MobileView>('config');
+  const [logoError, setLogoError] = useState<boolean>(false);
 
 
   const elmServiceRef = useRef<ELM327Service | null>(null);
@@ -50,27 +56,39 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
     if (selections.make) {
-      getModelsForMake(selections.make).then(models => setUiOptions(prev => ({...prev, models, years: [], specs: []})));
+      getModelsForMake(selections.make).then(models => {
+        if(isMounted) setUiOptions(prev => ({...prev, models, years: [], specs: []}))
+      });
     } else {
       setUiOptions(prev => ({...prev, models: [], years: [], specs: []}));
     }
+    return () => { isMounted = false; };
   }, [selections.make]);
 
   useEffect(() => {
-    if (selections.make && selections.model) {
-      getYearsForModel(selections.make, selections.model).then(years => setUiOptions(prev => ({...prev, years, specs: []})));
-    } else {
-      setUiOptions(prev => ({...prev, years: [], specs: []}));
-    }
+      let isMounted = true;
+      if (selections.make && selections.model) {
+        getYearsForModel(selections.make, selections.model).then(years => {
+          if (isMounted) setUiOptions(prev => ({...prev, years, specs: []}));
+        });
+      } else {
+        setUiOptions(prev => ({...prev, years: [], specs: []}));
+      }
+      return () => { isMounted = false; };
   }, [selections.make, selections.model]);
 
   useEffect(() => {
+    let isMounted = true;
     if (selections.make && selections.model && selections.year) {
-      getSpecsForYear(selections.make, selections.model, parseInt(selections.year, 10)).then(specs => setUiOptions(prev => ({...prev, specs})));
+      getSpecsForYear(selections.make, selections.model, parseInt(selections.year, 10)).then(specs => {
+          if (isMounted) setUiOptions(prev => ({...prev, specs}));
+      });
     } else {
       setUiOptions(prev => ({...prev, specs: []}));
     }
+    return () => { isMounted = false; };
   }, [selections.make, selections.model, selections.year]);
 
   useEffect(() => {
@@ -102,16 +120,19 @@ const App: React.FC = () => {
                     boot_liters: 'N/A', // Not in new data
                     fuel_tank_liters: 'N/A' // Not in new data
                   },
-                  image_url: '' // Not in new data
+                  image_url: generateLogoUrl(selections.make)
               };
               if (vin.trim().length >= 17) {
                 profile.vin = vin;
               }
               setVehicleProfile(profile);
+              setLogoError(false);
           } catch(e) {
               console.error("Failed to parse selected spec:", e);
               setVehicleProfile(null);
           }
+      } else {
+        setVehicleProfile(null);
       }
   }, [selections.spec, selections.make, selections.model, selections.year, vin]);
 
@@ -419,9 +440,26 @@ const App: React.FC = () => {
 
         {vehicleProfile && vehicleProfile.engine && (
             <div className='mt-6 border-t border-gray-700 pt-4'>
-                <h3 className="text-lg font-semibold mb-3 text-center">{vehicleProfile.make} {vehicleProfile.model}</h3>
-                <p className="text-sm text-gray-400 text-center mb-3">{vehicleProfile.year} - {vehicleProfile.trim}</p>
-                {vehicleProfile.image_url && <img src={vehicleProfile.image_url} alt={`${vehicleProfile.make} ${vehicleProfile.model}`} className="rounded-lg mb-4 w-full h-auto object-cover"/>}
+                <div className="flex items-center justify-center space-x-4 mb-4">
+                    {vehicleProfile.image_url && !logoError ? (
+                        <img 
+                            src={vehicleProfile.image_url} 
+                            alt={`${vehicleProfile.make} logo`} 
+                            className="w-16 h-16 p-1 bg-white rounded-full object-contain shrink-0"
+                            onError={() => setLogoError(true)}
+                        />
+                    ) : (
+                       vehicleProfile.make && (
+                         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shrink-0">
+                            <span className="text-2xl font-bold text-brand-dark">{vehicleProfile.make.substring(0, 2).toUpperCase()}</span>
+                         </div>
+                       )
+                    )}
+                    <div className="text-left">
+                        <h3 className="text-xl font-semibold">{vehicleProfile.make} {vehicleProfile.model}</h3>
+                        <p className="text-sm text-gray-400">{vehicleProfile.year} - {vehicleProfile.trim}</p>
+                    </div>
+                </div>
                 <div className="space-y-2 text-sm">
                     <LiveValue label="Motor" value={`${vehicleProfile.engine.volume_cc}cc ${vehicleProfile.engine.power_hp}hp`} />
                     <LiveValue label="Aspirasyon" value={vehicleProfile.engine.aspiration} />

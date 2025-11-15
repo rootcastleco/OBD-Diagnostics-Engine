@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "FR-S",
+        "specs": [
+            {
+                "startYear": 2013,
+                "endYear": 2016,
+                "body": "Coupe",
+                "engine": "2.0L Flat-4",
+                "engine_displacement": "1998cc",
+                "engine_hp": "200 HP",
+                "engine_torque": "151 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "6.5s",
+                "max_speed_kmh": "225km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "tC",
+        "specs": [
+            {
+                "startYear": 2011,
+                "endYear": 2016,
+                "body": "Coupe",
+                "engine": "2.5L I4",
+                "engine_displacement": "2494cc",
+                "engine_hp": "179 HP",
+                "engine_torque": "172 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "7.3s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

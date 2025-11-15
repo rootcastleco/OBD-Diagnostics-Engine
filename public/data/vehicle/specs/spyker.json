@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "C8",
+        "specs": [
+            {
+                "startYear": 2000,
+                "endYear": 2018,
+                "body": "Aileron",
+                "engine": "4.2L V8 (Audi)",
+                "engine_displacement": "4163cc",
+                "engine_hp": "400 HP",
+                "engine_torque": "354 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "4.5s",
+                "max_speed_kmh": "300km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

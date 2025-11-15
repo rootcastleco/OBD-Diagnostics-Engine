@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "720S",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2022,
+                "body": "Coupe",
+                "engine": "4.0L Twin-Turbo V8",
+                "engine_displacement": "3994cc",
+                "engine_hp": "710 HP",
+                "engine_torque": "568 Nm",
+                "transmission": "7-Speed DCT",
+                "zero_to_100_kmh": "2.9s",
+                "max_speed_kmh": "341km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "570S",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2021,
+                "body": "Coupe",
+                "engine": "3.8L Twin-Turbo V8",
+                "engine_displacement": "3799cc",
+                "engine_hp": "562 HP",
+                "engine_torque": "443 Nm",
+                "transmission": "7-Speed DCT",
+                "zero_to_100_kmh": "3.2s",
+                "max_speed_kmh": "328km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

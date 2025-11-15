@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "GV",
+        "specs": [
+            {
+                "startYear": 1985,
+                "endYear": 1992,
+                "body": "Hatchback",
+                "engine": "1.1L I4",
+                "engine_displacement": "1116cc",
+                "engine_hp": "55 HP",
+                "engine_torque": "52 Nm",
+                "transmission": "4-Speed Manual",
+                "zero_to_100_kmh": "16.0s",
+                "max_speed_kmh": "145km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

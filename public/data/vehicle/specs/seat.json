@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Ibiza",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "Hatchback",
+                "engine": "1.0L TSI",
+                "engine_displacement": "999cc",
+                "engine_hp": "115 HP",
+                "engine_torque": "200 Nm",
+                "transmission": "7-Speed DSG",
+                "zero_to_100_kmh": "9.5s",
+                "max_speed_kmh": "193km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Leon",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Hatchback",
+                "engine": "1.5L TSI",
+                "engine_displacement": "1498cc",
+                "engine_hp": "150 HP",
+                "engine_torque": "250 Nm",
+                "transmission": "7-Speed DSG",
+                "zero_to_100_kmh": "8.4s",
+                "max_speed_kmh": "221km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

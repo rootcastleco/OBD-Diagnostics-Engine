@@ -1,0 +1,70 @@
+
+[
+    {
+        "model": "C3",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2022,
+                "body": "Hatchback",
+                "engine": "1.2L PureTech",
+                "engine_displacement": "1199cc",
+                "engine_hp": "110 HP",
+                "engine_torque": "205 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "10.9s",
+                "max_speed_kmh": "194km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2016,
+                "endYear": 2022,
+                "body": "Hatchback",
+                "engine": "1.5L BlueHDi",
+                "engine_displacement": "1499cc",
+                "engine_hp": "100 HP",
+                "engine_torque": "250 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "11.3s",
+                "max_speed_kmh": "188km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    },
+    {
+        "model": "C4",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Hatchback",
+                "engine": "1.2L PureTech",
+                "engine_displacement": "1199cc",
+                "engine_hp": "130 HP",
+                "engine_torque": "230 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "10.2s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "C5 Aircross",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "1.6L PureTech",
+                "engine_displacement": "1598cc",
+                "engine_hp": "180 HP",
+                "engine_torque": "250 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "8.2s",
+                "max_speed_kmh": "219km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

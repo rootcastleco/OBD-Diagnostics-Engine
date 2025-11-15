@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "57",
+        "specs": [
+            {
+                "startYear": 2002,
+                "endYear": 2012,
+                "body": "Sedan",
+                "engine": "5.5L Twin-Turbo V12",
+                "engine_displacement": "5513cc",
+                "engine_hp": "543 HP",
+                "engine_torque": "664 Nm",
+                "transmission": "5-Speed Automatic",
+                "zero_to_100_kmh": "5.2s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "62",
+        "specs": [
+            {
+                "startYear": 2002,
+                "endYear": 2012,
+                "body": "Sedan",
+                "engine": "6.0L Twin-Turbo V12",
+                "engine_displacement": "5980cc",
+                "engine_hp": "604 HP",
+                "engine_torque": "738 Nm",
+                "transmission": "5-Speed Automatic",
+                "zero_to_100_kmh": "5.0s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

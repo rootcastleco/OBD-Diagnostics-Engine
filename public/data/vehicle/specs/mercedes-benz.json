@@ -1,0 +1,75 @@
+
+[
+    {
+        "model": "C-Class",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2021,
+                "body": "C 300 Sedan (W205)",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1991cc",
+                "engine_hp": "255 HP",
+                "engine_torque": "273 Nm",
+                "transmission": "9-Speed Automatic",
+                "zero_to_100_kmh": "5.9s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "E-Class",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "E 300 Sedan (W213)",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1991cc",
+                "engine_hp": "241 HP",
+                "engine_torque": "273 Nm",
+                "transmission": "9-Speed Automatic",
+                "zero_to_100_kmh": "6.2s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "S-Class",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2020,
+                "body": "S 560 Sedan (W222)",
+                "engine": "4.0L Twin-Turbo V8",
+                "engine_displacement": "3982cc",
+                "engine_hp": "463 HP",
+                "engine_torque": "516 Nm",
+                "transmission": "9-Speed Automatic",
+                "zero_to_100_kmh": "4.6s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "G-Class",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "G 550 SUV (W463)",
+                "engine": "4.0L Twin-Turbo V8",
+                "engine_displacement": "3982cc",
+                "engine_hp": "416 HP",
+                "engine_torque": "450 Nm",
+                "transmission": "9-Speed Automatic",
+                "zero_to_100_kmh": "5.6s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

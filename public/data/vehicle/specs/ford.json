@@ -1,0 +1,75 @@
+
+[
+    {
+        "model": "F-150",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2020,
+                "body": "SuperCrew",
+                "engine": "3.5L EcoBoost V6",
+                "engine_displacement": "3496cc",
+                "engine_hp": "375 HP",
+                "engine_torque": "470 Nm",
+                "transmission": "10-Speed Automatic",
+                "zero_to_100_kmh": "5.7s",
+                "max_speed_kmh": "170km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Mustang",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "GT Coupe",
+                "engine": "5.0L V8",
+                "engine_displacement": "4951cc",
+                "engine_hp": "460 HP",
+                "engine_torque": "420 Nm",
+                "transmission": "10-Speed Automatic",
+                "zero_to_100_kmh": "3.9s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Focus",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2018,
+                "body": "Hatchback",
+                "engine": "1.0L EcoBoost I3",
+                "engine_displacement": "999cc",
+                "engine_hp": "123 HP",
+                "engine_torque": "125 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "10.5s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Explorer",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "2.3L EcoBoost I4",
+                "engine_displacement": "2261cc",
+                "engine_hp": "300 HP",
+                "engine_torque": "310 Nm",
+                "transmission": "10-Speed Automatic",
+                "zero_to_100_kmh": "6.8s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

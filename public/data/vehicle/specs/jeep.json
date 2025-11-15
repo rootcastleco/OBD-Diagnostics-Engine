@@ -1,0 +1,52 @@
+
+[
+    {
+        "model": "Wrangler",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "Unlimited Rubicon (JL)",
+                "engine": "3.6L V6",
+                "engine_displacement": "3604cc",
+                "engine_hp": "285 HP",
+                "engine_torque": "260 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "7.0s",
+                "max_speed_kmh": "180km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Grand Cherokee",
+        "specs": [
+            {
+                "startYear": 2011,
+                "endYear": 2021,
+                "body": "SUV",
+                "engine": "5.7L V8 HEMI",
+                "engine_displacement": "5654cc",
+                "engine_hp": "360 HP",
+                "engine_torque": "390 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.8s",
+                "max_speed_kmh": "225km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2018,
+                "endYear": 2021,
+                "body": "Trackhawk",
+                "engine": "6.2L Supercharged V8",
+                "engine_displacement": "6166cc",
+                "engine_hp": "707 HP",
+                "engine_torque": "645 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "3.5s",
+                "max_speed_kmh": "290km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

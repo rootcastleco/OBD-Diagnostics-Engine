@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Cutlass",
+        "specs": [
+            {
+                "startYear": 1997,
+                "endYear": 1999,
+                "body": "Sedan",
+                "engine": "3.1L V6",
+                "engine_displacement": "3136cc",
+                "engine_hp": "150 HP",
+                "engine_torque": "185 Nm",
+                "transmission": "4-Speed Automatic",
+                "zero_to_100_kmh": "9.5s",
+                "max_speed_kmh": "180km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Alero",
+        "specs": [
+            {
+                "startYear": 1999,
+                "endYear": 2004,
+                "body": "Sedan",
+                "engine": "3.4L V6",
+                "engine_displacement": "3350cc",
+                "engine_hp": "170 HP",
+                "engine_torque": "200 Nm",
+                "transmission": "4-Speed Automatic",
+                "zero_to_100_kmh": "8.9s",
+                "max_speed_kmh": "190km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

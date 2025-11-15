@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Elantra",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2020,
+                "body": "Sedan",
+                "engine": "1.6L Gamma GDi",
+                "engine_displacement": "1591cc",
+                "engine_hp": "128 HP",
+                "engine_torque": "155 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "11.6s",
+                "max_speed_kmh": "195km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Sonata",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2019,
+                "body": "Sedan",
+                "engine": "2.0L Theta II Turbo",
+                "engine_displacement": "1998cc",
+                "engine_hp": "245 HP",
+                "engine_torque": "260 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "7.0s",
+                "max_speed_kmh": "240km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Tucson",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2021,
+                "body": "SUV",
+                "engine": "1.6L T-GDI",
+                "engine_displacement": "1591cc",
+                "engine_hp": "177 HP",
+                "engine_torque": "265 Nm",
+                "transmission": "7-Speed DCT",
+                "zero_to_100_kmh": "9.1s",
+                "max_speed_kmh": "201km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

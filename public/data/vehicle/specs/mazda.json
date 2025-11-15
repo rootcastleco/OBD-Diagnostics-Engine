@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Mazda3",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "Hatchback",
+                "engine": "2.5L Skyactiv-G I4",
+                "engine_displacement": "2488cc",
+                "engine_hp": "186 HP",
+                "engine_torque": "186 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "7.9s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Mazda6",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2021,
+                "body": "Sedan",
+                "engine": "2.5L Skyactiv-G Turbo I4",
+                "engine_displacement": "2488cc",
+                "engine_hp": "250 HP",
+                "engine_torque": "310 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "6.4s",
+                "max_speed_kmh": "240km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "CX-5",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "2.5L Skyactiv-G I4",
+                "engine_displacement": "2488cc",
+                "engine_hp": "187 HP",
+                "engine_torque": "186 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "8.6s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

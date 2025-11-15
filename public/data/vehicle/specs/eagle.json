@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "Talon",
+        "specs": [
+            {
+                "startYear": 1995,
+                "endYear": 1998,
+                "body": "Coupe TSi AWD",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1997cc",
+                "engine_hp": "210 HP",
+                "engine_torque": "214 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "6.6s",
+                "max_speed_kmh": "230km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

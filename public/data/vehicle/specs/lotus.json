@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Elise",
+        "specs": [
+            {
+                "startYear": 2011,
+                "endYear": 2021,
+                "body": "Sport 220",
+                "engine": "1.8L Supercharged I4",
+                "engine_displacement": "1798cc",
+                "engine_hp": "217 HP",
+                "engine_torque": "184 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "4.2s",
+                "max_speed_kmh": "233km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Exige",
+        "specs": [
+            {
+                "startYear": 2012,
+                "endYear": 2021,
+                "body": "Sport 410",
+                "engine": "3.5L Supercharged V6",
+                "engine_displacement": "3456cc",
+                "engine_hp": "410 HP",
+                "engine_torque": "310 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "3.3s",
+                "max_speed_kmh": "290km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

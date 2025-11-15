@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "GTO",
+        "specs": [
+            {
+                "startYear": 2004,
+                "endYear": 2006,
+                "body": "Coupe",
+                "engine": "6.0L V8",
+                "engine_displacement": "5967cc",
+                "engine_hp": "400 HP",
+                "engine_torque": "400 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "4.7s",
+                "max_speed_kmh": "257km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Firebird",
+        "specs": [
+            {
+                "startYear": 1993,
+                "endYear": 2002,
+                "body": "Trans Am",
+                "engine": "5.7L V8 (LS1)",
+                "engine_displacement": "5665cc",
+                "engine_hp": "310 HP",
+                "engine_torque": "340 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "5.2s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

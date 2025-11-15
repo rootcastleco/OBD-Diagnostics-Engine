@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Veyron",
+        "specs": [
+            {
+                "startYear": 2005,
+                "endYear": 2015,
+                "body": "Coupe (16.4)",
+                "engine": "8.0L Quad-Turbo W16",
+                "engine_displacement": "7993cc",
+                "engine_hp": "1001 HP",
+                "engine_torque": "922 Nm",
+                "transmission": "7-Speed DSG",
+                "zero_to_100_kmh": "2.5s",
+                "max_speed_kmh": "407km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Chiron",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2022,
+                "body": "Coupe",
+                "engine": "8.0L Quad-Turbo W16",
+                "engine_displacement": "7993cc",
+                "engine_hp": "1479 HP",
+                "engine_torque": "1180 Nm",
+                "transmission": "7-Speed DSG",
+                "zero_to_100_kmh": "2.4s",
+                "max_speed_kmh": "420km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

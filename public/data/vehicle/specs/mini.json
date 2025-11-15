@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Cooper",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2023,
+                "body": "Hardtop 2 Door S",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1998cc",
+                "engine_hp": "189 HP",
+                "engine_torque": "207 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "6.4s",
+                "max_speed_kmh": "235km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Countryman",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "Cooper S ALL4",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1998cc",
+                "engine_hp": "189 HP",
+                "engine_torque": "207 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "7.0s",
+                "max_speed_kmh": "222km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

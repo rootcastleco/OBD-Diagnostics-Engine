@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Golf",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2021,
+                "body": "GTI (Mk7)",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1984cc",
+                "engine_hp": "228 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "7-Speed DSG",
+                "zero_to_100_kmh": "5.9s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Passat",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2022,
+                "body": "Sedan (B8)",
+                "engine": "2.0L TDI Diesel",
+                "engine_displacement": "1968cc",
+                "engine_hp": "190 HP",
+                "engine_torque": "400 Nm",
+                "transmission": "6-Speed DSG",
+                "zero_to_100_kmh": "7.9s",
+                "max_speed_kmh": "233km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    },
+    {
+        "model": "Tiguan",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1984cc",
+                "engine_hp": "184 HP",
+                "engine_torque": "221 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "8.2s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

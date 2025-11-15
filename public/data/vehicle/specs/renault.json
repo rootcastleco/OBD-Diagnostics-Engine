@@ -1,0 +1,70 @@
+
+[
+    {
+        "model": "Clio",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "Hatchback",
+                "engine": "1.0L TCe",
+                "engine_displacement": "999cc",
+                "engine_hp": "100 HP",
+                "engine_torque": "160 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "11.8s",
+                "max_speed_kmh": "187km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Megane",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2022,
+                "body": "Hatchback",
+                "engine": "1.3L TCe",
+                "engine_displacement": "1332cc",
+                "engine_hp": "140 HP",
+                "engine_torque": "240 Nm",
+                "transmission": "7-Speed EDC",
+                "zero_to_100_kmh": "9.2s",
+                "max_speed_kmh": "205km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2016,
+                "endYear": 2022,
+                "body": "Sedan",
+                "engine": "1.5L dCi",
+                "engine_displacement": "1461cc",
+                "engine_hp": "115 HP",
+                "engine_torque": "260 Nm",
+                "transmission": "7-Speed EDC",
+                "zero_to_100_kmh": "11.1s",
+                "max_speed_kmh": "190km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    },
+    {
+        "model": "Captur",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "1.3L TCe",
+                "engine_displacement": "1333cc",
+                "engine_hp": "130 HP",
+                "engine_torque": "240 Nm",
+                "transmission": "7-Speed EDC",
+                "zero_to_100_kmh": "9.6s",
+                "max_speed_kmh": "195km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

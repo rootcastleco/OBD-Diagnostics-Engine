@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Q50",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "3.0L Twin-Turbo V6",
+                "engine_displacement": "2997cc",
+                "engine_hp": "300 HP",
+                "engine_torque": "295 Nm",
+                "transmission": "7-Speed Automatic",
+                "zero_to_100_kmh": "5.4s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "QX60",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2020,
+                "body": "SUV",
+                "engine": "3.5L V6",
+                "engine_displacement": "3498cc",
+                "engine_hp": "295 HP",
+                "engine_torque": "270 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "7.1s",
+                "max_speed_kmh": "190km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

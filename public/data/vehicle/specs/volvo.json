@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "S60",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "T5 Sedan",
+                "engine": "2.0L Turbo I4",
+                "engine_displacement": "1969cc",
+                "engine_hp": "250 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.3s",
+                "max_speed_kmh": "240km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "XC90",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2023,
+                "body": "T6 SUV",
+                "engine": "2.0L Supercharged & Turbo I4",
+                "engine_displacement": "1969cc",
+                "engine_hp": "316 HP",
+                "engine_torque": "295 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.1s",
+                "max_speed_kmh": "230km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

@@ -1,0 +1,70 @@
+
+[
+    {
+        "model": "Regal",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2020,
+                "body": "Sportback",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1998cc",
+                "engine_hp": "250 HP",
+                "engine_torque": "260 Nm",
+                "transmission": "9-Speed Automatic",
+                "zero_to_100_kmh": "6.2s",
+                "max_speed_kmh": "241km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2018,
+                "endYear": 2020,
+                "body": "TourX",
+                "engine": "2.0L Turbo",
+                "engine_displacement": "1998cc",
+                "engine_hp": "250 HP",
+                "engine_torque": "295 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.4s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Enclave",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2022,
+                "body": "SUV",
+                "engine": "3.6L V6",
+                "engine_displacement": "3564cc",
+                "engine_hp": "310 HP",
+                "engine_torque": "266 Nm",
+                "transmission": "9-Speed Automatic",
+                "zero_to_100_kmh": "6.5s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Encore",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2022,
+                "body": "SUV",
+                "engine": "1.4L Turbo",
+                "engine_displacement": "1364cc",
+                "engine_hp": "153 HP",
+                "engine_torque": "177 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "8.4s",
+                "max_speed_kmh": "196km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

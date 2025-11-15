@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "Viper",
+        "specs": [
+            {
+                "startYear": 2013,
+                "endYear": 2017,
+                "body": "GTS Coupe",
+                "engine": "8.4L V10",
+                "engine_displacement": "8390cc",
+                "engine_hp": "640 HP",
+                "engine_torque": "600 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "3.3s",
+                "max_speed_kmh": "332km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

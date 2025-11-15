@@ -1,0 +1,70 @@
+
+[
+    {
+        "model": "911",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Carrera S (992)",
+                "engine": "3.0L Twin-Turbo Flat-6",
+                "engine_displacement": "2981cc",
+                "engine_hp": "443 HP",
+                "engine_torque": "390 Nm",
+                "transmission": "8-Speed PDK",
+                "zero_to_100_kmh": "3.5s",
+                "max_speed_kmh": "308km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Turbo S (992)",
+                "engine": "3.8L Twin-Turbo Flat-6",
+                "engine_displacement": "3745cc",
+                "engine_hp": "640 HP",
+                "engine_torque": "590 Nm",
+                "transmission": "8-Speed PDK",
+                "zero_to_100_kmh": "2.6s",
+                "max_speed_kmh": "330km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Cayenne",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "3.0L Turbo V6",
+                "engine_displacement": "2995cc",
+                "engine_hp": "335 HP",
+                "engine_torque": "332 Nm",
+                "transmission": "8-Speed Tiptronic S",
+                "zero_to_100_kmh": "5.9s",
+                "max_speed_kmh": "245km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Panamera",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2023,
+                "body": "4S",
+                "engine": "2.9L Twin-Turbo V6",
+                "engine_displacement": "2894cc",
+                "engine_hp": "440 HP",
+                "engine_torque": "405 Nm",
+                "transmission": "8-Speed PDK",
+                "zero_to_100_kmh": "4.2s",
+                "max_speed_kmh": "289km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

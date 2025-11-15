@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "XR4Ti",
+        "specs": [
+            {
+                "startYear": 1985,
+                "endYear": 1989,
+                "body": "Hatchback",
+                "engine": "2.3L Turbo I4",
+                "engine_displacement": "2301cc",
+                "engine_hp": "175 HP",
+                "engine_torque": "200 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "7.8s",
+                "max_speed_kmh": "217km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

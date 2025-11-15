@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "827",
+        "specs": [
+            {
+                "startYear": 1989,
+                "endYear": 1991,
+                "body": "Sedan",
+                "engine": "2.7L V6 (Honda)",
+                "engine_displacement": "2675cc",
+                "engine_hp": "160 HP",
+                "engine_torque": "162 Nm",
+                "transmission": "4-Speed Automatic",
+                "zero_to_100_kmh": "9.0s",
+                "max_speed_kmh": "205km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

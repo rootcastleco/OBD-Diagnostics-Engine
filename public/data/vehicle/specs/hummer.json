@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "H2",
+        "specs": [
+            {
+                "startYear": 2003,
+                "endYear": 2009,
+                "body": "SUV",
+                "engine": "6.2L V8",
+                "engine_displacement": "6162cc",
+                "engine_hp": "393 HP",
+                "engine_torque": "415 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "9.1s",
+                "max_speed_kmh": "160km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "H3",
+        "specs": [
+            {
+                "startYear": 2006,
+                "endYear": 2010,
+                "body": "SUV",
+                "engine": "3.7L I5",
+                "engine_displacement": "3654cc",
+                "engine_hp": "239 HP",
+                "engine_torque": "241 Nm",
+                "transmission": "4-Speed Automatic",
+                "zero_to_100_kmh": "9.7s",
+                "max_speed_kmh": "160km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

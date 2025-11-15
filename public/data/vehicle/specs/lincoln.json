@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Navigator",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "3.5L Twin-Turbo V6",
+                "engine_displacement": "3496cc",
+                "engine_hp": "450 HP",
+                "engine_torque": "510 Nm",
+                "transmission": "10-Speed Automatic",
+                "zero_to_100_kmh": "5.5s",
+                "max_speed_kmh": "185km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Aviator",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "3.0L Twin-Turbo V6",
+                "engine_displacement": "2956cc",
+                "engine_hp": "400 HP",
+                "engine_torque": "415 Nm",
+                "transmission": "10-Speed Automatic",
+                "zero_to_100_kmh": "5.4s",
+                "max_speed_kmh": "230km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

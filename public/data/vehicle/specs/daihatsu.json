@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "Terios",
+        "specs": [
+            {
+                "startYear": 2006,
+                "endYear": 2017,
+                "body": "SUV",
+                "engine": "1.5L I4",
+                "engine_displacement": "1495cc",
+                "engine_hp": "105 HP",
+                "engine_torque": "140 Nm",
+                "transmission": "4-Speed Automatic",
+                "zero_to_100_kmh": "12.4s",
+                "max_speed_kmh": "165km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Sirion",
+        "specs": [
+            {
+                "startYear": 2004,
+                "endYear": 2010,
+                "body": "Hatchback",
+                "engine": "1.3L I4",
+                "engine_displacement": "1298cc",
+                "engine_hp": "87 HP",
+                "engine_torque": "120 Nm",
+                "transmission": "5-Speed Manual",
+                "zero_to_100_kmh": "11.3s",
+                "max_speed_kmh": "170km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

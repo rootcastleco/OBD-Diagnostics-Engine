@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "Karma",
+        "specs": [
+            {
+                "startYear": 2011,
+                "endYear": 2012,
+                "body": "Sedan",
+                "engine": "2.0L Turbo I4 PHEV",
+                "engine_displacement": "1998cc",
+                "engine_hp": "403 HP",
+                "engine_torque": "960 Nm",
+                "transmission": "1-Speed Direct Drive",
+                "zero_to_100_kmh": "6.3s",
+                "max_speed_kmh": "201km/h",
+                "fuel": "Gasoline/Hybrid"
+            }
+        ]
+    }
+]

@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "IS",
+        "specs": [
+            {
+                "startYear": 2014,
+                "endYear": 2020,
+                "body": "IS 350 Sedan",
+                "engine": "3.5L V6",
+                "engine_displacement": "3456cc",
+                "engine_hp": "306 HP",
+                "engine_torque": "277 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.6s",
+                "max_speed_kmh": "230km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "ES",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "ES 350 Sedan",
+                "engine": "3.5L V6",
+                "engine_displacement": "3456cc",
+                "engine_hp": "302 HP",
+                "engine_torque": "267 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.6s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "RX",
+        "specs": [
+            {
+                "startYear": 2016,
+                "endYear": 2022,
+                "body": "RX 350 SUV",
+                "engine": "3.5L V6",
+                "engine_displacement": "3456cc",
+                "engine_hp": "295 HP",
+                "engine_torque": "268 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "7.7s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

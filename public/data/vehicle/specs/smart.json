@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "Fortwo",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2019,
+                "body": "Coupe",
+                "engine": "0.9L Turbo I3",
+                "engine_displacement": "898cc",
+                "engine_hp": "89 HP",
+                "engine_torque": "100 Nm",
+                "transmission": "6-Speed DCT",
+                "zero_to_100_kmh": "10.4s",
+                "max_speed_kmh": "155km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

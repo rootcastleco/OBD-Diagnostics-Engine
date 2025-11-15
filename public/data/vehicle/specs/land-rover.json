@@ -1,0 +1,70 @@
+
+[
+    {
+        "model": "Range Rover",
+        "specs": [
+            {
+                "startYear": 2013,
+                "endYear": 2021,
+                "body": "HSE",
+                "engine": "3.0L Supercharged V6",
+                "engine_displacement": "2995cc",
+                "engine_hp": "340 HP",
+                "engine_torque": "332 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "7.1s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            },
+            {
+                "startYear": 2013,
+                "endYear": 2021,
+                "body": "SVAutobiography",
+                "engine": "5.0L Supercharged V8",
+                "engine_displacement": "5000cc",
+                "engine_hp": "557 HP",
+                "engine_torque": "516 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.1s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Defender",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "110",
+                "engine": "3.0L Turbo I6 MHEV",
+                "engine_displacement": "2996cc",
+                "engine_hp": "395 HP",
+                "engine_torque": "406 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.8s",
+                "max_speed_kmh": "191km/h",
+                "fuel": "Gasoline/Hybrid"
+            }
+        ]
+    },
+    {
+        "model": "Discovery",
+        "specs": [
+            {
+                "startYear": 2017,
+                "endYear": 2020,
+                "body": "SUV",
+                "engine": "3.0L Supercharged V6",
+                "engine_displacement": "2995cc",
+                "engine_hp": "340 HP",
+                "engine_torque": "332 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "6.9s",
+                "max_speed_kmh": "209km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

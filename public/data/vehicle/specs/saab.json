@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "9-3",
+        "specs": [
+            {
+                "startYear": 2003,
+                "endYear": 2011,
+                "body": "Aero Sedan",
+                "engine": "2.8L Turbo V6",
+                "engine_displacement": "2792cc",
+                "engine_hp": "250 HP",
+                "engine_torque": "258 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "6.9s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "9-5",
+        "specs": [
+            {
+                "startYear": 2010,
+                "endYear": 2012,
+                "body": "Aero Sedan",
+                "engine": "2.8L Turbo V6",
+                "engine_displacement": "2792cc",
+                "engine_hp": "300 HP",
+                "engine_torque": "295 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "6.9s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

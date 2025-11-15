@@ -1,0 +1,57 @@
+
+[
+    {
+        "model": "Impreza",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2021,
+                "body": "WRX STI",
+                "engine": "2.5L Turbo Flat-4",
+                "engine_displacement": "2457cc",
+                "engine_hp": "305 HP",
+                "engine_torque": "290 Nm",
+                "transmission": "6-Speed Manual",
+                "zero_to_100_kmh": "5.1s",
+                "max_speed_kmh": "250km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Outback",
+        "specs": [
+            {
+                "startYear": 2020,
+                "endYear": 2023,
+                "body": "Wagon",
+                "engine": "2.4L Turbo Flat-4",
+                "engine_displacement": "2387cc",
+                "engine_hp": "260 HP",
+                "engine_torque": "277 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "6.1s",
+                "max_speed_kmh": "210km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Forester",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "2.5L Flat-4",
+                "engine_displacement": "2498cc",
+                "engine_hp": "182 HP",
+                "engine_torque": "176 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "8.5s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    }
+]

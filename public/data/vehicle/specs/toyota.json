@@ -1,0 +1,75 @@
+
+[
+    {
+        "model": "Corolla",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "1.8L 2ZR-FAE I4",
+                "engine_displacement": "1798cc",
+                "engine_hp": "139 HP",
+                "engine_torque": "126 Nm",
+                "transmission": "CVT",
+                "zero_to_100_kmh": "10.2s",
+                "max_speed_kmh": "190km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Camry",
+        "specs": [
+            {
+                "startYear": 2018,
+                "endYear": 2023,
+                "body": "Sedan",
+                "engine": "3.5L V6",
+                "engine_displacement": "3456cc",
+                "engine_hp": "301 HP",
+                "engine_torque": "267 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "5.8s",
+                "max_speed_kmh": "220km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "RAV4",
+        "specs": [
+            {
+                "startYear": 2019,
+                "endYear": 2023,
+                "body": "SUV",
+                "engine": "2.5L I4",
+                "engine_displacement": "2487cc",
+                "engine_hp": "203 HP",
+                "engine_torque": "184 Nm",
+                "transmission": "8-Speed Automatic",
+                "zero_to_100_kmh": "8.2s",
+                "max_speed_kmh": "200km/h",
+                "fuel": "Gasoline"
+            }
+        ]
+    },
+    {
+        "model": "Hilux",
+        "specs": [
+            {
+                "startYear": 2015,
+                "endYear": 2023,
+                "body": "Double Cab",
+                "engine": "2.8L Diesel",
+                "engine_displacement": "2755cc",
+                "engine_hp": "201 HP",
+                "engine_torque": "500 Nm",
+                "transmission": "6-Speed Automatic",
+                "zero_to_100_kmh": "10.7s",
+                "max_speed_kmh": "175km/h",
+                "fuel": "Diesel"
+            }
+        ]
+    }
+]
