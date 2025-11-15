@@ -29,12 +29,14 @@ const App: React.FC = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [liveData, setLiveData] = useState<LiveData>({ rpm: 'N/A', speed: 'N/A', maf: 'N/A', ltft: 'N/A', stft: 'N/A', ect: 'N/A', dtc: [] });
-  const [rawLog, setRawLog] = useState<string[]>(['Welcome to Rootcastle Pilot AI. Connect to a vehicle to begin.']);
+  const [rawLog, setRawLog] = useState<string[]>(["Rootcastle Pilot AI'ya hoş geldiniz. Başlamak için bir araca bağlanın."]);
 
   const elmServiceRef = useRef<ELM327Service | null>(null);
   const liveIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const vinBufferRef = useRef<Record<string, string>>({});
+  const dtcCheckCounterRef = useRef(0);
+
 
   // --- DATA FETCHING & LOGIC ---
   const log = useCallback((message: string) => {
@@ -132,7 +134,7 @@ const App: React.FC = () => {
       const vinPart = cleanData.substring(6);
       
       vinBufferRef.current[frameIndex] = vinPart;
-      log(`RX: VIN Frame ${frameIndex} received.`);
+      log(`RX: VIN Çerçevesi ${frameIndex} alındı.`);
 
       if (Object.keys(vinBufferRef.current).length >= 2) {
           const sortedKeys = Object.keys(vinBufferRef.current).sort();
@@ -141,7 +143,7 @@ const App: React.FC = () => {
           const decodedVin = hexToAscii(fullVinHex).replace(/\u0000/g, '');
           if (decodedVin.length >= 17) {
             const finalVin = decodedVin.substring(1, 18); // VIN starts from 2nd char in payload
-            log(`SUCCESS: Decoded VIN: ${finalVin}`);
+            log(`BAŞARILI: VIN çözüldü: ${finalVin}`);
             setVin(finalVin);
             vinBufferRef.current = {}; 
             handleResolveVehicle(); // Automatically resolve after getting VIN
@@ -185,9 +187,11 @@ const App: React.FC = () => {
 
   const startLiveMode = useCallback((service: ELM327Service) => {
       if (liveIntervalRef.current) clearInterval(liveIntervalRef.current);
-      log('Starting Live Data Mode...');
+      log('Canlı Veri Modu başlatılıyor...');
       
+      log('İlk DTC taraması yapılıyor...');
       service.send('03');
+      dtcCheckCounterRef.current = 0;
 
       liveIntervalRef.current = setInterval(() => {
           service.send('010C');
@@ -196,6 +200,13 @@ const App: React.FC = () => {
           service.send('0107');
           service.send('0106');
           service.send('0105');
+          
+          dtcCheckCounterRef.current += 1;
+          if (dtcCheckCounterRef.current >= 10) { // Approx every 15 seconds
+              log('Periyodik DTC taraması yapılıyor...');
+              service.send('03');
+              dtcCheckCounterRef.current = 0;
+          }
       }, 1500);
   }, [log]);
   
@@ -224,19 +235,19 @@ const App: React.FC = () => {
         setIsConnected(true);
         startLiveMode(service);
     } else {
-        setError("Failed to connect to ELM327 device. Make sure it's on and in range.");
+        setError("ELM327 cihazına bağlanılamadı. Cihazın açık ve menzilde olduğundan emin olun.");
     }
     setIsConnecting(false);
   }, [log, parsePIDResponse, startLiveMode]);
   
   const handleDisconnect = useCallback(() => {
-    log('Disconnecting...');
+    log('Bağlantı kesiliyor...');
     elmServiceRef.current?.disconnect();
   }, [log]);
 
   const handleGetVin = () => {
     if (elmServiceRef.current) {
-        log("Requesting VIN from vehicle (Mode 09, PID 02)...");
+        log("Araçtan VIN isteniyor (Mod 09, PID 02)...");
         vinBufferRef.current = {};
         elmServiceRef.current.getVIN();
     }
@@ -247,14 +258,14 @@ const App: React.FC = () => {
     setError(null);
     setAnalysisResult('');
 
-    let rawData = `DTCs: ${liveData.dtc.join(', ') || 'None'}\n`;
+    let rawData = `DTCs: ${liveData.dtc.join(', ') || 'Yok'}\n`;
     rawData += Object.entries(liveData)
       .filter(([key]) => key !== 'dtc')
       .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
       .join('\n');
       
-    if (rawData.trim() === 'DTCs: None') {
-        setError('No live data available to analyze. Please connect to a vehicle first.');
+    if (rawData.trim() === 'DTCs: Yok') {
+        setError('Analiz edilecek canlı veri yok. Lütfen önce bir araca bağlanın.');
         setIsLoading(false);
         return;
     }
@@ -271,7 +282,7 @@ const App: React.FC = () => {
       const result = await analyzeObdData(vehicleInfoForAI, rawData);
       setAnalysisResult(result);
     } catch (err) {
-      setError('An error occurred during analysis. Please try again.');
+      setError('Analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.');
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -310,16 +321,16 @@ const App: React.FC = () => {
         </header>
         {isConnected ? (
              <button onClick={handleDisconnect} className="w-full flex justify-center items-center py-2 px-4 rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors">
-                <BluetoothIcon className="w-5 h-5 mr-2"/> Disconnect
+                <BluetoothIcon className="w-5 h-5 mr-2"/> Bağlantıyı Kes
             </button>
         ) : (
             <button onClick={handleConnect} disabled={isConnecting} className="w-full flex justify-center items-center py-2 px-4 rounded-md text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-500 transition-colors">
                  {isConnecting ? <svg className="animate-spin mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 
                  : <BluetoothIcon className="w-5 h-5 mr-2"/>}
-                {isConnecting ? 'Connecting...' : 'Connect ELM327'}
+                {isConnecting ? 'Bağlanılıyor...' : "ELM327'ye Bağlan"}
             </button>
         )}
-        <div className={`mt-2 text-center text-sm ${isConnected ? 'text-green-400' : 'text-gray-500'}`}>{isConnected ? 'Connected' : 'Disconnected'}</div>
+        <div className={`mt-2 text-center text-sm ${isConnected ? 'text-green-400' : 'text-gray-500'}`}>{isConnected ? 'Bağlı' : 'Bağlantı Yok'}</div>
 
         {vehicleProfile && (
             <div className='mt-6 border-t border-gray-700 pt-4'>
@@ -327,26 +338,28 @@ const App: React.FC = () => {
                 <p className="text-sm text-gray-400 text-center mb-3">{vehicleProfile.year} - {vehicleProfile.trim}</p>
                 <img src={vehicleProfile.image_url} alt={`${vehicleProfile.make} ${vehicleProfile.model}`} className="rounded-lg mb-4 w-full h-auto object-cover"/>
                 <div className="space-y-2 text-sm">
-                    <LiveValue label="Engine" value={`${vehicleProfile.engine.volume_cc}cc ${vehicleProfile.engine.power_hp}hp`} />
-                    <LiveValue label="Aspiration" value={vehicleProfile.engine.aspiration} />
-                    <LiveValue label="0-100km/h" value={vehicleProfile.technical_specs.acceleration_0_100} unit="s" />
-                    <LiveValue label="Top Speed" value={vehicleProfile.technical_specs.top_speed} unit="km/h" />
-                    <LiveValue label="Transmission" value={`${vehicleProfile.transmission.type} ${vehicleProfile.transmission.gears}`} />
+                    <LiveValue label="Motor" value={`${vehicleProfile.engine.volume_cc}cc ${vehicleProfile.engine.power_hp}hp`} />
+                    <LiveValue label="Aspirasyon" value={vehicleProfile.engine.aspiration} />
+                    <LiveValue label="0-100km/s" value={vehicleProfile.technical_specs.acceleration_0_100} unit="s" />
+                    <LiveValue label="Maks. Hız" value={vehicleProfile.technical_specs.top_speed} unit="km/h" />
+                    <LiveValue label="Şanzıman" value={`${vehicleProfile.transmission.type} ${vehicleProfile.transmission.gears}`} />
                 </div>
             </div>
         )}
         <div className='flex-grow'></div>
         <div>
-            <h3 className="text-lg font-semibold mt-6 border-b border-gray-700 pb-1 mb-3">Live Data</h3>
+            <h3 className="text-lg font-semibold mt-6 border-b border-gray-700 pb-1 mb-3">Canlı Veri</h3>
             <div className="space-y-2">
-                <LiveValue label="RPM" value={liveData.rpm} />
-                <LiveValue label="Speed" value={liveData.speed} unit="km/h" />
-                <LiveValue label="Coolant" value={liveData.ect} unit="°C" />
+                <LiveValue label="Devir" value={liveData.rpm} />
+                <LiveValue label="Hız" value={liveData.speed} unit="km/h" />
+                <LiveValue label="Soğutma Suyu" value={liveData.ect} unit="°C" />
+                <LiveValue label="STFT B1" value={liveData.stft} unit="%" />
+                <LiveValue label="LTFT B1" value={liveData.ltft} unit="%" />
             </div>
             <div className="mt-4">
-                <h4 className="text-sm text-gray-400">DTCs Found:</h4>
+                <h4 className="text-sm text-gray-400">Bulunan Hata Kodları:</h4>
                 <div className="font-mono text-yellow-400 text-center p-2 bg-brand-dark/50 rounded mt-1">
-                    {liveData.dtc.length > 0 ? liveData.dtc.join(', ') : 'None'}
+                    {liveData.dtc.length > 0 ? liveData.dtc.join(', ') : 'Yok'}
                 </div>
             </div>
         </div>
@@ -355,70 +368,70 @@ const App: React.FC = () => {
       {/* MAIN CONTENT */}
       <main className="flex-1 p-6 flex flex-col">
         <div className='flex justify-between items-center mb-4'>
-            <h2 className="text-2xl font-semibold text-white">Vehicle Configuration</h2>
+            <h2 className="text-2xl font-semibold text-white">Araç Konfigürasyonu</h2>
             <div className="flex items-center space-x-2">
                 <button onClick={handleGetVin} disabled={!isConnected} className="flex items-center py-2 px-3 rounded-md text-sm text-white bg-teal-600 hover:bg-teal-700 disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors">
                     <CarIcon className="w-4 h-4 mr-2"/>
-                    Get VIN from Vehicle
+                    VIN'i Araçtan Al
                 </button>
                 <button onClick={handleResolveVehicle} disabled={isResolving || !selections.trim} className="flex items-center py-2 px-3 rounded-md text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-500 transition-colors">
                     {isResolving ? <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 
                     : <VehicleSearchIcon className="w-4 h-4 mr-2"/>}
-                    {isResolving ? 'Identifying...' : 'Identify Vehicle'}
+                    {isResolving ? 'Tanımlanıyor...' : 'Aracı Tanımla'}
                 </button>
             </div>
         </div>
         <div className="grid grid-cols-1 gap-4 mb-4">
-           <input type="text" placeholder="VIN (Vehicle Identification Number)" value={vin} onChange={e => setVin(e.target.value)} className="bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono"/>
+           <input type="text" placeholder="VIN (Şasi Numarası)" value={vin} onChange={e => setVin(e.target.value)} className="bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono"/>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             <select value={selections.make} onChange={e => handleSelectionChange('make', e.target.value)} className={selectClasses}>
-                <option value="">Select Make</option>
+                <option value="">Marka Seçin</option>
                 {uiOptions.makes.map(m => <option key={m} value={m}>{m}</option>)}
             </select>
             <select value={selections.model} onChange={e => handleSelectionChange('model', e.target.value)} className={selectClasses} disabled={!selections.make}>
-                <option value="">Select Model</option>
+                <option value="">Model Seçin</option>
                 {uiOptions.models.map(m => <option key={m} value={m}>{m}</option>)}
             </select>
             <select value={selections.year} onChange={e => handleSelectionChange('year', e.target.value)} className={selectClasses} disabled={!selections.model}>
-                <option value="">Select Year</option>
+                <option value="">Yıl Seçin</option>
                 {uiOptions.years.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
              <select value={selections.engine} onChange={e => handleSelectionChange('engine', e.target.value)} className={selectClasses} disabled={!selections.year}>
-                <option value="">Select Engine</option>
+                <option value="">Motor Seçin</option>
                 {uiOptions.engines.map(e => <option key={e.engine} value={e.engine}>{`${e.engine} (${e.fuel})`}</option>)}
             </select>
              <select value={selections.trim} onChange={e => handleSelectionChange('trim', e.target.value)} className={selectClasses} disabled={!selections.engine}>
-                <option value="">Select Trim</option>
+                <option value="">Donanım Seçin</option>
                 {uiOptions.trims.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
         </div>
 
-        <h2 className="text-2xl font-semibold mb-4 text-white">ELM327 Console</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-white">ELM327 Konsolu</h2>
         <div ref={consoleRef} className="bg-black/40 p-4 rounded-lg h-80 flex-grow font-mono text-sm overflow-y-auto border border-gray-700/50">
             {rawLog.map((line, index) => <div key={index} className={line.startsWith('TX:') ? 'text-cyan-400' : line.startsWith('RX:') ? 'text-lime-400' : 'text-gray-500'}>{line}</div>)}
         </div>
         <button onClick={handleAnalysis} disabled={isLoading || !isConnected} className="w-full mt-6 flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm font-medium text-white bg-brand-blue hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue disabled:bg-brand-light-gray disabled:cursor-not-allowed transition-colors">
-            {isLoading ? 'Analyzing...' : 'Analyze Live Data with AI'}
+            {isLoading ? 'Analiz Ediliyor...' : 'Canlı Veriyi AI ile Analiz Et'}
         </button>
       </main>
 
       {/* RIGHT SIDEBAR (AI REPORT) */}
       <aside className="w-[480px] bg-[#111827] p-4 flex flex-col border-l border-gray-700/50">
-        <h2 className="text-2xl font-semibold text-white border-b-2 border-brand-blue pb-2 mb-2 shrink-0">AI Diagnostic Report</h2>
+        <h2 className="text-2xl font-semibold text-white border-b-2 border-brand-blue pb-2 mb-2 shrink-0">Yapay Zekâ Teşhis Raporu</h2>
         <div className="flex-grow overflow-y-auto pr-2">
             {error && <div className="text-red-400 bg-red-900/30 p-3 rounded-md text-sm">{error}</div>}
             {isLoading && (
               <div className="flex flex-col items-center justify-center h-full text-gray-400">
                 <svg className="animate-spin h-8 w-8 text-brand-blue mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                <p>AI is analyzing vehicle data...</p>
+                <p>Yapay zekâ araç verilerini analiz ediyor...</p>
               </div>
             )}
             {!isLoading && !analysisResult && !error && (
               <div className="flex flex-col items-center justify-center h-full text-gray-500 text-center">
                 <EngineIcon className="w-12 h-12 mb-4"/>
-                <p>Your diagnostic report will appear here.</p>
-                <p className="text-sm">Connect to a vehicle and press "Analyze Live Data".</p>
+                <p>Teşhis raporunuz burada görünecektir.</p>
+                <p className="text-sm">Bir araca bağlanın ve "Canlı Veriyi AI ile Analiz Et" düğmesine basın.</p>
               </div>
             )}
             {analysisResult && (

@@ -136,9 +136,9 @@ export const analyzeObdData = async (vehicleData: Partial<VehicleData>, rawData:
 Aşağıdaki ELM327 verisini analiz et:
 
 ARAÇ: ${vehicleData.make} ${vehicleData.model} ${vehicleData.year}
-VIN: ${vehicleData.vin || 'Not Provided'}
+VIN: ${vehicleData.vin || 'Belirtilmemiş'}
 YAKIT: ${vehicleData.fuel}
-RAW DATA:
+HAM VERİ:
 ${rawData}
 `;
 
@@ -155,6 +155,6 @@ ${rawData}
     return response.text;
   } catch (error) {
     console.error("Error calling Gemini API:", error);
-    throw new Error("Failed to get analysis from AI service.");
+    throw new Error("AI servisinden analiz alınamadı.");
   }
 };

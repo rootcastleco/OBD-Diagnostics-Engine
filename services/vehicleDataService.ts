@@ -104,8 +104,9 @@ export const getOptionsForYear = async (make: string, model: string, year: numbe
             const typedModel = model as DbModel<typeof typedMake>;
             const yearData = db[typedMake][typedModel];
             if (yearStr in yearData) {
-                const data = yearData[yearStr as keyof typeof yearData];
-                const engines = data.engines.map(e => ({
+                // FIX: Access property via casting to Record<string, any> instead of using `keyof` on a union type, which results in `never`.
+                const data = (yearData as Record<string, any>)[yearStr];
+                const engines = data.engines.map((e: any) => ({
                     engine: `${e.engine.volume_cc}cc ${e.engine.power_hp}hp`,
                     fuel: e.engine.fuel,
                     transmission: e.transmission.type
@@ -122,7 +123,7 @@ export const getOptionsForYear = async (make: string, model: string, year: numbe
 const decodeVinNHTSA = async (vin: string): Promise<{ make: string; model: string; year: string; }> => {
     if (vin.startsWith("NMT")) return { make: "Toyota", model: "Corolla", year: "2014" };
     if (vin.startsWith("WF0")) return { make: "Ford", model: "Focus", year: "2018" };
-    throw new Error('NHTSA API: VIN not found.');
+    throw new Error('NHTSA API: VIN bulunamadı.');
 }
 
 // --- VEHICLE RESOLUTION ENGINE ---
@@ -138,7 +139,7 @@ export const resolveVehicleInfo = async (partialData: Partial<VehicleData>): Pro
             baseData = await decodeVinNHTSA(partialData.vin);
             vpicConfidence = 'high';
         } catch (e) {
-            throw new Error("Could not decode VIN. Please use manual selection.");
+            throw new Error("VIN çözülemedi. Lütfen manuel seçim kullanın.");
         }
     } else if (partialData.make && partialData.model && partialData.year) {
         baseData = {
@@ -148,7 +149,7 @@ export const resolveVehicleInfo = async (partialData: Partial<VehicleData>): Pro
         };
         vpicConfidence = 'low';
     } else {
-        throw new Error("Please select Make, Model, and Year to identify the vehicle.");
+        throw new Error("Aracı tanımlamak için lütfen Marka, Model ve Yıl seçin.");
     }
     
     const { make, model, year } = baseData;
@@ -161,12 +162,13 @@ export const resolveVehicleInfo = async (partialData: Partial<VehicleData>): Pro
             const typedModel = model as DbModel<typeof typedMake>;
             const yearData = db[typedMake][typedModel];
             if (yearStr in yearData) {
-                const vehicleEntry = yearData[yearStr as keyof typeof yearData];
+                // FIX: Access property via casting to Record<string, any> instead of using `keyof` on a union type, which results in `never`.
+                const vehicleEntry = (yearData as Record<string, any>)[yearStr];
                 
                 // Find the selected engine or default to the first one
                 let selectedEngine = vehicleEntry.engines[0];
                 if(partialData.engine) {
-                    const potentialEngine = vehicleEntry.engines.find(e => `${e.engine.volume_cc}cc ${e.engine.power_hp}hp` === partialData.engine);
+                    const potentialEngine = vehicleEntry.engines.find((e: any) => `${e.engine.volume_cc}cc ${e.engine.power_hp}hp` === partialData.engine);
                     if(potentialEngine) selectedEngine = potentialEngine;
                 }
         
@@ -205,5 +207,5 @@ export const resolveVehicleInfo = async (partialData: Partial<VehicleData>): Pro
         }
     }
 
-    throw new Error(`Could not find a TR market profile for ${make} ${model} ${year}.`);
+    throw new Error(`${make} ${model} ${year} için bir TR piyasa profili bulunamadı.`);
 };

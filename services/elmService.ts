@@ -49,7 +49,7 @@ export class ELM327Service {
   public onDisconnect?: () => void;
 
   async connect() {
-    this.onLog?.('Requesting Bluetooth device...');
+    this.onLog?.('Bluetooth cihazı isteniyor...');
     try {
       this.device = await navigator.bluetooth.requestDevice({
         filters: [
@@ -65,21 +65,21 @@ export class ELM327Service {
         throw new Error('GATT Server not available.');
       }
       
-      this.onLog?.(`Connecting to GATT Server on ${this.device.name}...`);
+      this.onLog?.(`${this.device.name} üzerindeki GATT Sunucusuna bağlanılıyor...`);
       this.device.addEventListener('gattserverdisconnected', this.handleDisconnect);
       this.server = await this.device.gatt.connect();
 
-      this.onLog?.('Getting primary service...');
+      this.onLog?.('Ana servis alınıyor...');
       const service = await this.server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb');
       
-      this.onLog?.('Getting characteristics...');
+      this.onLog?.('Karakteristikler alınıyor...');
       this.rx = await service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb');
       this.tx = this.rx; 
 
-      this.onLog?.('Starting notifications...');
+      this.onLog?.('Bildirimler başlatılıyor...');
       await this.rx.startNotifications();
       this.rx.addEventListener("characteristicvaluechanged", this.handleData);
-      this.onLog?.('Connection successful. Initializing device...');
+      this.onLog?.('Bağlantı başarılı. Cihaz başlatılıyor...');
       
       this.send('ATZ');
       this.send('ATE0');
@@ -89,7 +89,7 @@ export class ELM327Service {
 
       return true;
     } catch (error) {
-      this.onLog?.(`Connection failed: ${error}`);
+      this.onLog?.(`Bağlantı başarısız: ${error}`);
       console.error(error);
       this.disconnect();
       return false;
@@ -97,7 +97,7 @@ export class ELM327Service {
   }
   
   private handleDisconnect = () => {
-      this.onLog?.('Device disconnected.');
+      this.onLog?.('Cihaz bağlantısı kesildi.');
       if (this.device) {
         this.device.removeEventListener('gattserverdisconnected', this.handleDisconnect);
       }
