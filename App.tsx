@@ -6,7 +6,7 @@ import { analyzeObdData, lookupDtcCode } from './services/geminiService';
 import { ELM327Service } from './services/elmService';
 import { resolveVehicleByVIN } from './services/vinService';
 import { getMakes, getModelsForMake, getYearsForModel, getSpecsForYear } from './services/vehicleDataService';
-import { EngineIcon, WrenchIcon, CarIcon, BoltIcon, InfoIcon, BluetoothIcon, VehicleSearchIcon } from './components/icons';
+import { EngineIcon, WrenchIcon, CarIcon, BoltIcon, InfoIcon, BluetoothIcon, VehicleSearchIcon, TransmissionIcon, FuelIcon, SpeedometerIcon } from './components/icons';
 import { AnimatePresence, motion } from "framer-motion";
 
 // --- HELPER & UTILITY COMPONENTS ---
@@ -31,6 +31,36 @@ const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ chi
         {children}
     </div>
 );
+
+
+// --- SPEC DISPLAY COMPONENTS ---
+const SpecItem: React.FC<{ icon: React.ReactNode; label: string; value: string | number; }> = ({ icon, label, value }) => (
+    <div className="flex items-start gap-3 p-2 bg-brand-dark/30 rounded-lg">
+        <div className="text-brand-primary">{icon}</div>
+        <div>
+            <p className="text-xs text-brand-text-secondary">{label}</p>
+            <p className="text-sm font-semibold text-brand-text-primary">{value || 'N/A'}</p>
+        </div>
+    </div>
+);
+
+const SpecDisplayCard: React.FC<{ spec: SpecProfile }> = ({ spec }) => {
+    return (
+        <div className="mt-4 pt-4 border-t border-brand-border">
+            <h3 className="text-sm font-bold mb-3 text-brand-text-secondary">Teknik Özellikler</h3>
+            <div className="grid grid-cols-2 gap-3">
+                <SpecItem icon={<BoltIcon className="w-5 h-5" />} label="Beygir" value={spec.engine_hp} />
+                <SpecItem icon={<WrenchIcon className="w-5 h-5" />} label="Tork" value={spec.engine_torque} />
+                <SpecItem icon={<EngineIcon className="w-5 h-5" />} label="Motor" value={`${spec.engine_displacement} ${spec.engine}`} />
+                <SpecItem icon={<TransmissionIcon className="w-5 h-5" />} label="Vites" value={spec.transmission} />
+                <SpecItem icon={<FuelIcon className="w-5 h-5" />} label="Yakıt" value={spec.fuel} />
+                <SpecItem icon={<SpeedometerIcon className="w-5 h-5" />} label="0-100 Hızlanma" value={spec.zero_to_100_kmh} />
+                <SpecItem icon={<SpeedometerIcon className="w-5 h-5" />} label="Maks. Hız" value={spec.max_speed_kmh} />
+            </div>
+        </div>
+    );
+};
+
 
 // --- GAUGE COMPONENTS ---
 
@@ -182,6 +212,8 @@ const ConfigView: React.FC<any> = ({ selections, setSelections, uiOptions, vin, 
         </select>
     );
     
+    const selectedSpec = selections.spec !== '' && uiOptions.specs?.[parseInt(selections.spec, 10)];
+    
     return (
         <div className="p-4 space-y-4">
              <Card className="p-4">
@@ -231,7 +263,22 @@ const ConfigView: React.FC<any> = ({ selections, setSelections, uiOptions, vin, 
                    <CustomSelect name="make" value={selections.make} onChange={handleSelectChange} options={uiOptions.makes} placeholder="Marka Seçin" />
                    <CustomSelect name="model" value={selections.model} onChange={handleSelectChange} options={uiOptions.models} placeholder="Model Seçin" disabled={!selections.make} />
                    <CustomSelect name="year" value={selections.year} onChange={handleSelectChange} options={uiOptions.years} placeholder="Yıl Seçin" disabled={!selections.model} />
+                   <select
+                        name="spec"
+                        value={selections.spec}
+                        onChange={handleSelectChange}
+                        disabled={!selections.year || !uiOptions.specs || uiOptions.specs.length === 0}
+                        className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-primary focus:outline-none appearance-none"
+                    >
+                        <option value="">Spesifikasyon Seçin</option>
+                        {uiOptions.specs.map((spec: SpecProfile, index: number) => (
+                            <option key={index} value={index.toString()}>
+                                {`${spec.body} / ${spec.engine} (${spec.engine_hp})`}
+                            </option>
+                        ))}
+                    </select>
                 </div>
+                {selectedSpec && <SpecDisplayCard spec={selectedSpec} />}
             </Card>
         </div>
     );
