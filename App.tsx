@@ -7,681 +7,492 @@ import { ELM327Service } from './services/elmService';
 import { resolveVehicleByVIN } from './services/vinService';
 import { getMakes, getModelsForMake, getYearsForModel, getSpecsForYear } from './services/vehicleDataService';
 import { EngineIcon, WrenchIcon, CarIcon, BoltIcon, InfoIcon, BluetoothIcon, VehicleSearchIcon } from './components/icons';
+import { AnimatePresence, motion } from "framer-motion";
 
-const logoBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAPACAYAAAB/Y4w6AAAF4UlEQVR4nO3d4XHTMBSG4bcy2xkgE5BNUCZgA5QJUCZgmAAmCZgEwASYAG9JgL+h42kkyZPk/x2fPRLJW0s+XpZt24Jb/B4AAEBgCQQkIAEJSEACEnALb+9vX/6i/H0A4H/LbduW3CAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCDA3/gP8P0d/b8LCEgAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIMBbeL9+/v57+P64b27f/vAAwP+W27YlNwhIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCCAv/Ef4Ps7+n8XEJCAAAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEnB7eX4/vj99+uP3s+f983l+P3/K78+f48d3n+e329u3z/t3AECg8hL49fM9v334/Pl2u11vby/j+/v7Lp/n9vZm3+324/P23t6/z/fnz3k/P35+vP+fH395Pj+/3f8HAECg/gIPDAgCEpCABCQggW/g5w8P+Pj8/Pz3eX6/vx+/v38/n19/3+/vj+/P+Hl+v3++v79/vj9/vr/4/QECgSr89v6e327/9vmc3++3t7eX8fb2drvdbsft9vt8fn6b3+/xeHw/n59x+/3j8fiP3x8AAKgQeGBAEJCAAAQkIAEJ+A08v7+n+fXt7eX4+vr6/ffz/H5/35/v7+/n+P39/Tq/PwACRfgFnhgQBCQgAQlIQAISkIAEfi8gIAMSkIAEJCABCUhAAhKQgAQlIAEJSEACEpCAAAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEnBb2Lbt1t7eXj4/P+/p/f19T2/v9vHx+H3v+PHx+PXr9/eP3x8AAB/gDwIJSAC/hA/wPz9+e3t7e4+Pj/v8/HxeX1/39fV1T0/v+Xx+/fj06T0+Pr7Hx8f9+PFxfn67p6fH5+fn9fb2vsePHz/u3//8AQBQIfDAgCAgAQkISEACEpCAX8D19XVPb2/v6empra2tvb29/f33169fX758+fz58+fPnz9+/Pjx48ePn5+fn5+f9/X19ePHj3t7e/v48ePevn37/Pnzvr6+/vz5s7e3t7e3t7e3t6+vr2trc58/f/78+fPevn379evXr1+/fvx+f3+/P78/AACK8AseGBAEJCAgAQlIQAISkIAE/JdAQAYkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAv/P8A/w/R39vwsISEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAhKQgAQkIAEJSEACEpCABCQgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCAgAQlIQAISkIAEJCABCUhAAv//gQAEJPAGvgEAAAAASUVORK5CYII=';
-
-const LiveValue: React.FC<{ label: string; value: string | number; unit?: string }> = ({ label, value, unit }) => (
-  <div className="flex justify-between items-baseline bg-brand-dark/50 p-2 rounded">
-    <span className="text-sm text-gray-400">{label}</span>
-    <span className="font-mono text-lg text-brand-blue">{value} <span className="text-xs text-gray-500">{unit}</span></span>
-  </div>
-);
-
-const VisualLiveValue: React.FC<{ label: string; value: string | number; unit?: string; max: number }> = ({ label, value, unit, max }) => {
-  const numericValue = typeof value === 'number' ? value : parseFloat(String(value));
-  const displayValue = isNaN(numericValue) ? 'N/A' : value;
-  const percentage = isNaN(numericValue) || numericValue < 0 ? 0 : Math.min((numericValue / max) * 100, 100);
-
-  return (
-    <div className="bg-brand-dark/50 p-2 rounded">
-      <div className="flex justify-between items-baseline mb-1">
-        <span className="text-sm text-gray-400">{label}</span>
-        <span className="font-mono text-lg text-brand-blue">{displayValue} <span className="text-xs text-gray-500">{unit}</span></span>
-      </div>
-      <div className="w-full bg-brand-light-gray/50 rounded-full h-1.5">
-        <div className="bg-brand-blue h-1.5 rounded-full transition-all duration-300 ease-in-out" style={{ width: `${percentage}%` }}></div>
-      </div>
-    </div>
-  );
-};
-
-type MobileView = 'live' | 'config' | 'report';
+// --- HELPER & UTILITY COMPONENTS ---
 
 const generateLogoUrl = (make: string) => {
+    if (!make) return '';
     const makeLower = make.toLowerCase();
-    if (makeLower === 'skoda') {
-        // Clearbit doesn't have a good Skoda logo, so we provide a direct link.
-        return 'https://upload.wikimedia.org/wikipedia/commons/2/29/Skoda_Logo.svg';
-    }
+    if (makeLower === 'skoda') return 'https://upload.wikimedia.org/wikipedia/commons/2/29/Skoda_Logo.svg';
     const domain = makeLower.replace(/ /g, '').replace(/-/g, '') + '.com';
     return `https://logo.clearbit.com/${domain}`;
 };
 
+const IconButton: React.FC<{ icon: React.ReactNode; label: string; onClick: () => void; active: boolean; }> = ({ icon, label, onClick, active }) => (
+    <button onClick={onClick} className={`flex flex-col items-center justify-center gap-1 w-full transition-colors duration-200 p-2 rounded-lg ${active ? 'text-brand-primary' : 'text-brand-text-secondary hover:text-brand-text-primary'}`}>
+        {icon}
+        <span className="text-xs font-medium">{label}</span>
+    </button>
+);
+
+const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
+    <div className={`bg-brand-surface-glass border border-brand-border rounded-2xl backdrop-blur-md ${className}`}>
+        {children}
+    </div>
+);
+
+// --- GAUGE COMPONENTS ---
+
+const RadialGauge: React.FC<{ label: string; value: number | string; unit: string; max: number; colorClass: string; }> = ({ label, value, unit, max, colorClass }) => {
+    const numericValue = typeof value === 'number' ? value : parseFloat(String(value));
+    const displayValue = isNaN(numericValue) ? 'N/A' : value;
+    const percentage = isNaN(numericValue) ? 0 : Math.min((numericValue / max) * 100, 100);
+    const circumference = 2 * Math.PI * 45;
+    const offset = circumference - (percentage / 100) * circumference;
+
+    return (
+        <Card className="p-4 flex flex-col items-center justify-center aspect-square text-center">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" className="text-brand-border" stroke="currentColor" strokeWidth="6" fill="transparent" />
+                <motion.circle
+                    cx="50" cy="50" r="45"
+                    className={colorClass}
+                    stroke="currentColor"
+                    strokeWidth="6"
+                    fill="transparent"
+                    strokeLinecap="round"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={offset}
+                    initial={{ strokeDashoffset: circumference }}
+                    animate={{ strokeDashoffset: offset }}
+                    transition={{ duration: 0.5, ease: "circOut" }}
+                />
+            </svg>
+            <div className="absolute flex flex-col">
+                <span className="text-3xl font-bold tracking-tighter text-brand-text-primary">{displayValue}</span>
+                <span className="text-sm text-brand-text-secondary -mt-1">{unit}</span>
+            </div>
+            <span className="mt-2 text-xs font-medium text-brand-text-secondary uppercase tracking-wider">{label}</span>
+        </Card>
+    );
+};
+
+const LinearGauge: React.FC<{ label: string; value: number | string; unit: string; max: number; colorClass: string; }> = ({ label, value, unit, max, colorClass }) => {
+    const numericValue = typeof value === 'number' ? value : parseFloat(String(value));
+    const displayValue = isNaN(numericValue) ? 'N/A' : value;
+    const percentage = isNaN(numericValue) || numericValue < 0 ? 0 : Math.min((numericValue / max) * 100, 100);
+
+    return (
+        <Card className="p-3">
+            <div className="flex justify-between items-baseline mb-2">
+                <span className="text-xs text-brand-text-secondary">{label}</span>
+                <span className="font-mono text-sm text-brand-text-primary">{displayValue} <span className="text-xs">{unit}</span></span>
+            </div>
+            <div className="w-full bg-brand-border rounded-full h-1.5">
+                <motion.div
+                    className={`${colorClass} h-1.5 rounded-full`}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${percentage}%` }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                />
+            </div>
+        </Card>
+    );
+};
+
+
+// --- VIEW COMPONENTS ---
+
+type MobileView = 'live' | 'config' | 'report';
+
+const LiveDashboardView: React.FC<{ liveData: LiveData; vehicleProfile: VehicleProfile | null; selectedMake: string; logoError: boolean, onLogoError: () => void; }> = ({ liveData, vehicleProfile, selectedMake, logoError, onLogoError }) => {
+    const displayMake = vehicleProfile?.make || selectedMake;
+
+    return (
+        <div className="p-4 space-y-4">
+            {displayMake && (
+                <Card className="p-4">
+                    <div className="flex items-center gap-4">
+                        {!logoError && (
+                          <img 
+                            key={displayMake}
+                            src={generateLogoUrl(displayMake)} 
+                            alt={`${displayMake} logo`}
+                            className="w-14 h-14 bg-white/10 rounded-full p-1 object-contain" 
+                            onError={onLogoError}
+                          />
+                        )}
+                        <div>
+                            <h1 className="text-lg font-bold text-brand-text-primary">{vehicleProfile ? `${vehicleProfile.make} ${vehicleProfile.model}` : displayMake}</h1>
+                            {vehicleProfile && (
+                                <p className="text-sm text-brand-text-secondary">{vehicleProfile.year} - {vehicleProfile.trim}</p>
+                            )}
+                        </div>
+                    </div>
+                </Card>
+            )}
+            <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2 md:col-span-1">
+                    <RadialGauge label="Motor Devri" value={liveData.rpm} unit="RPM" max={8000} colorClass="text-brand-primary" />
+                </div>
+                <div className="col-span-2 md:col-span-1 grid grid-cols-2 gap-4">
+                    <LinearGauge label="Hız" value={liveData.speed} unit="km/h" max={240} colorClass="bg-brand-secondary" />
+                    <LinearGauge label="Soğutma Suyu" value={liveData.ect} unit="°C" max={120} colorClass="bg-yellow-400" />
+                    <LinearGauge label="MAF" value={liveData.maf} unit="g/s" max={100} colorClass="bg-purple-400" />
+                    <LinearGauge label="STFT" value={liveData.stft} unit="%" max={25} colorClass="bg-pink-400" />
+                    <LinearGauge label="LTFT" value={liveData.ltft} unit="%" max={25} colorClass="bg-indigo-400" />
+                </div>
+            </div>
+             {liveData.dtc.length > 0 && (
+                <Card className="p-4">
+                    <h3 className="text-sm font-bold mb-2 text-red-400">Arıza Kodları (DTC)</h3>
+                    <div className="flex flex-wrap gap-2">
+                        {liveData.dtc.map(code => (
+                            <span key={code} className="bg-red-500/20 text-red-300 text-xs font-mono px-2 py-1 rounded-md">{code}</span>
+                        ))}
+                    </div>
+                </Card>
+            )}
+        </div>
+    );
+};
+
+const ConfigView: React.FC<any> = ({ selections, setSelections, uiOptions, vin, setVin, isConnected, isConnecting, handleConnect, handleDisconnect, handleIdentifyByVIN, handleGetVIN }) => {
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setSelections((prev: any) => {
+            const newState = { ...prev, [name]: value };
+            if (name === 'make') {
+                newState.model = '';
+                newState.year = '';
+                newState.spec = '';
+            }
+            if (name === 'model') {
+                newState.year = '';
+                newState.spec = '';
+            }
+            if (name === 'year') {
+                newState.spec = '';
+            }
+            return newState;
+        });
+    };
+
+    const CustomSelect = ({ name, value, onChange, options, placeholder, disabled = false }: { name: string, value: string, onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void, options: (string|number)[], placeholder: string, disabled?: boolean}) => (
+        <select
+            name={name}
+            value={value}
+            onChange={onChange}
+            disabled={disabled}
+            className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-primary focus:outline-none appearance-none"
+        >
+            <option value="">{placeholder}</option>
+            {options.map((opt: any) => <option key={opt.toString()} value={opt.toString()}>{opt.toString()}</option>)}
+        </select>
+    );
+    
+    return (
+        <div className="p-4 space-y-4">
+             <Card className="p-4">
+                <h2 className="text-base font-bold mb-3 text-brand-text-primary">Bağlantı</h2>
+                {isConnected ? (
+                     <div className="space-y-3">
+                        <div className="flex items-center justify-between bg-green-500/10 text-green-300 px-3 py-2 rounded-lg">
+                            <span className="text-sm font-medium">ELM327'ye Bağlı</span>
+                            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        </div>
+                        <button onClick={handleDisconnect} className="w-full bg-red-500/80 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                            Bağlantıyı Kes
+                        </button>
+                    </div>
+                ) : (
+                    <button onClick={handleConnect} disabled={isConnecting} className="w-full flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-primary-hover text-brand-dark font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50">
+                        <BluetoothIcon className="w-5 h-5" />
+                        {isConnecting ? 'Bağlanılıyor...' : "ELM327'ye Bağlan"}
+                    </button>
+                )}
+            </Card>
+
+            <Card className="p-4">
+                <h2 className="text-base font-bold mb-3 text-brand-text-primary">VIN ile Tanımla</h2>
+                 <div className="space-y-3">
+                    <input
+                        type="text"
+                        value={vin}
+                        onChange={(e) => setVin(e.target.value.toUpperCase())}
+                        placeholder="VIN Girin (17 Karakter)"
+                        className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-brand-primary focus:outline-none"
+                    />
+                    <div className="flex gap-2">
+                        <button onClick={handleGetVIN} disabled={!isConnected} className="w-full bg-brand-secondary/80 hover:bg-brand-secondary text-white text-sm font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50">
+                            VIN'i Al
+                        </button>
+                        <button onClick={handleIdentifyByVIN} disabled={!vin} className="w-full bg-brand-primary/80 hover:bg-brand-primary text-brand-dark text-sm font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50">
+                            Tanımla
+                        </button>
+                    </div>
+                 </div>
+            </Card>
+
+            <Card className="p-4">
+                <h2 className="text-base font-bold mb-3 text-brand-text-primary">Araç Seçimi</h2>
+                <div className="space-y-3">
+                   <CustomSelect name="make" value={selections.make} onChange={handleSelectChange} options={uiOptions.makes} placeholder="Marka Seçin" />
+                   <CustomSelect name="model" value={selections.model} onChange={handleSelectChange} options={uiOptions.models} placeholder="Model Seçin" disabled={!selections.make} />
+                   <CustomSelect name="year" value={selections.year} onChange={handleSelectChange} options={uiOptions.years} placeholder="Yıl Seçin" disabled={!selections.model} />
+                </div>
+            </Card>
+        </div>
+    );
+}
+
+const ReportView: React.FC<any> = ({ analysisResult, isLoading, rawLog, dtcLookupCode, setDtcLookupCode, dtcLookupResult, isLookingUpDtc, dtcLookupError, handleDtcLookup, handleAnalyze }) => {
+    return (
+        <div className="p-4 space-y-4">
+            <Card className="p-4">
+                 <h2 className="text-base font-bold mb-3 text-brand-text-primary">Yapay Zeka Analizi</h2>
+                 <button onClick={handleAnalyze} disabled={isLoading} className="w-full mb-3 bg-brand-primary hover:bg-brand-primary-hover text-brand-dark font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50">
+                    {isLoading ? 'Analiz Ediliyor...' : 'Mevcut Verileri Analiz Et'}
+                </button>
+                {analysisResult && (
+                    <div className="prose prose-sm prose-invert max-w-none p-3 bg-black/20 rounded-lg mt-3">
+                        <pre className="whitespace-pre-wrap font-sans">{analysisResult}</pre>
+                    </div>
+                )}
+            </Card>
+            
+            <Card className="p-4">
+                 <h2 className="text-base font-bold mb-3 text-brand-text-primary">DTC Kodu Arama</h2>
+                 <div className="flex gap-2">
+                    <input
+                        type="text"
+                        value={dtcLookupCode}
+                        onChange={(e) => setDtcLookupCode(e.target.value.toUpperCase())}
+                        placeholder="Örn: P0135"
+                        className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-brand-primary focus:outline-none"
+                    />
+                    <button onClick={handleDtcLookup} disabled={isLookingUpDtc || !dtcLookupCode} className="bg-brand-secondary/80 hover:bg-brand-secondary text-white font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50">
+                        Ara
+                    </button>
+                 </div>
+                 {isLookingUpDtc && <p className="text-sm mt-2 text-brand-text-secondary">Aranıyor...</p>}
+                 {dtcLookupError && <p className="text-sm mt-2 text-red-400">{dtcLookupError}</p>}
+                 {dtcLookupResult && (
+                    <div className="prose prose-sm prose-invert max-w-none p-3 bg-black/20 rounded-lg mt-3">
+                        <pre className="whitespace-pre-wrap font-sans">{dtcLookupResult}</pre>
+                    </div>
+                )}
+            </Card>
+
+            <Card className="p-4">
+                <h2 className="text-base font-bold mb-3 text-brand-text-primary">Ham Veri Akışı</h2>
+                <div className="h-48 overflow-y-auto bg-black/30 rounded-lg p-2 font-mono text-xs text-brand-text-secondary space-y-1">
+                    {rawLog.map((log, i) => <p key={i} className={log.startsWith('RX:') ? 'text-cyan-400' : log.startsWith('TX:') ? 'text-yellow-400' : ''}>{log}</p>)}
+                </div>
+            </Card>
+        </div>
+    );
+}
+
+// --- MAIN APP COMPONENT ---
+
 const App: React.FC = () => {
-  // --- STATE MANAGEMENT ---
+  // State
   const [selections, setSelections] = useState({ make: '', model: '', year: '', spec: '' });
   const [uiOptions, setUiOptions] = useState<{ makes: string[], models: string[], years: number[], specs: SpecProfile[] }>({ makes: [], models: [], years: [], specs: []});
   const [vin, setVin] = useState('');
-  
   const [vehicleProfile, setVehicleProfile] = useState<VehicleProfile | null>(null);
-
   const [analysisResult, setAnalysisResult] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isResolving, setIsResolving] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
-  const [liveData, setLiveData] = useState<LiveData>({ rpm: 'N/A', speed: 'N/A', maf: 'N/A', ltft: 'N/A', stft: 'N/A', ect: 'N/A', dtc: [] });
-  const [rawLog, setRawLog] = useState<string[]>(["Rootcastle Pilot AI'ya hoş geldiniz. Başlamak için bir araca bağlanın."]);
-  const [activeView, setActiveView] = useState<MobileView>('config');
+  const [liveData, setLiveData] = useState<LiveData>({ rpm: 0, speed: 0, maf: 0, ltft: 0, stft: 0, ect: 0, dtc: [] });
+  const [rawLog, setRawLog] = useState<string[]>(["Rootcastle Pilot AI'ya hoş geldiniz."]);
+  const [activeView, setActiveView] = useState<MobileView>('live');
   const [logoError, setLogoError] = useState<boolean>(false);
-
-  // DTC Lookup State
   const [dtcLookupCode, setDtcLookupCode] = useState<string>('');
   const [dtcLookupResult, setDtcLookupResult] = useState<string>('');
   const [isLookingUpDtc, setIsLookingUpDtc] = useState<boolean>(false);
   const [dtcLookupError, setDtcLookupError] = useState<string | null>(null);
 
-
+  // Refs
   const elmServiceRef = useRef<ELM327Service | null>(null);
   const liveIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const vinBufferRef = useRef<Record<string, string>>({});
   const dtcCheckCounterRef = useRef(0);
   
-  // --- UI DATA LOADING ---
-  useEffect(() => {
-    getMakes().then(makes => setUiOptions(prev => ({...prev, makes})));
-  }, []);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (selections.make) {
-      getModelsForMake(selections.make).then(models => {
-        if(isMounted) setUiOptions(prev => ({...prev, models, years: [], specs: []}))
-      });
-    } else {
-      setUiOptions(prev => ({...prev, models: [], years: [], specs: []}));
-    }
-    return () => { isMounted = false; };
-  }, [selections.make]);
-
-  useEffect(() => {
-      let isMounted = true;
-      if (selections.make && selections.model) {
-        getYearsForModel(selections.make, selections.model).then(years => {
-          if (isMounted) setUiOptions(prev => ({...prev, years, specs: []}));
-        });
-      } else {
-        setUiOptions(prev => ({...prev, years: [], specs: []}));
-      }
-      return () => { isMounted = false; };
-  }, [selections.make, selections.model]);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (selections.make && selections.model && selections.year) {
-      getSpecsForYear(selections.make, selections.model, parseInt(selections.year, 10)).then(specs => {
-          if (isMounted) setUiOptions(prev => ({...prev, specs}));
-      });
-    } else {
-      setUiOptions(prev => ({...prev, specs: []}));
-    }
-    return () => { isMounted = false; };
-  }, [selections.make, selections.model, selections.year]);
-
-  useEffect(() => {
-      if (selections.spec) {
-          try {
-              const selectedSpec: SpecProfile = JSON.parse(selections.spec);
-              const profile: VehicleProfile = {
-                  make: selections.make,
-                  model: selections.model,
-                  year: parseInt(selections.year, 10),
-                  trim: selectedSpec.body,
-                  engine: {
-                    volume_cc: parseInt(selectedSpec.engine_displacement?.replace('cc', '').trim() || '0'),
-                    power_hp: parseInt(selectedSpec.engine_hp?.replace('HP', '').trim() || '0'),
-                    torque_nm: parseInt(selectedSpec.engine_torque?.replace('Nm', '').trim() || '0'),
-                    fuel: selectedSpec.fuel,
-                    aspiration: selectedSpec.engine,
-                    cylinders: 4, // Assuming 4, not in new data
-                  },
-                  transmission: {
-                    type: selectedSpec.transmission,
-                    gears: 'Bilinmiyor'
-                  },
-                  technical_specs: {
-                    acceleration_0_100: selectedSpec.zero_to_100_kmh?.replace('s','').trim() || 'N/A',
-                    top_speed: selectedSpec.max_speed_kmh?.replace('km/h', '').trim() || 'N/A',
-                    avg_consumption: 'N/A', // Not in new data
-                    weight_kg: 'N/A', // Not in new data
-                    boot_liters: 'N/A', // Not in new data
-                    fuel_tank_liters: 'N/A' // Not in new data
-                  },
-                  image_url: generateLogoUrl(selections.make)
-              };
-              if (vin.trim().length >= 17) {
-                profile.vin = vin;
-              }
-              setVehicleProfile(profile);
-              setLogoError(false);
-          } catch(e) {
-              console.error("Failed to parse selected spec:", e);
-              setVehicleProfile(null);
-          }
-      } else {
-        setVehicleProfile(null);
-      }
-  }, [selections.spec, selections.make, selections.model, selections.year, vin]);
-
-
-  // --- DATA FETCHING & LOGIC ---
-  const log = useCallback((message: string) => {
-    setRawLog(prev => [...prev.slice(-100), message]);
-    setTimeout(() => {
-        consoleRef.current?.scrollTo({ top: consoleRef.current.scrollHeight, behavior: 'smooth' });
-    }, 100);
-  }, []);
-
-  const handleSelectionChange = (field: keyof typeof selections, value: string) => {
-      setSelections(prev => {
-        const newState = {...prev, [field]: value};
-        if (field === 'make') {
-            newState.model = '';
-            newState.year = '';
-            newState.spec = '';
-            setVehicleProfile(null);
-        } else if (field === 'model') {
-            newState.year = '';
-            newState.spec = '';
-            setVehicleProfile(null);
-        } else if (field === 'year') {
-            newState.spec = '';
-            setVehicleProfile(null);
-        }
-        return newState;
-      });
-  };
-
-  const handleResolveVehicle = async () => {
-    setIsResolving(true);
-    setError(null);
-    setVehicleProfile(null);
-    
-    if (vin.trim().length < 17) {
-        setError("Lütfen 17 haneli geçerli bir VIN girin.");
-        setIsResolving(false);
-        return;
-    }
-    
-    try {
-        const result = await resolveVehicleByVIN(vin);
-        if (result.status === 'ok' && result.vehicle) {
-            setSelections({
-                make: result.vehicle.make,
-                model: result.vehicle.model,
-                year: result.vehicle.year.toString(),
-                spec: result.spec ? JSON.stringify(result.spec) : ''
-            });
-            // The useEffect for selections.spec will handle setting the vehicle profile
-        } else {
-             setError(`Araç ${result.make} ${result.model} ${result.year} olarak tanındı, ancak veritabanında tam eşleşme bulunamadı. Lütfen manuel olarak seçim yapın.`);
-             setSelections({
-                make: result.make || '',
-                model: result.model || '',
-                year: result.year?.toString() || '',
-                spec: ''
-             });
-        }
-    } catch (err) {
-        setError((err as Error).message);
-    } finally {
-        setIsResolving(false);
-    }
-  };
-
-
-  const hexToAscii = (hexStr: string) => {
-    let asciiStr = '';
-    for (let i = 0; i < hexStr.length; i += 2) {
-        asciiStr += String.fromCharCode(parseInt(hexStr.substr(i, 2), 16));
-    }
-    return asciiStr;
-  };
-
-  const parsePIDResponse = useCallback((dataString: string) => {
-    const cleanData = dataString.replace(/\s/g, '').toUpperCase();
-    
-    if (cleanData.startsWith('4902')) { 
-      const frameIndex = cleanData.substring(4, 6);
-      const vinPart = cleanData.substring(6);
-      
-      vinBufferRef.current[frameIndex] = vinPart;
-      log(`RX: VIN Çerçevesi ${frameIndex} alındı.`);
-
-      if (Object.keys(vinBufferRef.current).length >= 2) {
-          const sortedKeys = Object.keys(vinBufferRef.current).sort();
-          const fullVinHex = sortedKeys.map(key => vinBufferRef.current[key]).join('');
-          
-          const decodedVin = hexToAscii(fullVinHex).replace(/\u0000/g, '');
-          if (decodedVin.length >= 17) {
-            const finalVin = decodedVin.substring(1, 18); // VIN starts from 2nd char in payload
-            log(`BAŞARILI: VIN çözüldü: ${finalVin}`);
-            setVin(finalVin);
-            vinBufferRef.current = {}; 
-            handleResolveVehicle(); // Automatically resolve after getting VIN
-          }
-      }
-      return null;
-    }
-
-    if (cleanData.startsWith('41')) {
-        const pid = cleanData.substring(2, 4);
-        const dataBytes = cleanData.substring(4);
-        const a = parseInt(dataBytes.substring(0, 2), 16);
-        const b = parseInt(dataBytes.substring(2, 4), 16);
-
-        switch (pid) {
-            case '0C': return { rpm: Math.round(((a * 256) + b) / 4) };
-            case '0D': return { speed: a };
-            case '10': return { maf: (((a * 256) + b) / 100).toFixed(2) };
-            case '07': return { ltft: ((a - 128) * 100 / 128).toFixed(2) };
-            case '06': return { stft: ((a - 128) * 100 / 128).toFixed(2) };
-            case '05': return { ect: a - 40 };
-            default: return null;
-        }
-    } else if (cleanData.startsWith('43')) {
-        const dtcData = cleanData.substring(2);
-        const dtcs: string[] = [];
-        if (dtcData.length > 0 && dtcData !== '0000') {
-            for (let i = 0; i < dtcData.length; i += 4) {
-                const dtcBytes = dtcData.substring(i, i + 4);
-                if (dtcBytes === '0000') continue;
-                const firstDigit = parseInt(dtcBytes.charAt(0), 16);
-                const letter = ['P', 'C', 'B', 'U'][firstDigit >> 2];
-                const code = letter + (firstDigit % 4).toString(16) + dtcBytes.substring(1);
-                dtcs.push(code);
-            }
-        }
-        return { dtc: dtcs };
-    }
-    return null;
-  }, [log]);
-
-  const startLiveMode = useCallback((service: ELM327Service) => {
-      if (liveIntervalRef.current) clearInterval(liveIntervalRef.current);
-      log('Canlı Veri Modu başlatılıyor...');
-      
-      log('İlk DTC taraması yapılıyor...');
-      service.send('03');
-      dtcCheckCounterRef.current = 0;
-
-      liveIntervalRef.current = setInterval(() => {
-          service.send('010C');
-          service.send('010D');
-          service.send('0110');
-          service.send('0107');
-          service.send('0106');
-          service.send('0105');
-          
-          dtcCheckCounterRef.current += 1;
-          if (dtcCheckCounterRef.current >= 10) { // Approx every 15 seconds
-              log('Periyodik DTC taraması yapılıyor...');
-              service.send('03');
-              dtcCheckCounterRef.current = 0;
-          }
-      }, 1500);
-  }, [log]);
+  // Handlers
+  const addLog = (log: string) => setRawLog(prev => [log, ...prev.slice(0, 99)]);
   
   const handleConnect = useCallback(async () => {
     setIsConnecting(true);
-    setError(null);
-    const service = new ELM327Service();
-    elmServiceRef.current = service;
+    addLog("Bağlantı işlemi başlatıldı...");
+    elmServiceRef.current = new ELM327Service();
+    elmServiceRef.current.onLog = addLog;
+    elmServiceRef.current.onDisconnect = () => {
+        setIsConnected(false);
+        if(liveIntervalRef.current) clearInterval(liveIntervalRef.current);
+    };
 
-    service.onLog = log;
-    service.onData = (data) => {
-        const parsed = parsePIDResponse(data);
-        if (parsed) {
-            setLiveData(prev => ({...prev, ...parsed}));
+    elmServiceRef.current.onData = (data) => {
+        // Simple data parser
+        if (data.startsWith('41 0C')) { // RPM
+            const hex = data.split(' ').slice(2).join('');
+            const value = (parseInt(hex, 16)) / 4;
+            setLiveData(d => ({...d, rpm: Math.round(value)}));
+        } else if (data.startsWith('41 0D')) { // Speed
+            const hex = data.split(' ')[2];
+            setLiveData(d => ({...d, speed: parseInt(hex, 16)}));
+        } else if (data.startsWith('41 05')) { // ECT
+            const hex = data.split(' ')[2];
+            setLiveData(d => ({...d, ect: parseInt(hex, 16) - 40}));
+        } else if (data.startsWith('41 10')) { // MAF
+             const hex = data.split(' ').slice(2).join('');
+             const value = parseInt(hex, 16) / 100;
+             setLiveData(d => ({...d, maf: parseFloat(value.toFixed(2))}));
+        } else if (data.startsWith('41 06')) { // STFT
+            const hex = data.split(' ')[2];
+            const value = (parseInt(hex, 16) - 128) * 100 / 128;
+            setLiveData(d => ({...d, stft: parseFloat(value.toFixed(2))}));
+        } else if (data.startsWith('41 07')) { // LTFT
+            const hex = data.split(' ')[2];
+            const value = (parseInt(hex, 16) - 128) * 100 / 128;
+            setLiveData(d => ({...d, ltft: parseFloat(value.toFixed(2))}));
+        } else if (data.startsWith('43')) { // DTC
+            // Basic DTC decoder for one frame
+            const frames = data.replace(/43 /g, '').split(' ');
+            const dtcs: string[] = [];
+            for (let i = 0; i < frames.length; i += 2) {
+                const byte1 = parseInt(frames[i], 16);
+                if (byte1 === 0) continue;
+                const firstChar = ['P', 'C', 'B', 'U'][(byte1 & 0xC0) >> 6];
+                const secondChar = ((byte1 & 0x30) >> 4).toString();
+                const thirdChar = (byte1 & 0x0F).toString(16).toUpperCase();
+                const fourthAndFifth = frames[i+1].toUpperCase();
+                dtcs.push(`${firstChar}${secondChar}${thirdChar}${fourthAndFifth}`);
+            }
+            setLiveData(d => ({...d, dtc: Array.from(new Set([...d.dtc, ...dtcs]))}));
+        } else if(data.startsWith('0902')) {
+            // VIN handling logic here if needed
         }
     };
-    service.onDisconnect = () => {
-        if (liveIntervalRef.current) clearInterval(liveIntervalRef.current);
-        setIsConnected(false);
-        setIsConnecting(false);
-        setLiveData({ rpm: 'N/A', speed: 'N/A', maf: 'N/A', ltft: 'N/A', stft: 'N/A', ect: 'N/A', dtc: [] });
-    };
 
-    const status = await service.connect();
+    const status = await elmServiceRef.current.connect();
     if (status === 'success') {
         setIsConnected(true);
-        startLiveMode(service);
-    } else if (status === 'failed') {
-        setError("ELM327 cihazına bağlanılamadı. Cihazın açık ve menzilde olduğundan emin olun.");
+        liveIntervalRef.current = setInterval(() => {
+            if (!elmServiceRef.current) return;
+            elmServiceRef.current.send('010C'); // RPM
+            elmServiceRef.current.send('010D'); // Speed
+            elmServiceRef.current.send('0105'); // ECT
+            elmServiceRef.current.send('0110'); // MAF
+            elmServiceRef.current.send('0106'); // STFT B1
+            elmServiceRef.current.send('0107'); // LTFT B1
+            
+            dtcCheckCounterRef.current++;
+            if(dtcCheckCounterRef.current % 5 === 0) { // Check DTC every 5 cycles
+                 elmServiceRef.current.send('03');
+            }
+
+        }, 1000);
     }
     setIsConnecting(false);
-  }, [log, parsePIDResponse, startLiveMode]);
+  }, []);
   
-  const handleDisconnect = useCallback(() => {
-    log('Bağlantı kesiliyor...');
-    elmServiceRef.current?.disconnect();
-  }, [log]);
+  const handleDisconnect = () => elmServiceRef.current?.disconnect();
 
-  const handleGetVin = () => {
-    if (elmServiceRef.current) {
-        log("Araçtan VIN isteniyor (Mod 09, PID 02)...");
-        vinBufferRef.current = {};
-        elmServiceRef.current.getVIN();
-    }
+  const handleGetVIN = () => {
+      addLog("Cihazdan VIN isteniyor...");
+      elmServiceRef.current?.getVIN();
   };
-  
-  const handleAnalysis = useCallback(async () => {
-    setIsLoading(true);
+
+  const handleIdentifyByVIN = async () => {
+    if (!vin) return;
+    setIsResolving(true);
     setError(null);
-    setAnalysisResult('');
-    setActiveView('report');
-
-    let rawData = `DTCs: ${liveData.dtc.join(', ') || 'Yok'}\n`;
-    rawData += Object.entries(liveData)
-      .filter(([key]) => key !== 'dtc')
-      .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
-      .join('\n');
-      
-    if (rawData.trim() === 'DTCs: Yok') {
-        setError('Analiz edilecek canlı veri yok. Lütfen önce bir araca bağlanın.');
-        setIsLoading(false);
-        return;
-    }
-
     try {
-      const vehicleInfoForAI: Partial<VehicleData> = vehicleProfile ? {
-        vin: vin,
-        make: vehicleProfile.make,
-        model: `${vehicleProfile.model} (${vehicleProfile.trim})`,
-        year: vehicleProfile.year.toString(),
-        fuel: vehicleProfile.engine ? `${vehicleProfile.engine.fuel} (${vehicleProfile.engine.volume_cc}cc, ${vehicleProfile.engine.power_hp}HP)` : 'Bilinmiyor'
-      } : { make: selections.make, model: selections.model, year: selections.year, vin };
-
-      const result = await analyzeObdData(vehicleInfoForAI, rawData);
-      setAnalysisResult(result);
-    } catch (err) {
-      setError('Analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+        const result = await resolveVehicleByVIN(vin);
+        if (result.status === 'ok' && result.vehicle) {
+            setLogoError(false); // Reset logo error on successful identification
+            setVehicleProfile(result.vehicle);
+            setSelections({
+                make: result.make || '',
+                model: result.model || '',
+                year: result.year?.toString() || '',
+                spec: '',
+            });
+            addLog(`Araç tanımlandı: ${result.make} ${result.model} ${result.year}`);
+        } else {
+            throw new Error(`VIN çözümlenemedi: ${result.status}`);
+        }
+    } catch (e: any) {
+        setError(e.message);
+        addLog(`Hata: ${e.message}`);
     }
-  }, [selections, liveData, vehicleProfile, vin]);
-
-  const handleDtcLookup = useCallback(async (codeOverride?: string) => {
-    const codeToSearch = (codeOverride || dtcLookupCode).trim();
-    if (!codeToSearch) return;
-
-    if (codeOverride) {
-      setDtcLookupCode(codeToSearch);
-    }
-    setActiveView('report');
-    
-    setIsLookingUpDtc(true);
-    setDtcLookupError(null);
-    setDtcLookupResult('');
-    
-    try {
-      const result = await lookupDtcCode(codeToSearch.toUpperCase());
-      setDtcLookupResult(result);
-    } catch (err) {
-      setDtcLookupError('Hata kodu bilgisi alınamadı. Lütfen tekrar deneyin.');
-      console.error(err);
-    } finally {
-      setIsLookingUpDtc(false);
-    }
-  }, [dtcLookupCode]);
-
-
-  const renderAnalysis = (text: string) => {
-    const lines = text.split('\n');
-    return lines.map((line, index) => {
-      if (line.startsWith('📌')) return <h2 key={index} className="text-xl font-bold text-brand-blue mt-6 mb-2 flex items-center"><CarIcon className="w-6 h-6 mr-2 shrink-0" />{line.substring(1).trim()}</h2>;
-      if (line.startsWith('🔍')) return <h3 key={index} className="text-lg font-semibold text-gray-200 mt-4 mb-1 flex items-center"><InfoIcon className="w-5 h-5 mr-2 shrink-0" />{line.substring(1).trim()}</h3>;
-      if (line.startsWith('🎯')) return <h3 key={index} className="text-lg font-semibold text-gray-200 mt-4 mb-1 flex items-center"><EngineIcon className="w-5 h-5 mr-2 shrink-0" />{line.substring(1).trim()}</h3>;
-      if (line.startsWith('🛑')) {
-        const urgency = line.substring(1).trim();
-        let color = 'text-green-400';
-        if (urgency.includes('Orta')) color = 'text-yellow-400';
-        if (urgency.includes('Acil')) color = 'text-red-500';
-        return <h3 key={index} className={`text-lg font-semibold ${color} mt-4 mb-1 flex items-center`}><BoltIcon className="w-5 h-5 mr-2 shrink-0" />{urgency}</h3>;
-      }
-      if (line.startsWith('📡') || line.startsWith('🔧')) return <h3 key={index} className="text-lg font-semibold text-gray-200 mt-4 mb-1 flex items-center"><WrenchIcon className="w-5 h-5 mr-2 shrink-0" />{line.substring(1).trim()}</h3>;
-      if (line.startsWith('1.') || line.startsWith('2.') || line.startsWith('3.') || line.startsWith('-') || line.startsWith('→') || line.startsWith('🧪')) return <p key={index} className="text-gray-400 ml-4">{line}</p>;
-      if(line.trim() === '') return <br key={index} />;
-      return <p key={index} className="text-gray-300">{line}</p>;
-    });
+    setIsResolving(false);
   };
+  
+   const handleAnalyze = async () => {
+        setIsLoading(true);
+        setAnalysisResult('');
+        setError(null);
+        try {
+            const vehicleData: Partial<VehicleData> = {
+                make: vehicleProfile?.make || selections.make,
+                model: vehicleProfile?.model || selections.model,
+                year: (vehicleProfile?.year || selections.year).toString(),
+                vin: vin,
+            };
+            const rawDataLog = `DTCs: ${liveData.dtc.join(', ') || 'None'}, RPM: ${liveData.rpm}, Speed: ${liveData.speed}, ECT: ${liveData.ect}, MAF: ${liveData.maf}, LTFT: ${liveData.ltft}, STFT: ${liveData.stft}`;
+            const result = await analyzeObdData(vehicleData, rawDataLog);
+            setAnalysisResult(result);
+        } catch (e: any) {
+            setError(e.message);
+        }
+        setIsLoading(false);
+    };
+    
+    const handleDtcLookup = async () => {
+        if (!dtcLookupCode) return;
+        setIsLookingUpDtc(true);
+        setDtcLookupResult('');
+        setDtcLookupError(null);
+        try {
+            const result = await lookupDtcCode(dtcLookupCode);
+            setDtcLookupResult(result);
+        } catch (e: any) {
+            setDtcLookupError(e.message);
+        }
+        setIsLookingUpDtc(false);
+    };
 
-  const selectClasses = "w-full bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue disabled:opacity-50 disabled:cursor-not-allowed";
+  // Effects for data fetching
+  useEffect(() => { getMakes().then(makes => setUiOptions(prev => ({...prev, makes}))); }, []);
+  useEffect(() => { if (selections.make) getModelsForMake(selections.make).then(models => setUiOptions(prev => ({...prev, models, years: [], specs: []}))); }, [selections.make]);
+  useEffect(() => { if (selections.model) getYearsForModel(selections.make, selections.model).then(years => setUiOptions(prev => ({...prev, years, specs: []}))); }, [selections.make, selections.model]);
+  useEffect(() => { if (selections.year) getSpecsForYear(selections.make, selections.model, parseInt(selections.year)).then(specs => setUiOptions(prev => ({...prev, specs}))); }, [selections.make, selections.model, selections.year]);
+  
+  useEffect(() => {
+    if (selections.make) {
+        setLogoError(false);
+    }
+  }, [selections.make]);
 
-  const BottomNavBar = () => (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#111827] border-t border-gray-700/50 flex justify-around items-center p-2 z-10">
-      <button onClick={() => setActiveView('live')} className={`flex flex-col items-center space-y-1 ${activeView === 'live' ? 'text-brand-blue' : 'text-gray-400'}`}>
-        <CarIcon className="w-6 h-6"/>
-        <span className="text-xs">Araç</span>
-      </button>
-      <button onClick={() => setActiveView('config')} className={`flex flex-col items-center space-y-1 ${activeView === 'config' ? 'text-brand-blue' : 'text-gray-400'}`}>
-        <WrenchIcon className="w-6 h-6"/>
-        <span className="text-xs">Kontrol</span>
-      </button>
-      <button onClick={() => setActiveView('report')} className={`flex flex-col items-center space-y-1 ${activeView === 'report' ? 'text-brand-blue' : 'text-gray-400'}`}>
-        <InfoIcon className="w-6 h-6"/>
-        <span className="text-xs">Rapor</span>
-      </button>
-    </nav>
-  );
+  const CurrentView = () => {
+      switch (activeView) {
+          case 'live': return <LiveDashboardView liveData={liveData} vehicleProfile={vehicleProfile} selectedMake={selections.make} logoError={logoError} onLogoError={() => setLogoError(true)} />;
+          case 'config': return <ConfigView selections={selections} setSelections={setSelections} uiOptions={uiOptions} vin={vin} setVin={setVin} isConnected={isConnected} isConnecting={isConnecting} handleConnect={handleConnect} handleDisconnect={handleDisconnect} handleIdentifyByVIN={handleIdentifyByVIN} handleGetVIN={handleGetVIN} />;
+          case 'report': return <ReportView analysisResult={analysisResult} isLoading={isLoading} rawLog={rawLog} dtcLookupCode={dtcLookupCode} setDtcLookupCode={setDtcLookupCode} dtcLookupResult={dtcLookupResult} isLookingUpDtc={isLookingUpDtc} dtcLookupError={dtcLookupError} handleDtcLookup={handleDtcLookup} handleAnalyze={handleAnalyze}/>;
+          default: return null;
+      }
+  }
 
   return (
-    <div className="bg-[#0E121A] min-h-screen text-gray-200 flex flex-col md:flex-row font-sans h-screen overflow-hidden">
-      {/* LEFT SIDEBAR */}
-      <aside className={`w-full md:w-80 bg-[#111827] p-4 flex-col border-r border-gray-700/50 overflow-y-auto pb-20 md:pb-4 ${activeView === 'live' ? 'flex' : 'hidden'} md:flex`}>
-        <header className="mb-6 flex items-center justify-start md:justify-center space-x-3">
-          <img src={logoBase64} alt="Rootcastle Pilot AI Logo" className="w-10 h-10" />
-          <div className='text-left md:text-center'>
-            <h1 className="text-2xl font-bold text-white leading-tight">Rootcastle</h1>
-            <p className="text-sm text-brand-blue leading-tight">Pilot AI</p>
-          </div>
-        </header>
-        {isConnected ? (
-             <button onClick={handleDisconnect} className="w-full flex justify-center items-center py-2 px-4 rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors">
-                <BluetoothIcon className="w-5 h-5 mr-2"/> Bağlantıyı Kes
-            </button>
-        ) : (
-            <button onClick={handleConnect} disabled={isConnecting} className="w-full flex justify-center items-center py-2 px-4 rounded-md text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-500 transition-colors">
-                 {isConnecting ? <svg className="animate-spin mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 
-                 : <BluetoothIcon className="w-5 h-5 mr-2"/>}
-                {isConnecting ? 'Bağlanılıyor...' : "ELM327'ye Bağlan"}
-            </button>
-        )}
-        <div className="mt-4 flex items-center justify-center space-x-2 p-2 rounded-lg bg-black/20 border border-gray-700/50">
-            <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></div>
-            <span className={`text-sm font-medium ${isConnected ? 'text-green-400' : 'text-gray-300'}`}>
-                {isConnected ? 'Bağlı' : 'Bağlantı Yok'}
-            </span>
-        </div>
-
-        {vehicleProfile && vehicleProfile.engine && (
-            <div className='mt-6 border-t border-gray-700 pt-4'>
-                <div className="flex items-center justify-center space-x-4 mb-4">
-                    {vehicleProfile.image_url && !logoError ? (
-                        <img 
-                            src={vehicleProfile.image_url} 
-                            alt={`${vehicleProfile.make} logo`} 
-                            className="w-16 h-16 p-1 bg-white rounded-full object-contain shrink-0"
-                            onError={() => setLogoError(true)}
-                        />
-                    ) : (
-                       vehicleProfile.make && (
-                         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shrink-0">
-                            <span className="text-2xl font-bold text-brand-dark">{vehicleProfile.make.substring(0, 2).toUpperCase()}</span>
-                         </div>
-                       )
-                    )}
-                    <div className="text-left">
-                        <h3 className="text-xl font-semibold">{vehicleProfile.make} {vehicleProfile.model}</h3>
-                        <p className="text-sm text-gray-400">{vehicleProfile.year} - {vehicleProfile.trim}</p>
-                    </div>
-                </div>
-                <div className="space-y-2 text-sm">
-                    <LiveValue label="Motor" value={`${vehicleProfile.engine.volume_cc}cc ${vehicleProfile.engine.power_hp}hp`} />
-                    <LiveValue label="Aspirasyon" value={vehicleProfile.engine.aspiration} />
-                    <LiveValue label="0-100km/s" value={vehicleProfile.technical_specs.acceleration_0_100} unit="s" />
-                    <LiveValue label="Maks. Hız" value={vehicleProfile.technical_specs.top_speed} unit="km/h" />
-                    <LiveValue label="Şanzıman" value={`${vehicleProfile.transmission.type}`} />
-                </div>
-            </div>
-        )}
-        <div className='flex-grow'></div>
-        <div>
-            <h3 className="text-lg font-semibold mt-6 border-b border-gray-700 pb-1 mb-3">Canlı Veri</h3>
-            <div className="space-y-2">
-                <VisualLiveValue label="Devir" value={liveData.rpm} max={8000} unit="RPM" />
-                <VisualLiveValue label="Hız" value={liveData.speed} max={250} unit="km/h" />
-                <LiveValue label="Soğutma Suyu" value={liveData.ect} unit="°C" />
-                <LiveValue label="Hava Akışı (MAF)" value={liveData.maf} unit="g/s" />
-                <LiveValue label="STFT B1" value={liveData.stft} unit="%" />
-                <LiveValue label="LTFT B1" value={liveData.ltft} unit="%" />
-            </div>
-            <div className="mt-4">
-              <h4 className="text-base font-semibold text-red-500 mb-2">Arıza Kodları</h4>
-              {liveData.dtc.length > 0 ? (
-                  <div className="space-y-1">
-                      {liveData.dtc.map((code) => (
-                          <button 
-                              key={code}
-                              onClick={() => handleDtcLookup(code)}
-                              className="w-full text-left font-mono text-yellow-400 p-2 bg-red-900/20 rounded hover:bg-red-900/40 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
-                          >
-                              {code}
-                          </button>
-                      ))}
-                  </div>
-              ) : (
-                  <div className="font-mono text-gray-500 p-2 bg-brand-dark/50 rounded mt-1">
-                      Yok
-                  </div>
-              )}
-            </div>
-        </div>
-      </aside>
-
-      {/* MAIN CONTENT */}
-      <main className={`flex-1 p-6 flex-col overflow-y-auto pb-20 md:pb-6 ${activeView === 'config' ? 'flex' : 'hidden'} md:flex`}>
-        <div className='flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4'>
-            <h2 className="text-2xl font-semibold text-white">Araç Konfigürasyonu</h2>
-            <div className="flex items-center space-x-2 w-full md:w-auto">
-                <button onClick={handleGetVin} disabled={!isConnected} className="flex-1 md:flex-none flex items-center justify-center py-2 px-3 rounded-md text-sm text-white bg-teal-600 hover:bg-teal-700 disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors">
-                    <CarIcon className="w-4 h-4 mr-2"/>
-                    VIN'i Al
-                </button>
-                <button onClick={handleResolveVehicle} disabled={isResolving || vin.trim().length < 17} className="flex-1 md:flex-none flex items-center justify-center py-2 px-3 rounded-md text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-500 transition-colors">
-                    {isResolving ? <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 
-                    : <VehicleSearchIcon className="w-4 h-4 mr-2"/>}
-                    {isResolving ? 'Tanımlanıyor...' : 'Tanımla'}
-                </button>
-            </div>
-        </div>
-        <div className="grid grid-cols-1 gap-4 mb-4">
-           <input type="text" placeholder="VIN (Şasi Numarası) - 17 Karakter" value={vin} onChange={e => setVin(e.target.value.toUpperCase())} className="bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono uppercase"/>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-             <select value={selections.make} onChange={e => handleSelectionChange('make', e.target.value)} className={selectClasses}>
-                <option value="">Marka Seçin</option>
-                {uiOptions.makes.map(make => <option key={make} value={make}>{make}</option>)}
-            </select>
-             <select value={selections.model} onChange={e => handleSelectionChange('model', e.target.value)} disabled={!selections.make} className={selectClasses}>
-                <option value="">Model Seçin</option>
-                {uiOptions.models.map(model => <option key={model} value={model}>{model}</option>)}
-            </select>
-             <select value={selections.year} onChange={e => handleSelectionChange('year', e.target.value)} disabled={!selections.model} className={selectClasses}>
-                <option value="">Yıl Seçin</option>
-                {uiOptions.years.map(year => <option key={year} value={year}>{year}</option>)}
-            </select>
-            <select value={selections.spec} onChange={e => handleSelectionChange('spec', e.target.value)} disabled={!selections.year} className={`${selectClasses} sm:col-span-2`}>
-                <option value="">Motor / Donanım Seçin</option>
-                {uiOptions.specs.map((spec, index) => (
-                    <option key={index} value={JSON.stringify(spec)}>
-                        {`${spec.engine || ''} (${spec.engine_hp || 'N/A'}) - ${spec.fuel} ${spec.transmission} - ${spec.body}`}
-                    </option>
-                ))}
-            </select>
-        </div>
-
-        <h2 className="text-2xl font-semibold mb-4 text-white">ELM327 Konsolu</h2>
-        <div ref={consoleRef} className="bg-black/40 p-4 rounded-lg flex-grow font-mono text-sm overflow-y-auto border border-gray-700/50 min-h-[200px]">
-            {rawLog.map((line, index) => <div key={index} className={line.startsWith('TX:') ? 'text-cyan-400' : line.startsWith('RX:') ? 'text-lime-400' : 'text-gray-500'}>{line}</div>)}
-        </div>
-        <button onClick={handleAnalysis} disabled={isLoading || !isConnected} className="w-full mt-6 flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm font-medium text-white bg-brand-blue hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue disabled:bg-brand-light-gray disabled:cursor-not-allowed transition-colors">
-            {isLoading ? 'Analiz Ediliyor...' : 'Canlı Veriyi AI ile Analiz Et'}
-        </button>
+    <div className="flex flex-col h-screen w-full max-w-md mx-auto bg-brand-dark overflow-hidden">
+      <main className="flex-1 overflow-y-auto">
+        <CurrentView />
       </main>
-
-      {/* RIGHT SIDEBAR (AI REPORT) */}
-      <aside className={`w-full md:w-[480px] bg-[#111827] p-4 flex-col border-l border-gray-700/50 overflow-y-auto pb-20 md:pb-4 ${activeView === 'report' ? 'flex' : 'hidden'} md:flex`}>
-        <h2 className="text-2xl font-semibold text-white border-b-2 border-brand-blue pb-2 mb-4 shrink-0">Yapay Zekâ Teşhis Raporu</h2>
-        
-        <div className="mb-6 shrink-0">
-          <h3 className="text-lg font-semibold text-gray-200 mb-2">Hata Kodu Arama</h3>
-          <div className="flex space-x-2">
-            <input
-              type="text"
-              placeholder="Örn: P0420"
-              value={dtcLookupCode}
-              onChange={e => setDtcLookupCode(e.target.value.toUpperCase())}
-              className="flex-grow bg-brand-gray border border-brand-light-gray rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-brand-blue font-mono uppercase"
-            />
-            <button
-              onClick={() => handleDtcLookup()}
-              disabled={isLookingUpDtc}
-              className="flex items-center justify-center py-2 px-4 rounded-md text-sm text-white bg-brand-blue hover:bg-blue-600 disabled:bg-gray-500 transition-colors"
-            >
-              {isLookingUpDtc ? (
-                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-              ) : "Ara"}
-            </button>
-          </div>
-        </div>
-        
-        {(isLookingUpDtc || dtcLookupError || dtcLookupResult) && (
-          <div className="mb-6 p-4 bg-brand-dark/50 rounded-lg border border-gray-700/50">
-            {dtcLookupError && <div className="text-red-400 bg-red-900/30 p-3 rounded-md text-sm">{dtcLookupError}</div>}
-            {isLookingUpDtc && (
-              <div className="flex items-center justify-center text-gray-400">
-                <svg className="animate-spin h-5 w-5 text-brand-blue mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                <span>Hata kodu bilgisi alınıyor...</span>
-              </div>
-            )}
-            {dtcLookupResult && (
-              <div className="prose prose-invert max-w-none text-sm">
-                {renderAnalysis(dtcLookupResult)}
-              </div>
-            )}
-          </div>
-        )}
-        
-        <div className="border-t border-gray-700/50 my-2 shrink-0"></div>
-
-        <div className="flex-grow overflow-y-auto pr-2">
-            {error && <div className="text-red-400 bg-red-900/30 p-3 rounded-md text-sm">{error}</div>}
-            {isLoading && (
-              <div className="flex flex-col items-center justify-center h-full text-gray-400">
-                <svg className="animate-spin h-8 w-8 text-brand-blue mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                <p>Yapay zekâ araç verilerini analiz ediyor...</p>
-              </div>
-            )}
-            {!isLoading && !analysisResult && !error && (
-              <div className="flex flex-col items-center justify-center h-full text-gray-500 text-center">
-                <EngineIcon className="w-12 h-12 mb-4"/>
-                <p>Teşhis raporunuz burada görünecektir.</p>
-                <p className="text-sm">Bir araca bağlanın ve "Canlı Veriyi AI ile Analiz Et" düğmesine basın.</p>
-              </div>
-            )}
-            {analysisResult && (
-              <div className="prose prose-invert max-w-none text-sm">
-                {renderAnalysis(analysisResult)}
-              </div>
-            )}
-        </div>
-      </aside>
-      <BottomNavBar />
+      <footer className="w-full bg-brand-surface-glass border-t border-brand-border backdrop-blur-md">
+        <nav className="flex justify-around items-center p-2">
+            <IconButton icon={<CarIcon className="w-6 h-6" />} label="Araç" onClick={() => setActiveView('live')} active={activeView === 'live'} />
+            <IconButton icon={<WrenchIcon className="w-6 h-6" />} label="Kontrol" onClick={() => setActiveView('config')} active={activeView === 'config'} />
+            <IconButton icon={<InfoIcon className="w-6 h-6" />} label="Rapor" onClick={() => setActiveView('report')} active={activeView === 'report'} />
+        </nav>
+      </footer>
     </div>
   );
 };
