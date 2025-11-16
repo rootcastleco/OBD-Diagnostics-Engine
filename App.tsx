@@ -178,7 +178,7 @@ const LiveDashboardView: React.FC<{ liveData: LiveData; vehicleProfile: VehicleP
     );
 };
 
-const ConfigView: React.FC<any> = ({ selections, setSelections, uiOptions, vin, setVin, isConnected, isConnecting, handleConnect, handleDisconnect, handleIdentifyByVIN, handleGetVIN }) => {
+const ConfigView: React.FC<any> = ({ selections, setSelections, uiOptions, vin, setVin, isConnected, isConnecting, handleConnect, handleDisconnect, handleIdentifyByVIN, handleGetVIN, vehicleDataLoading, vehicleDataError }) => {
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         setSelections((prev: any) => {
@@ -259,25 +259,33 @@ const ConfigView: React.FC<any> = ({ selections, setSelections, uiOptions, vin, 
 
             <Card className="p-4">
                 <h2 className="text-base font-bold mb-3 text-brand-text-primary">Araç Seçimi</h2>
-                <div className="space-y-3">
-                   <CustomSelect name="make" value={selections.make} onChange={handleSelectChange} options={uiOptions.makes} placeholder="Marka Seçin" />
-                   <CustomSelect name="model" value={selections.model} onChange={handleSelectChange} options={uiOptions.models} placeholder="Model Seçin" disabled={!selections.make} />
-                   <CustomSelect name="year" value={selections.year} onChange={handleSelectChange} options={uiOptions.years} placeholder="Yıl Seçin" disabled={!selections.model} />
-                   <select
-                        name="spec"
-                        value={selections.spec}
-                        onChange={handleSelectChange}
-                        disabled={!selections.year || !uiOptions.specs || uiOptions.specs.length === 0}
-                        className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-primary focus:outline-none appearance-none"
-                    >
-                        <option value="">Spesifikasyon Seçin</option>
-                        {uiOptions.specs.map((spec: SpecProfile, index: number) => (
-                            <option key={index} value={index.toString()}>
-                                {`${spec.body} / ${spec.engine} (${spec.engine_hp})`}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                 {vehicleDataLoading ? (
+                     <p className="text-sm text-brand-text-secondary text-center py-4">Araç listesi yükleniyor...</p>
+                ) : vehicleDataError ? (
+                    <div className="text-sm text-red-400 bg-red-500/10 p-3 rounded-lg text-center">
+                        <p>{vehicleDataError}</p>
+                    </div>
+                ) : (
+                    <div className="space-y-3">
+                       <CustomSelect name="make" value={selections.make} onChange={handleSelectChange} options={uiOptions.makes} placeholder="Marka Seçin" />
+                       <CustomSelect name="model" value={selections.model} onChange={handleSelectChange} options={uiOptions.models} placeholder="Model Seçin" disabled={!selections.make} />
+                       <CustomSelect name="year" value={selections.year} onChange={handleSelectChange} options={uiOptions.years} placeholder="Yıl Seçin" disabled={!selections.model} />
+                       <select
+                            name="spec"
+                            value={selections.spec}
+                            onChange={handleSelectChange}
+                            disabled={!selections.year || !uiOptions.specs || uiOptions.specs.length === 0}
+                            className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-primary focus:outline-none appearance-none"
+                        >
+                            <option value="">Spesifikasyon Seçin</option>
+                            {uiOptions.specs.map((spec: SpecProfile, index: number) => (
+                                <option key={index} value={index.toString()}>
+                                    {`${spec.body} / ${spec.engine} (${spec.engine_hp})`}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
                 {selectedSpec && <SpecDisplayCard spec={selectedSpec} />}
             </Card>
         </div>
@@ -354,6 +362,8 @@ const App: React.FC = () => {
   const [dtcLookupResult, setDtcLookupResult] = useState<string>('');
   const [isLookingUpDtc, setIsLookingUpDtc] = useState<boolean>(false);
   const [dtcLookupError, setDtcLookupError] = useState<string | null>(null);
+  const [vehicleDataLoading, setVehicleDataLoading] = useState(true);
+  const [vehicleDataError, setVehicleDataError] = useState<string | null>(null);
 
   // Refs
   const elmServiceRef = useRef<ELM327Service | null>(null);
@@ -508,7 +518,22 @@ const App: React.FC = () => {
     };
 
   // Effects for data fetching
-  useEffect(() => { getMakes().then(makes => setUiOptions(prev => ({...prev, makes}))); }, []);
+    useEffect(() => {
+        setVehicleDataLoading(true);
+        setVehicleDataError(null);
+        getMakes().then(makes => {
+            setUiOptions(prev => ({...prev, makes}));
+            if (makes.length === 0) {
+                setVehicleDataError("Araç marka listesi yüklenemedi. Lütfen internet bağlantınızı kontrol edin veya sunucu yapılandırmasını doğrulayın.");
+            }
+        }).catch(err => {
+            console.error("Araç markaları yüklenirken hata oluştu:", err);
+            setVehicleDataError("Araç markaları yüklenirken beklenmedik bir hata oluştu.");
+        }).finally(() => {
+            setVehicleDataLoading(false);
+        });
+    }, []);
+
   useEffect(() => { if (selections.make) getModelsForMake(selections.make).then(models => setUiOptions(prev => ({...prev, models, years: [], specs: []}))); }, [selections.make]);
   useEffect(() => { if (selections.model) getYearsForModel(selections.make, selections.model).then(years => setUiOptions(prev => ({...prev, years, specs: []}))); }, [selections.make, selections.model]);
   useEffect(() => { if (selections.year) getSpecsForYear(selections.make, selections.model, parseInt(selections.year)).then(specs => setUiOptions(prev => ({...prev, specs}))); }, [selections.make, selections.model, selections.year]);
@@ -522,7 +547,7 @@ const App: React.FC = () => {
   const CurrentView = () => {
       switch (activeView) {
           case 'live': return <LiveDashboardView liveData={liveData} vehicleProfile={vehicleProfile} selectedMake={selections.make} logoError={logoError} onLogoError={() => setLogoError(true)} />;
-          case 'config': return <ConfigView selections={selections} setSelections={setSelections} uiOptions={uiOptions} vin={vin} setVin={setVin} isConnected={isConnected} isConnecting={isConnecting} handleConnect={handleConnect} handleDisconnect={handleDisconnect} handleIdentifyByVIN={handleIdentifyByVIN} handleGetVIN={handleGetVIN} />;
+          case 'config': return <ConfigView selections={selections} setSelections={setSelections} uiOptions={uiOptions} vin={vin} setVin={setVin} isConnected={isConnected} isConnecting={isConnecting} handleConnect={handleConnect} handleDisconnect={handleDisconnect} handleIdentifyByVIN={handleIdentifyByVIN} handleGetVIN={handleGetVIN} vehicleDataLoading={vehicleDataLoading} vehicleDataError={vehicleDataError} />;
           case 'report': return <ReportView analysisResult={analysisResult} isLoading={isLoading} rawLog={rawLog} dtcLookupCode={dtcLookupCode} setDtcLookupCode={setDtcLookupCode} dtcLookupResult={dtcLookupResult} isLookingUpDtc={isLookingUpDtc} dtcLookupError={dtcLookupError} handleDtcLookup={handleDtcLookup} handleAnalyze={handleAnalyze}/>;
           default: return null;
       }
